@@ -2,7 +2,7 @@ package com.example.mamans.maman01;
 
 import java.util.Scanner;
 
-public class BullsAndCowsPlayer {
+public class BullsAndCowsInputParser {
     /*
     * The player code section of this Bulls-and-Cows game.
     * This class handle the player side of this game, which includes:
@@ -10,16 +10,26 @@ public class BullsAndCowsPlayer {
     *   2. parsing player's input - including handling inputs errors
     *   3. history? (need to decide if put this here or in the Manger class)
     * */
-    BullsAndCowsUtils bncUtils = new BullsAndCowsUtils();
+    private BullsAndCowsUtils bncUtils = new BullsAndCowsUtils();
+
+    private BullsAndCowsErrorManager gameErrorManager = new BullsAndCowsErrorManager();
 
     private final String errorInputMassage = "InputError: Player input must contain 4 digits";
 
     private String currPlayerNumberAsString;
+
+    private String InputErrorMessage;
+
     private int currPlayerNumberAsInt;
 
     private int playerGuessIndex;
 
     private final Scanner scanner = new Scanner(System.in);
+
+
+    public String getInputErrorMessage() { return this.InputErrorMessage; }
+
+    public void setInputErrorMessage(String msg) { this.InputErrorMessage = msg; }
 
 
     public int getPlayerGuessIndex() {return this.playerGuessIndex; }
@@ -37,7 +47,7 @@ public class BullsAndCowsPlayer {
     public void setCurrPlayerNumberAsInt(int n) { this.currPlayerNumberAsInt = n; }
 
 
-    public void setCurrUserNumberFromUserInput(String userInput) {
+    public void setCurrPlayerGuess(String userInput) {
         int digit0 = bncUtils.charToInt(userInput.charAt(0));
         int digit1 = bncUtils.charToInt(userInput.charAt(1));
         int digit2 = bncUtils.charToInt(userInput.charAt(2));
@@ -60,43 +70,44 @@ public class BullsAndCowsPlayer {
 
     public boolean parsePlayerInput(String input) {
 
+        int inputLength = input.length();
         System.out.println("get: " + input);
-        System.out.println("Input Length:" + " " + input.length());
+        System.out.println("Input Length:" + " " + inputLength);
 
-        if (input == null) {
-            // handle case of empty user input
-            System.out.println(this.errorInputMassage);
-            System.out.println("user input is empty");
+        if (inputLength == 0) {
+            // handle error case of empty input
+            this.setInputErrorMessage(gameErrorManager.getErrorInputIsEmpty());
             return false;
         }
 
-        if (input != null) {
-            // handle case of non-empty user input
+        if (inputLength < 4) {
+            // handle error case of too short input
+            this.setInputErrorMessage(gameErrorManager.getErrorInputLengthIsTooShort());
+            return false;
+        }
 
-            // todo: check before:
-            //      1. user enter 4-digit number (and nothing else)
-            //      2. consider skip leading or closing empty spaces
+        if (inputLength > 4) {
+            // handle error case of too long input
+            this.setInputErrorMessage(gameErrorManager.getErrorInputLengthIsTooLong());
+            return false;
+        }
 
-            // remove all spaces (' ')
-            input = input.replaceAll(" ", "");
-            int inputLength = input.length();
-
-            if (!(inputLength == 4)) {
-                System.out.println(this.errorInputMassage);
+        for (char c : input.toCharArray()) {
+            // check if this input contains non-digits
+            if (!bncUtils.isDigitChar(c)) {
+                this.setInputErrorMessage(gameErrorManager.getErrorInputContainsNonDigits());
                 return false;
             }
 
-
-            for (char c : input.toCharArray()) {
-                if (!bncUtils.isDigitChar(c)) {
-                    System.out.println(this.errorInputMassage);
-                    System.out.println("bad character: " + " " + c);
-                    return false;
-                }
+            // check for duplicate digits
+            if (bncUtils.countDigitRepetition(c, input) > 1) {
+                this.setInputErrorMessage(gameErrorManager.getErrorInputContainsDuplicatesDigits());
+                return false;
             }
-
-            this.setCurrUserNumberFromUserInput(input);
         }
+
+        this.setCurrPlayerGuess(input);
+        this.setInputErrorMessage("");
         return true;
     }
 

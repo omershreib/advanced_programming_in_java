@@ -25,4 +25,13 @@ public class BullsAndCowsUtils {
         return c >= '0' && c <= '9';
     }
 
+    public int countDigitRepetition(char dig, String number) {
+        int count = 0;
+        for (int i=0; i<4; i++) {
+            if (number.charAt(i) == dig)
+                count++;
+        }
+        return count;
+    }
+
 }

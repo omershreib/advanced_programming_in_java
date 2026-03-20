@@ -2,7 +2,7 @@ package com.example.mamans.maman01;
 
 public class BullsAndCowsManager {
     public BullsAndCowsBackend gameBackend = new BullsAndCowsBackend();
-    public BullsAndCowsPlayer gamePlayer = new BullsAndCowsPlayer();
+    public BullsAndCowsInputParser gamePlayer = new BullsAndCowsInputParser();
 
     public BullsAndCowsGuessArchive archive = new BullsAndCowsGuessArchive();
 
@@ -47,14 +47,14 @@ public class BullsAndCowsManager {
         return false;
     }
 
-    public String displayGuessResult() {
+    public String summarizeGuessResult() {
         int guessIndex = this.gamePlayer.getPlayerGuessIndex();
         String guessNumber = this.gamePlayer.getCurrPlayerNumberAsString();
-        String toDisplay = "Guess #" + guessIndex + " ; GuessNumber:" + " " + guessNumber + " ; #bulls:"
+        String result = "#" + guessIndex + " ; player's guess:" + " " + guessNumber + " ; #bulls:"
                 + " " + this.getCurrBulls() + " ; #cows:" + " " + this.getCurrCows();
 
-        System.out.println(toDisplay);
-        return toDisplay;
+        System.out.println(result);
+        return result;
 
     }
 
@@ -75,7 +75,7 @@ public class BullsAndCowsManager {
         while (!this.isGameOver) {
             this.gamePlayer.waitForPlayerGuess();
             this.compareNumbers(gameNumber, this.gamePlayer.getCurrPlayerNumberAsString());
-            this.displayGuessResult();
+            this.summarizeGuessResult();
             this.checkForGameOver();
         }
 
