@@ -11,6 +11,7 @@ public class BullsAndCowsPlayer {
     *   3. history? (need to decide if put this here or in the Manger class)
     * */
     BullsAndCowsUtils bncUtils = new BullsAndCowsUtils();
+
     private final String errorInputMassage = "InputError: Player input must contain 4 digits";
 
     private String currPlayerNumberAsString;
@@ -59,6 +60,7 @@ public class BullsAndCowsPlayer {
 
     public boolean parsePlayerInput(String input) {
 
+        System.out.println("get: " + input);
         System.out.println("Input Length:" + " " + input.length());
 
         if (input == null) {

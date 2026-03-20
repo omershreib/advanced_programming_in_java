@@ -1,8 +1,10 @@
 package com.example.mamans.maman01;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class BullsAndCowsBackend {
@@ -30,7 +32,27 @@ public class BullsAndCowsBackend {
 
 
     protected void initNewGame() {
-        this.generateGameNumber();
+        this.generateGameUniqueNumbers();
+    }
+
+    private void generateGameUniqueNumbers() {
+        /* implement random selection of numbers without repetitions as follows:
+        * 1. shuffle all the numbers from 0 to 9
+        * 2. take only the first 4 digits located at positions 0-3
+        * */
+        List<Integer> numbers = new ArrayList<>(List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9));
+        Collections.shuffle(numbers);
+
+        int digit0 = numbers.get(3);
+        int digit1 = numbers.get(2);
+        int digit2 = numbers.get(1);
+        int digit3 = numbers.get(0);
+
+        this.setGameNumberAsInt(bncUtils.buildNumberFromDigits(digit0, digit1, digit2, digit3));
+        this.setGameNumberAsString(bncUtils.prettifyNumber(this.getGameNumberAsInt()));
+
+        // during debug only
+        System.out.println("Random-Game-Number: " + this.getGameNumberAsString());
     }
 
     private void generateGameNumber() {
@@ -46,6 +68,9 @@ public class BullsAndCowsBackend {
 
         this.setGameNumberAsInt(bncUtils.buildNumberFromDigits(digit0, digit1, digit2, digit3));
         this.setGameNumberAsString(bncUtils.prettifyNumber(this.getGameNumberAsInt()));
+
+        // during debug only
+        System.out.println("Random-Game-Number: " + this.getGameNumberAsString());
     }
 
 

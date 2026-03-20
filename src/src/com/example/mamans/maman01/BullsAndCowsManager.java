@@ -1,8 +1,10 @@
 package com.example.mamans.maman01;
 
 public class BullsAndCowsManager {
-    private BullsAndCowsBackend gameBackend = new BullsAndCowsBackend();
-    private BullsAndCowsPlayer gamePlayer = new BullsAndCowsPlayer();
+    public BullsAndCowsBackend gameBackend = new BullsAndCowsBackend();
+    public BullsAndCowsPlayer gamePlayer = new BullsAndCowsPlayer();
+
+    public BullsAndCowsGuessArchive archive = new BullsAndCowsGuessArchive();
 
     private boolean isGameOver;
 
@@ -45,11 +47,15 @@ public class BullsAndCowsManager {
         return false;
     }
 
-    public void displayGuessResult() {
+    public String displayGuessResult() {
         int guessIndex = this.gamePlayer.getPlayerGuessIndex();
         String guessNumber = this.gamePlayer.getCurrPlayerNumberAsString();
-        System.out.println("Guess #" + guessIndex + " ; GuessNumber:" + " " + guessNumber + " ; #bulls:"
-                            + " " + this.getCurrBulls() + " ; #cows:" + " " + this.getCurrCows());
+        String toDisplay = "Guess #" + guessIndex + " ; GuessNumber:" + " " + guessNumber + " ; #bulls:"
+                + " " + this.getCurrBulls() + " ; #cows:" + " " + this.getCurrCows();
+
+        System.out.println(toDisplay);
+        return toDisplay;
+
     }
 
     private void preCompareSetup() {
