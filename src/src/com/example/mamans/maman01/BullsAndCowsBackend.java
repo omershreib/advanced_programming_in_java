@@ -14,8 +14,7 @@ public class BullsAndCowsBackend {
     *
     * */
     BullsAndCowsUtils bncUtils = new BullsAndCowsUtils();
-    private int currBulls;
-    private int currCows;
+
     private int gameNumberAsInt;
     private String gameNumberAsString;
 
@@ -28,14 +27,7 @@ public class BullsAndCowsBackend {
 
     private void setGameNumberAsString(String s) { this.gameNumberAsString = s; }
 
-    public int getCurrBulls() { return this.currBulls; }
 
-    public int getCurrCows() { return this.currCows; }
-
-    private void initCheck() {
-        this.currBulls = 0;
-        this.currCows = 0;
-    }
 
     protected void initNewGame() {
         this.generateGameNumber();
@@ -55,9 +47,6 @@ public class BullsAndCowsBackend {
         this.setGameNumberAsInt(bncUtils.buildNumberFromDigits(digit0, digit1, digit2, digit3));
         this.setGameNumberAsString(bncUtils.prettifyNumber(this.getGameNumberAsInt()));
     }
-
-
-
 
 
 }
