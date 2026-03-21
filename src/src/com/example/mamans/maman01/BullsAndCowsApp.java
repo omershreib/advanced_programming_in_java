@@ -1,32 +1,27 @@
 package com.example.mamans.maman01;
 
 import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-import java.util.ListIterator;
 import java.util.Optional;
 
 public class BullsAndCowsApp extends Application {
-    BullsAndCowsErrorManager gameErrorManager = new BullsAndCowsErrorManager();
+    private final TextInputDialog textInputDialog = new TextInputDialog();
+    private final Alert error = new Alert(Alert.AlertType.ERROR);
 
-    TextInputDialog textInputDialog = new TextInputDialog();
-    Alert error = new Alert(Alert.AlertType.ERROR);
+    private final Alert info = new Alert(Alert.AlertType.INFORMATION);
 
-    Alert info = new Alert(Alert.AlertType.INFORMATION);
+    private final Alert gameStartOrExitWindow = new Alert(Alert.AlertType.CONFIRMATION);
 
-    Alert gameStartOrExitWindow = new Alert(Alert.AlertType.CONFIRMATION);
+    private static final String GAME_OVER_INFO_MASSAGE = "Bullseye! your manage to correctly guess the number";
 
-    private final String GAME_OVER_INFO_MASSAGE = "Bullseye! your manage to correctly guess the number";
-
-    private final String GAME_TITLE = "BullsAndCows!";
+    private static final String GAME_TITLE = "BullsAndCows!";
 
 
     private void setGameStartOrExitWindow() {
         gameStartOrExitWindow.setTitle("new game or exit");
-        gameStartOrExitWindow.setHeaderText("Press OK to restart the game, or CANCEL of exit");
+        gameStartOrExitWindow.setHeaderText("Press OK to restart the game, or Cancel of exit");
     }
 
     public void newGame() {
@@ -35,7 +30,7 @@ public class BullsAndCowsApp extends Application {
         game.initNewGame();
 
         while (!game.checkForGameOver()) {
-            textInputDialog.setTitle("bulls and cows");
+            textInputDialog.setTitle(GAME_TITLE);
             textInputDialog.setHeaderText("Lets' Play Bulls and Cows!\nTry To Guess The 4-Digit Number:");
 
             Optional<String> playerInput = textInputDialog.showAndWait();
@@ -53,10 +48,6 @@ public class BullsAndCowsApp extends Application {
                 String result = game.summarizeGuessResult();
 
                 guessesHistory.append("\n").append(result);
-
-//                for (ListIterator<String> guesses = game.archive.getGuessArchive(); guesses.hasNext(); ) {
-//                    guessesHistory.append("\n").append(guesses.next());
-//                }
                 textInputDialog.setContentText(guessesHistory.toString());
 
             }
@@ -69,7 +60,7 @@ public class BullsAndCowsApp extends Application {
         }
 
         info.setTitle("Game Over");
-        info.setHeaderText(this.GAME_OVER_INFO_MASSAGE);
+        info.setHeaderText(GAME_OVER_INFO_MASSAGE);
         info.setContentText("player guesses history:\n" + guessesHistory.toString());
         info.showAndWait();
     }
@@ -82,23 +73,23 @@ public class BullsAndCowsApp extends Application {
     @Override
     public void start(Stage primaryStage) {
         this.setGameStartOrExitWindow();
-        //boolean isClose = false;
+        boolean isClosed = false;
 
-        while (true) {
+        while (!isClosed) {
             try {
                 this.newGame();
 
                 System.out.println("restart or exit");
                 Optional<ButtonType> result = gameStartOrExitWindow.showAndWait();
 
-//                if (result.isPresent() && result.get() == ButtonType.OK) {
-//                    this.newGame();
-//                }
+                if (result.isPresent() && result.get() == ButtonType.OK) {
+                    System.out.println("restart game");
+                }
 
                 if (result.isPresent() && result.get() == ButtonType.CANCEL) {
-                    System.out.println("Close Program");
+                    System.out.println("close program");
                     primaryStage.close();
-                    //System.exit(0);
+                    isClosed = true;
                 }
             }
 

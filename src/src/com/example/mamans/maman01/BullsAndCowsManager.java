@@ -50,8 +50,8 @@ public class BullsAndCowsManager {
     public String summarizeGuessResult() {
         int guessIndex = this.gamePlayer.getPlayerGuessIndex();
         String guessNumber = this.gamePlayer.getCurrPlayerNumberAsString();
-        String result = "#" + guessIndex + " ; player's guess:" + " " + guessNumber + " ; #bulls:"
-                + " " + this.getCurrBulls() + " ; #cows:" + " " + this.getCurrCows();
+        String result = "#" + guessIndex + " guess:" + " " + guessNumber + " #bulls:"
+                + " " + this.getCurrBulls() + " #cows:" + " " + this.getCurrCows();
 
         System.out.println(result);
         return result;

@@ -1,10 +1,6 @@
 package com.example.mamans.maman01;
 
 public class BullsAndCowsUtils {
-    public String ConvertNumberFromIntToString(int n) {
-        return this.prettifyNumber(n);
-    }
-
 
     public String prettifyNumber(int n) {
         return String.format("%04d", n);

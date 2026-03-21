@@ -12,7 +12,13 @@ public class BullsAndCowsInputParser {
     * */
     private BullsAndCowsUtils bncUtils = new BullsAndCowsUtils();
 
-    private BullsAndCowsErrorManager gameErrorManager = new BullsAndCowsErrorManager();
+    private static final String ERROR_INPUT_IS_EMPTY = "Input cannot be empty";
+    private static final String ERROR_INPUT_CONTAINS_NON_DIGITS = "Input must includes only digits (0-9)";
+    private static final String ERROR_INPUT_CONTAINS_DUPLICATE_DIGITS = "All four digits must be unique! (repetitions are not allowed)";
+    private static final String ERROR_INPUT_LENGTH_TOO_SHORT = "Input length is too short! (required 4 unique digits)";
+    private static final String ERROR_INPUT_LENGTH_TOO_LONG = "Input length is too long! (required 4 unique digits)";
+
+    //private BullsAndCowsErrorManager gameErrorManager = new BullsAndCowsErrorManager();
 
     private final String errorInputMassage = "InputError: Player input must contain 4 digits";
 
@@ -74,34 +80,39 @@ public class BullsAndCowsInputParser {
         System.out.println("get: " + input);
         System.out.println("Input Length:" + " " + inputLength);
 
+        if (input.equals("cancel")) {
+            // handle Cancel button press during the game
+            System.exit(0);
+        }
+
         if (inputLength == 0) {
             // handle error case of empty input
-            this.setInputErrorMessage(gameErrorManager.getErrorInputIsEmpty());
+            this.setInputErrorMessage(ERROR_INPUT_IS_EMPTY);
             return false;
         }
 
         if (inputLength < 4) {
             // handle error case of too short input
-            this.setInputErrorMessage(gameErrorManager.getErrorInputLengthIsTooShort());
+            this.setInputErrorMessage(ERROR_INPUT_LENGTH_TOO_SHORT);
             return false;
         }
 
         if (inputLength > 4) {
             // handle error case of too long input
-            this.setInputErrorMessage(gameErrorManager.getErrorInputLengthIsTooLong());
+            this.setInputErrorMessage(ERROR_INPUT_LENGTH_TOO_LONG);
             return false;
         }
 
         for (char c : input.toCharArray()) {
             // check if this input contains non-digits
             if (!bncUtils.isDigitChar(c)) {
-                this.setInputErrorMessage(gameErrorManager.getErrorInputContainsNonDigits());
+                this.setInputErrorMessage(ERROR_INPUT_CONTAINS_NON_DIGITS);
                 return false;
             }
 
             // check for duplicate digits
             if (bncUtils.countDigitRepetition(c, input) > 1) {
-                this.setInputErrorMessage(gameErrorManager.getErrorInputContainsDuplicatesDigits());
+                this.setInputErrorMessage(ERROR_INPUT_CONTAINS_DUPLICATE_DIGITS);
                 return false;
             }
         }
