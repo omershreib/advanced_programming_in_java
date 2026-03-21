@@ -29,31 +29,29 @@ public class BullsAndCowsApp extends Application {
         StringBuilder guessesHistory = new StringBuilder();
         game.initNewGame();
 
+        textInputDialog.setContentText("");
+        textInputDialog.getEditor().clear();
+
         while (!game.checkForGameOver()) {
             textInputDialog.setTitle(GAME_TITLE);
             textInputDialog.setHeaderText("Lets' Play Bulls and Cows!\nTry To Guess The 4-Digit Number:");
 
             Optional<String> playerInput = textInputDialog.showAndWait();
-
-
-
-            playerInput.ifPresent(System.out::println);
-
-            if (game.gamePlayer.parsePlayerInput(playerInput.orElse("cancel"))) {
-                game.archive.addPlayerGuessToArchive(game.gamePlayer.getCurrPlayerNumberAsString());
+            
+            if (game.gameInputParser.parsePlayerInput(playerInput.orElse("cancel"))) {
+                game.archive.addPlayerGuessToArchive(game.gameInputParser.getCurrPlayerNumberAsString());
 
                 game.compareNumbers(game.gameBackend.getGameNumberAsString(),
-                        game.gamePlayer.getCurrPlayerNumberAsString());
+                        game.gameInputParser.getCurrPlayerNumberAsString());
 
                 String result = game.summarizeGuessResult();
 
                 guessesHistory.append("\n").append(result);
                 textInputDialog.setContentText(guessesHistory.toString());
-
             }
 
             else {
-                this.error.setContentText(game.gamePlayer.getInputErrorMessage());
+                this.error.setContentText(game.gameInputParser.getInputErrorMessage());
                 this.error.showAndWait();
             }
 
@@ -61,7 +59,7 @@ public class BullsAndCowsApp extends Application {
 
         info.setTitle("Game Over");
         info.setHeaderText(GAME_OVER_INFO_MASSAGE);
-        info.setContentText("player guesses history:\n" + guessesHistory.toString());
+        info.setContentText("player guesses history:\n" + guessesHistory);
         info.showAndWait();
     }
 
@@ -94,14 +92,12 @@ public class BullsAndCowsApp extends Application {
             }
 
             catch (Exception e) {
-                System.out.println(e.toString());
+                System.out.println(e);
                 primaryStage.close();
                 System.exit(1);
             }
 
         }
-
-
 
     }
 }

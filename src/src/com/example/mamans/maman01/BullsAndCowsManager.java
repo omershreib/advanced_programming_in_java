@@ -2,7 +2,7 @@ package com.example.mamans.maman01;
 
 public class BullsAndCowsManager {
     public BullsAndCowsBackend gameBackend = new BullsAndCowsBackend();
-    public BullsAndCowsInputParser gamePlayer = new BullsAndCowsInputParser();
+    public BullsAndCowsInputParser gameInputParser = new BullsAndCowsInputParser();
 
     public BullsAndCowsGuessArchive archive = new BullsAndCowsGuessArchive();
 
@@ -48,10 +48,11 @@ public class BullsAndCowsManager {
     }
 
     public String summarizeGuessResult() {
-        int guessIndex = this.gamePlayer.getPlayerGuessIndex();
-        String guessNumber = this.gamePlayer.getCurrPlayerNumberAsString();
-        String result = "#" + guessIndex + " guess:" + " " + guessNumber + " #bulls:"
-                + " " + this.getCurrBulls() + " #cows:" + " " + this.getCurrCows();
+        int guessIndex = this.gameInputParser.getPlayerGuessIndex();
+        String guessNumber = this.gameInputParser.getCurrPlayerNumberAsString();
+
+        String result = "#" + guessIndex + "\t\t" + guessNumber + "\t\t#bulls:"
+                + " " + this.getCurrBulls() + "\t\t#cows:" + " " + this.getCurrCows();
 
         System.out.println(result);
         return result;
@@ -60,12 +61,13 @@ public class BullsAndCowsManager {
 
     private void preCompareSetup() {
         this.initCheck();
-        this.gamePlayer.incrementPlayerGuessIndex();
+        this.gameInputParser.incrementPlayerGuessIndex();
     }
 
     public void initNewGame() {
+        this.setGameOver(false);
         this.gameBackend.initNewGame();
-        this.gamePlayer.initNewGame();
+        this.gameInputParser.initNewGame();
     }
 
     public void runGame() {
@@ -73,8 +75,8 @@ public class BullsAndCowsManager {
         String gameNumber = this.gameBackend.getGameNumberAsString();
 
         while (!this.isGameOver) {
-            this.gamePlayer.waitForPlayerGuess();
-            this.compareNumbers(gameNumber, this.gamePlayer.getCurrPlayerNumberAsString());
+            this.gameInputParser.waitForPlayerGuess();
+            this.compareNumbers(gameNumber, this.gameInputParser.getCurrPlayerNumberAsString());
             this.summarizeGuessResult();
             this.checkForGameOver();
         }
