@@ -1,4 +1,4 @@
-package com.example.mamans.maman01;
+package com.example.mamans.maman01.bulls_and_cows;
 
 public class BullsAndCowsErrorManager {
     private final String ERROR_PREFIX = "ErrorInput";

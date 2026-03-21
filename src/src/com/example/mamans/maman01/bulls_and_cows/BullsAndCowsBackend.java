@@ -1,4 +1,4 @@
-package com.example.mamans.maman01;
+package com.example.mamans.maman01.bulls_and_cows;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,10 +1,10 @@
-package com.example.mamans.maman01;
+package com.example.mamans.maman01.bulls_and_cows;
 
 public class BullsAndCowsManager {
     public BullsAndCowsBackend gameBackend = new BullsAndCowsBackend();
     public BullsAndCowsInputParser gameInputParser = new BullsAndCowsInputParser();
 
-    public BullsAndCowsGuessArchive archive = new BullsAndCowsGuessArchive();
+    //public BullsAndCowsGuessArchive archive = new BullsAndCowsGuessArchive();
 
     private boolean isGameOver;
 

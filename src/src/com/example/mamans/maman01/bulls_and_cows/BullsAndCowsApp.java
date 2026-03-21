@@ -1,4 +1,4 @@
-package com.example.mamans.maman01;
+package com.example.mamans.maman01.bulls_and_cows;
 
 import javafx.application.Application;
 import javafx.scene.control.*;
@@ -39,7 +39,7 @@ public class BullsAndCowsApp extends Application {
             Optional<String> playerInput = textInputDialog.showAndWait();
             
             if (game.gameInputParser.parsePlayerInput(playerInput.orElse("cancel"))) {
-                game.archive.addPlayerGuessToArchive(game.gameInputParser.getCurrPlayerNumberAsString());
+                //game.archive.addPlayerGuessToArchive(game.gameInputParser.getCurrPlayerNumberAsString());
 
                 game.compareNumbers(game.gameBackend.getGameNumberAsString(),
                         game.gameInputParser.getCurrPlayerNumberAsString());
