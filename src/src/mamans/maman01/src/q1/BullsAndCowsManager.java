@@ -46,12 +46,12 @@ public class BullsAndCowsManager {
 
     protected String getGuessesHistory() { return this.guessesHistory.toString(); }
 
-    /** summarize guess result
+    /**
+     * return a summarized version of the player's current guess <br>
      *
      * <p> all the data needed to build this summary is saved by
-     * this game's backend and inputParser immediately after a valid player guess input </p>
-     *
-     * <p> the output of this method is later used as the @guessData input of the updateGuessesHistory() method </p>
+     * this game's backend and inputParser immediately after a valid player guess input.
+     * the output of this method is later used as the @guessData input of the updateGuessesHistory() method </p>
      *
      * @return a formatted string
      * */
@@ -75,7 +75,6 @@ public class BullsAndCowsManager {
         gameBackend.initCheck();
     }
 
-
     /** manager new game initialize method
      *
      * <p> initialization setup includes: </p>
@@ -84,15 +83,20 @@ public class BullsAndCowsManager {
      *     <li> calls inputParser initializer </li>
      *     <li> clear previous game history </li>
      * </ul>
-     * * */
+     * **/
     public void initNewGame() {
-        //this.preCompareSetup();
         this.gameBackend.initNewGame();
         this.gameInputParser.initNewGame();
         this.clearGuessesHistory();
     }
 
-    protected boolean playCurrGameTurn(String guessInput) {
+    /**
+     * play the current game's turn according to the current guess provided by the player
+     *
+     * @param guessInput a String
+     * @return true if this play's turn ends successfully. this if and only if the @guessInput is valid (otherwise, false)
+     * */
+    protected boolean playGameCurrTurn(String guessInput) {
 
         // accept player guess input if valid (or exit upon cancel button press)
         if (gameInputParser.parsePlayerInput(guessInput)) {
@@ -107,6 +111,5 @@ public class BullsAndCowsManager {
         }
         return false;
     }
-
 
 }

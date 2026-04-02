@@ -35,11 +35,6 @@ public class BullsAndCowsBackend {
 
     public int getCurrBulls() { return this.currBulls; }
 
-//    public void setCurrBulls(int n) { this.currBulls = n; }
-//
-//    public void setCurrCows(int n) { this.currCows = n; }
-
-
     public int getCurrCows() { return this.currCows; }
 
     /** initialize player guess check by assigning zero to currBulls and currCows
