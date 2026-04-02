@@ -6,6 +6,24 @@ import javafx.stage.Stage;
 
 import java.util.Optional;
 
+/**
+ * <h3> BullsAndCowsApp </h3>
+ *
+ * <p>
+ *     this is the main class interface for running the Bulls-and-Cows game required to implement in maman01 (q1).
+ *     handle the GUI displacement (implemented by alerts boxes) during this entire game's lifetime.
+ * <p>
+ *     uses the BullsAndCowsManager to interacts between the game logic (i.e., the backend class) and the
+ *     player's input class handler (i.e., the parser class)
+ * </p>
+ *
+ * @maman   01
+ * @question    1
+ * @author  Omer Shraibshtein (205984271)
+ * @email   omershreib@gmail.com
+ * @since   2026-04-02
+ * */
+
 public class BullsAndCowsApp extends Application {
 
     // player input interface
@@ -24,8 +42,14 @@ public class BullsAndCowsApp extends Application {
 
 
     // game over constants variables
+    private static final String GAME_OVER_TITLE = GAME_TITLE + " (Game Over)";
     private static final String GAME_OVER_HEADER_TEXT = "Bullseye! your manage to correctly guess the number";
     private static final String GAME_OVER_PREFIX_CONTENT_TEXT = "player guesses history:\n";
+
+
+    // restart or exit game constants variables
+    private static final String GAME_RESTART_OR_EXIT_TITLE = GAME_TITLE + " (Restart or Exit Game)";
+    private static final String GAME_RESTART_OR_EXIT_CONTENT_TEXT = "Press OK to restart the game, or Cancel of exit";
 
 
     // game manager constant class object
@@ -43,7 +67,7 @@ public class BullsAndCowsApp extends Application {
 
     /** game over info alert box content setup and display */
     private void showGameOverInfoAlert() {
-        info.setTitle("Game Over");
+        info.setTitle(GAME_OVER_TITLE);
         info.setHeaderText(GAME_OVER_HEADER_TEXT);
         info.setContentText(GAME_OVER_PREFIX_CONTENT_TEXT + gameManager.getGuessesHistory());
         info.showAndWait();
@@ -51,8 +75,8 @@ public class BullsAndCowsApp extends Application {
 
     /** Restart-or-Exit confirmation alert setup */
     private void setConfirmRestartOrExit() {
-        confirmRestartOrExit.setTitle("new game or exit");
-        confirmRestartOrExit.setHeaderText("Press OK to restart the game, or Cancel of exit");
+        confirmRestartOrExit.setTitle(GAME_RESTART_OR_EXIT_TITLE);
+        confirmRestartOrExit.setHeaderText(GAME_RESTART_OR_EXIT_CONTENT_TEXT);
     }
 
     /** main method for starting a new BullsAndCows game */
@@ -62,15 +86,23 @@ public class BullsAndCowsApp extends Application {
 
         this.gameContentSetup();
 
-        while (!gameManager.checkForGameOver()) {
+        while (!gameManager.gameBackend.checkForGameOver()) {
             Optional<String> playerInput = textInputDialog.showAndWait();
 
             // accept player guess input if valid (or exit upon cancel button press)
             if (gameManager.gameInputParser.parsePlayerInput(playerInput.orElse("cancel"))) {
 
+
+//                System.out.println("before:");
+//                System.out.println(gameManager.gameBackend.getCurrBulls());
+//                System.out.println(gameManager.gameBackend.getCurrCows());
+
                 // compare between the current player's guess with the true game's number
-                gameManager.compareNumbers(gameManager.gameBackend.getGameNumberAsString(),
-                        gameManager.gameInputParser.getCurrPlayerNumberAsString());
+                gameManager.gameBackend.compareWithGameNumber(gameManager.gameInputParser.getCurrPlayerNumberAsString());
+
+//                System.out.println("result:");
+//                System.out.println(gameManager.gameBackend.getCurrBulls());
+//                System.out.println(gameManager.gameBackend.getCurrCows());
 
                 // update guesses-history and display it to the player
                 gameManager.updateGuessesHistory(gameManager.summarizeGuessResult());
@@ -103,18 +135,15 @@ public class BullsAndCowsApp extends Application {
                 this.newGame();
                 this.setConfirmRestartOrExit();
 
-                // uncomment during debug:
-                //System.out.println("display restart-or-exit alert box");
+                System.out.println("display restart-or-exit alert box");
                 Optional<ButtonType> result = confirmRestartOrExit.showAndWait();
 
                 if (result.isPresent() && result.get() == ButtonType.OK) {
-                    // uncomment during debug:
-                    //System.out.println("restart game");
+                    System.out.println("restart game");
                 }
 
                 if (result.isPresent() && result.get() == ButtonType.CANCEL) {
-                    // uncomment during debug:
-                    //System.out.println("close program");
+                    System.out.println("close program");
                     primaryStage.close();
                     isClosed = true;
                 }

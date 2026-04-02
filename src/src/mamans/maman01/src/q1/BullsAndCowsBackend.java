@@ -18,6 +18,41 @@ public class BullsAndCowsBackend {
     private int gameNumberAsInt;
     private String gameNumberAsString;
 
+    private int currBulls;
+
+    private int currCows;
+
+    private boolean isGameOver;
+
+    public int getCurrBulls() { return this.currBulls; }
+
+    public void setCurrBulls(int n) { this.currBulls = n; }
+
+    public void setCurrCows(int n) { this.currCows = n; }
+
+
+    public int getCurrCows() { return this.currCows; }
+
+    /** initialize player guess check by assigning zero to currBulls and currCows
+     * (required before each and every player guess comparison) */
+    protected void initCheck() {
+        this.currBulls = 0;
+        this.currCows = 0;
+    }
+
+    public void setGameOver(boolean b) { this.isGameOver = b; }
+
+    public boolean getIsGameOver() { return this.isGameOver; }
+
+
+    public boolean checkForGameOver() {
+        if (this.currBulls == 4) {
+            this.setGameOver(true);
+            return true;
+        }
+        return false;
+    }
+
 
     public int getGameNumberAsInt() { return this.gameNumberAsInt; }
 
@@ -52,5 +87,34 @@ public class BullsAndCowsBackend {
         // during debug only
         System.out.println("Random-Game-Number: " + this.getGameNumberAsString());
     }
+
+    /** compare between the player's guessed number and the game's pre-generated number
+     * <p> comparison logic: </p>
+     * <ol>
+     *      <li> first, count the cows </li>
+     *      <li> then, for every counted bulls count decrease cows accordingly </li>
+     * </ol>
+     *
+     * */
+    public void compareWithGameNumber(String playerNumber) {
+        String gameNumber = this.getGameNumberAsString();
+        this.initCheck();
+
+
+        for (char c : playerNumber.toCharArray()) {
+            if (gameNumber.indexOf(c) >= 0) {
+                this.currCows++;
+            }
+        }
+
+        for (int i=0; i<4; i++) {
+            if (gameNumber.charAt(i) == playerNumber.charAt(i)) {
+                this.currCows--;
+                this.currBulls++;
+            }
+        }
+
+    }
+
 
 }
