@@ -37,7 +37,7 @@ public class BullsAndCowsUtils {
 
     /** build a 4-digit number from 4 integers
      *
-     * @param d0 the unit digit
+     * @param d0 the units digit
      * @param d1 the tens digit
      * @param d2 the hundreds digit
      * @param d3 the thousands digit

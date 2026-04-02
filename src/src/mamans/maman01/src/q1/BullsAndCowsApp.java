@@ -79,39 +79,6 @@ public class BullsAndCowsApp extends Application {
         confirmRestartOrExit.setHeaderText(GAME_RESTART_OR_EXIT_CONTENT_TEXT);
     }
 
-    // todo: delete me
-    public void newGame() {
-
-        gameManager.initNewGame();
-
-        this.gameContentSetup();
-
-        while (!gameManager.gameBackend.checkForGameOver()) {
-            Optional<String> playerInput = textInputDialog.showAndWait();
-
-            // accept player guess input if valid (or exit upon cancel button press)
-            if (gameManager.gameInputParser.parsePlayerInput(playerInput.orElse("cancel"))) {
-
-                // compare between the current player's guess with the true game's number
-                gameManager.gameBackend.compareWithGameNumber(gameManager.gameInputParser.getCurrPlayerNumberAsString());
-
-
-                // update guesses-history and display it to the player
-                gameManager.updateGuessesHistory(gameManager.summarizeGuessResult());
-                textInputDialog.setContentText(gameManager.getGuessesHistory());
-            }
-
-            // handle input parsing error by alerting with a proper error message
-            else {
-                error.setContentText(gameManager.gameInputParser.getInputErrorMessage());
-                error.showAndWait();
-            }
-
-        }
-
-        this.showGameOverInfoAlert();
-    }
-
     /** a runner method for starting a new BullsAndCows game */
     protected void runGame() {
 
@@ -122,8 +89,6 @@ public class BullsAndCowsApp extends Application {
 
         do {
             isValidInput = gameManager.playCurrGameTurn(textInputDialog.showAndWait().orElse("cancel"));
-
-            System.out.println("isInputInvalid: " + Boolean.toString(isValidInput));
 
             if (isValidInput)
                 textInputDialog.setContentText(gameManager.getGuessesHistory());

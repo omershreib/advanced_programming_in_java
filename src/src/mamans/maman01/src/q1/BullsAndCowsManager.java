@@ -30,14 +30,11 @@ public class BullsAndCowsManager {
     * */
     private StringBuilder guessesHistory;
 
-//    private boolean isGameOver;
 
-//    private int currBulls;
-//
-//    private int currCows;
-
-
-    /** append a new guessData to the guessesHistory String archive */
+    /** append a new guessData to the guessesHistory String archive
+     *
+     * @param guessData a formatted string
+     * */
     protected void updateGuessesHistory(String guessData) {
         this.guessesHistory.append("\n").append(guessData);
     }
@@ -49,30 +46,16 @@ public class BullsAndCowsManager {
 
     protected String getGuessesHistory() { return this.guessesHistory.toString(); }
 
-//    public int getCurrBulls() { return this.currBulls; }
-//
-//    public int getCurrCows() { return this.currCows; }
-
-
-//    /** initialize player guess check by assigning zero to currBulls and currCows
-//     * (required before each and every player guess comparison) */
-//    private void initCheck() {
-//        this.currBulls = 0;
-//        this.currCows = 0;
-//    }
-//
-//    public void setGameOver(boolean b) { this.isGameOver = b; }
-//
-//
-//    public boolean checkForGameOver() {
-//        if (this.currBulls == 4) {
-//            this.setGameOver(true);
-//            return true;
-//        }
-//        return false;
-//    }
-
-    public String summarizeGuessResult() {
+    /** summarize guess result
+     *
+     * <p> all the data needed to build this summary is saved by
+     * this game's backend and inputParser immediately after a valid player guess input </p>
+     *
+     * <p> the output of this method is later used as the @guessData input of the updateGuessesHistory() method </p>
+     *
+     * @return a formatted string
+     * */
+    protected String summarizeGuessResult() {
 
         gameInputParser.incrementPlayerGuessIndex();
 
@@ -88,14 +71,23 @@ public class BullsAndCowsManager {
 
     }
 
-    private void preCompareSetup() {
-        this.gameBackend.initCheck();
-        this.gameInputParser.incrementPlayerGuessIndex();
-    }
+//    private void preCompareSetup() {
+//        this.gameBackend.initCheck();
+//        this.gameInputParser.incrementPlayerGuessIndex();
+//    }
 
+
+    /** manager new game initialize method
+     *
+     * <p> initialization setup includes: </p>
+     * <ul>
+     *     <li> calls backend initializer  </li>
+     *     <li> calls inputParser initializer </li>
+     *     <li> clear previous game history </li>
+     * </ul>
+     * * */
     public void initNewGame() {
-        this.preCompareSetup();
-        this.gameBackend.setGameOver(false);
+        //this.preCompareSetup();
         this.gameBackend.initNewGame();
         this.gameInputParser.initNewGame();
         this.clearGuessesHistory();

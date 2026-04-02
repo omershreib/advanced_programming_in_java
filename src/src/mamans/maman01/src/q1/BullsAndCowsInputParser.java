@@ -66,6 +66,17 @@ public class BullsAndCowsInputParser {
     public void setCurrPlayerNumberAsInt(int n) { this.currPlayerNumberAsInt = n; }
 
 
+    /**
+     * set a current (valid) player guess input
+     *
+     * <p> this includes: </p>
+     * <ul>
+     *     <li> creating an <b>Integer</b> version of it accessible using getCurrPlayerNumberAsInt() </li>
+     *     <li> creating a <b>String</b> version of it accessible using getCurrPlayerNumberAsString() </li>
+     * </ul>
+     *
+     * @param userInput a String (assumed to be a valid 4-digits number as the BullsAndCows game requires)
+     * */
     public void setCurrPlayerGuess(String userInput) {
         int digit0 = bncUtils.charToInt(userInput.charAt(0));
         int digit1 = bncUtils.charToInt(userInput.charAt(1));
@@ -75,16 +86,6 @@ public class BullsAndCowsInputParser {
         this.setCurrPlayerNumberAsInt(bncUtils.buildNumberFromDigits(digit3, digit2, digit1, digit0));
         this.setCurrPlayerNumberAsString(bncUtils.prettifyNumber(this.getCurrPlayerNumberAsInt()));
     }
-
-//    public void waitForPlayerGuess() {
-//        System.out.println("enter your guess");
-//        String userInput = scanner.nextLine();
-//
-//        if (this.parsePlayerInput(userInput)) {
-//            System.out.println("current player guess: " + userInput);
-//            System.out.println(this.getCurrPlayerNumberAsString());
-//        }
-//    }
 
 
     /**
