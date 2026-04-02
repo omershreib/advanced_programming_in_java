@@ -1,15 +1,26 @@
-package com.example.mamans.maman01.bulls_and_cows;
+package mamans.maman01.src.q1;
 
 public class BullsAndCowsManager {
     public BullsAndCowsBackend gameBackend = new BullsAndCowsBackend();
     public BullsAndCowsInputParser gameInputParser = new BullsAndCowsInputParser();
 
-    //public BullsAndCowsGuessArchive archive = new BullsAndCowsGuessArchive();
+    private StringBuilder guessesHistory;
 
     private boolean isGameOver;
 
     private int currBulls;
     private int currCows;
+
+    protected void updateGuessesHistory(String guessData) {
+        this.guessesHistory.append("\n").append(guessData);
+    }
+
+    protected void clearGuessesHistory() {
+        this.guessesHistory = new StringBuilder();
+    }
+
+    protected String getGuessesHistory() { return this.guessesHistory.toString(); }
+
     public int getCurrBulls() { return this.currBulls; }
 
     public int getCurrCows() { return this.currCows; }
@@ -65,9 +76,11 @@ public class BullsAndCowsManager {
     }
 
     public void initNewGame() {
+        this.preCompareSetup();
         this.setGameOver(false);
         this.gameBackend.initNewGame();
         this.gameInputParser.initNewGame();
+        this.clearGuessesHistory();
     }
 
     public void runGame() {

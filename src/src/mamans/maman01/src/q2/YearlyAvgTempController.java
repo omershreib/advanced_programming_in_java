@@ -1,4 +1,4 @@
-package com.example.mamans.maman01.q2;
+package mamans.maman01.src.q2;
 
 
 import javafx.event.ActionEvent;
@@ -14,12 +14,12 @@ import java.util.List;
 
 public class YearlyAvgTempController {
 
-    private final int BAR_CHART_SCALE = 15;
-    private final int BAR_CHART_UPPER_X_FIXER = 10;
-    private final int BAR_CHART_UPPER_Y_FIXER = 100;
-    private final int BAR_CHART_GAP = 10;
-    private final int BAR_CHART_WIDTH = 40;
-    private final int BAR_CHART_HEIGHT = 100;
+    private final int BAR_CHART_SCALE;
+    //private final int BAR_CHART_UPPER_X_FIXER = 10;
+    //private final int BAR_CHART_UPPER_Y_FIXER = 100;
+    private final int BAR_CHART_GAP;
+    private final int BAR_CHART_WIDTH;
+    private final int BAR_CHART_HEIGHT;
 
     private final Color BAR_CHART_GENERAL_COLOR = Color.LIGHTGRAY;
 
@@ -48,6 +48,13 @@ public class YearlyAvgTempController {
 
     @FXML
     private Text yearTitle;
+
+    public YearlyAvgTempController() {
+        this.BAR_CHART_SCALE = 15;
+        this.BAR_CHART_GAP = 10;
+        this.BAR_CHART_WIDTH = 40;
+        this.BAR_CHART_HEIGHT = 100;
+    }
 
 
     private void setSelectYear(int year) { yearChoiceBox.setValue(year); }
@@ -80,22 +87,22 @@ public class YearlyAvgTempController {
 
         int currentYear;
         this.clearCanvas();
-        Integer currYearChoiceBox;
-
-        try {
-            currYearChoiceBox = this.yearChoiceBox.valueProperty().get();
-        }
-
-        catch (Exception ignored) {
-            currYearChoiceBox = null;
-        }
+        Integer currentYearChoiceBox = this.yearChoiceBox.valueProperty().isNull().get() ? null : this.yearChoiceBox.getValue();
 
 
-        if (currYearChoiceBox != null && this.dataProvider.isYearInData(currYearChoiceBox)) {
-            currentYear = currYearChoiceBox;
+//        try {
+//            currYearChoiceBox = this.yearChoiceBox.valueProperty().get();
+//        }
+//
+//        catch (Exception ignored) {
+//            currYearChoiceBox = null;
+//        }
+
+
+        if (currentYearChoiceBox != null && this.dataProvider.isYearInData(currentYearChoiceBox)) {
+            currentYear = currentYearChoiceBox;
             this.yearChoiceBox.setValue(null);
         }
-
 
         else
             currentYear = this.getYearToDisplay();
@@ -111,9 +118,9 @@ public class YearlyAvgTempController {
         // update next-year-to-display
         this.setYearToDisplay(currentYear + 1);
 
-
+        // --- old variables
         //double scale = 15;          // pixels per unit
-        double barWidth = 30;
+        // double barWidth = 30;
         //double gap = 15;
         //double barWidth = 40;
         //double gap = 20;
@@ -140,7 +147,7 @@ public class YearlyAvgTempController {
                 gc.setFill(BAR_CHART_GENERAL_COLOR);
 
             //gc.setFill(BAR_CHART_GENERAL_COLOR);
-            gc.fillRect(x, baselineY - barHeight, barWidth, barHeight);
+            gc.fillRect(x, baselineY - barHeight, this.BAR_CHART_WIDTH, barHeight);
 
             gc.setFill(Color.BLACK);
             gc.fillText("  " + Double.toString(tempsValues.get(i)), x,baselineY - barHeight - 5);
@@ -172,12 +179,11 @@ public class YearlyAvgTempController {
         gc.getCanvas().setWidth(800);
 
         this.updateYearTitle("");
-        this.yearTitle.setX(this.canvas.getLayoutX()/2 + 100);
+
+        yearTitle.setX(this.canvas.getLayoutX()/2 + 100);
 
         yearChoiceBox.getItems().addAll(2021, 2022, 2023, 2024, 2025);
-
         yearChoiceBox.setLayoutX(600);
-
 
         this.dataProvider.init();
 

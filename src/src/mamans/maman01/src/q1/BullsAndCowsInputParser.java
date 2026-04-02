@@ -1,46 +1,43 @@
-package com.example.mamans.maman01.bulls_and_cows;
+package mamans.maman01.src.q1;
 
 import java.util.Scanner;
 
 public class BullsAndCowsInputParser {
-    /*
-    * The player code section of this Bulls-and-Cows game.
-    * This class handle the player side of this game, which includes:
-    *   1. receiving the player's input number
-    *   2. parsing player's input - including handling inputs errors
-    *   3. history? (need to decide if put this here or in the Manger class)
-    * */
-    private BullsAndCowsUtils bncUtils = new BullsAndCowsUtils();
+    private static final BullsAndCowsUtils bncUtils = new BullsAndCowsUtils();
 
+    // Constants input error massages
     private static final String ERROR_INPUT_IS_EMPTY = "Input cannot be empty";
     private static final String ERROR_INPUT_CONTAINS_NON_DIGITS = "Input must includes only digits (0-9)";
     private static final String ERROR_INPUT_CONTAINS_DUPLICATE_DIGITS = "All four digits must be unique! (repetitions are not allowed)";
     private static final String ERROR_INPUT_LENGTH_TOO_SHORT = "Input length is too short! (required 4 unique digits)";
     private static final String ERROR_INPUT_LENGTH_TOO_LONG = "Input length is too long! (required 4 unique digits)";
 
-    //private BullsAndCowsErrorManager gameErrorManager = new BullsAndCowsErrorManager();
-
-    private final String errorInputMassage = "InputError: Player input must contain 4 digits";
-
+    // player's current guess number (as String)
     private String currPlayerNumberAsString;
 
-    private String InputErrorMessage;
 
+    // player's current guess number (as Integer)
     private int currPlayerNumberAsInt;
 
+
+    // current input error message (if input is valid then this attribute will be set to the empty String)
+    private String InputErrorMessage;
+
+
+    // player's guesses counter
     private int playerGuessIndex;
 
-    private final Scanner scanner = new Scanner(System.in);
+    // player input scanner
+    private static final Scanner scanner = new Scanner(System.in);
 
 
     public String getInputErrorMessage() { return this.InputErrorMessage; }
 
     public void setInputErrorMessage(String msg) { this.InputErrorMessage = msg; }
 
+    public int getPlayerGuessIndex() { return this.playerGuessIndex; }
 
-    public int getPlayerGuessIndex() {return this.playerGuessIndex; }
-
-    public void incrementPlayerGuessIndex() {this.playerGuessIndex++; }
+    public void incrementPlayerGuessIndex() { this.playerGuessIndex++; }
 
     public String getCurrPlayerNumberAsString() { return this.currPlayerNumberAsString; }
 
@@ -75,6 +72,25 @@ public class BullsAndCowsInputParser {
 
 
     public boolean parsePlayerInput(String input) {
+        /* Parse Player Input
+
+        this method parses the player's input and check if it valid.
+
+        BEFORE this parsing, check if the cancel button was pressed (if positive then close this program).
+
+        player input examinations are ordered as follows:
+            1. verify input length (must be equal to 4)
+            2. verify that all input characters are digits (i.e., 0-9)
+            3. check of digits' duplication.
+
+        if this input passed all these three examinations, then this input is set as the current player's
+        BullsAndCows' guess. Otherwise, set a proper error message (later will be alerted by the application class)
+
+        Args:
+            input: player input (as String).
+
+        Returns true if this input is valid (false otherwise).
+        * */
 
         int inputLength = input.length();
         System.out.println("get: " + input);
