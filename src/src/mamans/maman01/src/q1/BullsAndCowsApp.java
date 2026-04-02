@@ -87,8 +87,15 @@ public class BullsAndCowsApp extends Application {
         boolean isValidInput;
         this.gameContentSetup();
 
+
+        System.out.println("IsGameOver: " + Boolean.toString(gameManager.gameBackend.checkForGameOver()));
+        System.out.println(gameManager.gameBackend.getCurrBulls());
+
         do {
             isValidInput = gameManager.playCurrGameTurn(textInputDialog.showAndWait().orElse("cancel"));
+
+            System.out.println("isValidInput: " + Boolean.toString(isValidInput));
+            System.out.println("IsGameOver: " + Boolean.toString(gameManager.gameBackend.checkForGameOver()));
 
             if (isValidInput)
                 textInputDialog.setContentText(gameManager.getGuessesHistory());

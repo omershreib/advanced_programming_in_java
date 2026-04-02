@@ -55,6 +55,8 @@ public class BullsAndCowsInputParser {
 
     public void incrementPlayerGuessIndex() { this.playerGuessIndex++; }
 
+    public void resetPlayerGuessIndex() { this.playerGuessIndex = 0; }
+
     public String getCurrPlayerNumberAsString() { return this.currPlayerNumberAsString; }
 
     public int getCurrPlayerNumberAsInt() {

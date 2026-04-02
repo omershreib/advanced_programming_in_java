@@ -71,10 +71,9 @@ public class BullsAndCowsManager {
 
     }
 
-//    private void preCompareSetup() {
-//        this.gameBackend.initCheck();
-//        this.gameInputParser.incrementPlayerGuessIndex();
-//    }
+    private void preCompareSetup() {
+        gameBackend.initCheck();
+    }
 
 
     /** manager new game initialize method
@@ -102,7 +101,7 @@ public class BullsAndCowsManager {
             gameBackend.compareWithGameNumber(gameInputParser.getCurrPlayerNumberAsString());
 
             // update guesses-history and display it to the player
-            this.updateGuessesHistory(this.summarizeGuessResult());
+            updateGuessesHistory(this.summarizeGuessResult());
 
             return true;
         }

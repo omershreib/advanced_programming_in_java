@@ -74,6 +74,7 @@ public class BullsAndCowsBackend {
     }
 
     protected void initNewGame() {
+        this.initCheck();
         this.setGameOver(false);
         this.generateGameNumber();
     }
