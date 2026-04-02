@@ -1,8 +1,5 @@
 package mamans.maman01.src.q1;
 
-import java.util.List;
-import java.util.Optional;
-
 /**
  * <h3> BullsAndCowsManager </h3>
  *
@@ -104,8 +101,20 @@ public class BullsAndCowsManager {
         this.clearGuessesHistory();
     }
 
-    protected void playCurrGameTurn(String guessInput) {
+    protected boolean playCurrGameTurn(String guessInput) {
 
+        // accept player guess input if valid (or exit upon cancel button press)
+        if (gameInputParser.parsePlayerInput(guessInput)) {
+
+            // compare between the current player's guess with the true game's number
+            gameBackend.compareWithGameNumber(gameInputParser.getCurrPlayerNumberAsString());
+
+            // update guesses-history and display it to the player
+            this.updateGuessesHistory(this.summarizeGuessResult());
+
+            return true;
+        }
+        return false;
     }
 
 

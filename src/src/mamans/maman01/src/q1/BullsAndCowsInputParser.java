@@ -2,6 +2,22 @@ package mamans.maman01.src.q1;
 
 import java.util.Scanner;
 
+/**
+ * <h3> BullsAndCowsInputParser </h3>
+ *
+ * <p>
+ *     this is an inputParser class handle parsing the player's guess input and check if it is valid
+ *     (i.e., stands all this game requirement which expected to receive a 4 unique digits number)
+ * </p>
+ * <p> when this parser detected that this player's input is <b>invalid</b> then it save a proper error message </p>
+ *
+ * @maman   01
+ * @question    1
+ * @author  Omer Shraibshtein (205984271)
+ * @email   omershreib@gmail.com
+ * @since   2026-04-02
+ * */
+
 public class BullsAndCowsInputParser {
     private static final BullsAndCowsUtils bncUtils = new BullsAndCowsUtils();
 
@@ -60,37 +76,39 @@ public class BullsAndCowsInputParser {
         this.setCurrPlayerNumberAsString(bncUtils.prettifyNumber(this.getCurrPlayerNumberAsInt()));
     }
 
-    public void waitForPlayerGuess() {
-        System.out.println("enter your guess");
-        String userInput = scanner.nextLine();
+//    public void waitForPlayerGuess() {
+//        System.out.println("enter your guess");
+//        String userInput = scanner.nextLine();
+//
+//        if (this.parsePlayerInput(userInput)) {
+//            System.out.println("current player guess: " + userInput);
+//            System.out.println(this.getCurrPlayerNumberAsString());
+//        }
+//    }
 
-        if (this.parsePlayerInput(userInput)) {
-            System.out.println("current player guess: " + userInput);
-            System.out.println(this.getCurrPlayerNumberAsString());
-        }
-    }
 
+    /**
+     * this method parses the player's input and check if it valid.
 
-    public boolean parsePlayerInput(String input) {
-        /* Parse Player Input
+        <p> <b>BEFORE</b> this parsing, check if the cancel button was pressed (if positive then close this program) </p>
 
-        this method parses the player's input and check if it valid.
+        <p>player input examinations are ordered as follows:</p>
+        <ol>
+            <li> verify input length (must be equal to 4) </li>
+            <li> verify that all input characters are digits (i.e., 0-9) </li>
+            <li> check of digits' duplication </li>
+        </ol>
 
-        BEFORE this parsing, check if the cancel button was pressed (if positive then close this program).
+        <p>
+            if this input passed all these three examinations, then this input is set as the current player's
+            BullsAndCows' guess. Otherwise, set a proper error message (later will be alerted by the application class)
+        </p>
 
-        player input examinations are ordered as follows:
-            1. verify input length (must be equal to 4)
-            2. verify that all input characters are digits (i.e., 0-9)
-            3. check of digits' duplication.
-
-        if this input passed all these three examinations, then this input is set as the current player's
-        BullsAndCows' guess. Otherwise, set a proper error message (later will be alerted by the application class)
-
-        Args:
-            input: player input (as String).
-
-        Returns true if this input is valid (false otherwise).
+        @param input player input (as String)
+        @return true if this input is valid (false otherwise).
         * */
+    public boolean parsePlayerInput(String input) {
+
 
         int inputLength = input.length();
         System.out.println("get: " + input);
@@ -138,6 +156,8 @@ public class BullsAndCowsInputParser {
         return true;
     }
 
+    /** initialize inputParser setup before starting a new game
+     * (practically, only need to reset the player's guesses index) */
     public void initNewGame() {
         this.playerGuessIndex = 0;
     }

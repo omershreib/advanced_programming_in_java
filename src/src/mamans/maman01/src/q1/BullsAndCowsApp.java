@@ -79,7 +79,7 @@ public class BullsAndCowsApp extends Application {
         confirmRestartOrExit.setHeaderText(GAME_RESTART_OR_EXIT_CONTENT_TEXT);
     }
 
-    /** main method for starting a new BullsAndCows game */
+    // todo: delete me
     public void newGame() {
 
         gameManager.initNewGame();
@@ -92,17 +92,9 @@ public class BullsAndCowsApp extends Application {
             // accept player guess input if valid (or exit upon cancel button press)
             if (gameManager.gameInputParser.parsePlayerInput(playerInput.orElse("cancel"))) {
 
-
-//                System.out.println("before:");
-//                System.out.println(gameManager.gameBackend.getCurrBulls());
-//                System.out.println(gameManager.gameBackend.getCurrCows());
-
                 // compare between the current player's guess with the true game's number
                 gameManager.gameBackend.compareWithGameNumber(gameManager.gameInputParser.getCurrPlayerNumberAsString());
 
-//                System.out.println("result:");
-//                System.out.println(gameManager.gameBackend.getCurrBulls());
-//                System.out.println(gameManager.gameBackend.getCurrCows());
 
                 // update guesses-history and display it to the player
                 gameManager.updateGuessesHistory(gameManager.summarizeGuessResult());
@@ -120,6 +112,33 @@ public class BullsAndCowsApp extends Application {
         this.showGameOverInfoAlert();
     }
 
+    /** a runner method for starting a new BullsAndCows game */
+    protected void runGame() {
+
+        gameManager.initNewGame();
+
+        boolean isValidInput;
+        this.gameContentSetup();
+
+        do {
+            isValidInput = gameManager.playCurrGameTurn(textInputDialog.showAndWait().orElse("cancel"));
+
+            System.out.println("isInputInvalid: " + Boolean.toString(isValidInput));
+
+            if (isValidInput)
+                textInputDialog.setContentText(gameManager.getGuessesHistory());
+
+            else {
+                error.setContentText(gameManager.gameInputParser.getInputErrorMessage());
+                error.showAndWait();
+            }
+
+
+        } while (!gameManager.gameBackend.checkForGameOver());
+
+        this.showGameOverInfoAlert();
+    }
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -132,7 +151,7 @@ public class BullsAndCowsApp extends Application {
 
         while (!isClosed) {
             try {
-                this.newGame();
+                this.runGame();
                 this.setConfirmRestartOrExit();
 
                 System.out.println("display restart-or-exit alert box");
