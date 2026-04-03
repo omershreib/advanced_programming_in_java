@@ -17,6 +17,6 @@
             <Font size="24.0" />
          </font>
       </Text>
-      <ChoiceBox fx:id="yearChoiceBox" layoutX="435.0" layoutY="17.0" prefWidth="150.0" />
+      <ChoiceBox fx:id="yearChoiceBox" layoutX="435.0" layoutY="17.0" prefWidth="150.0" onAction="#onSelectYearChoose" />
    </Pane>
 </AnchorPane>
