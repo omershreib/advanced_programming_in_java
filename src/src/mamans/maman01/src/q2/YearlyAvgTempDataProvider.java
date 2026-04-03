@@ -3,6 +3,24 @@ package mamans.maman01.src.q2;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * <h3> YearlyAvgTempDataProvider </h3>
+ * <p>
+ *     this class implements a temperature data archive (using hashMap), so by giving a year:
+ *     <br>
+ *     dataProvider(year) → monthly-average-temp-values of that year
+ *     <br>
+ *     <b>important!</b> the init() method must called once before using this class getters methods
+ *
+ * </p>
+ *
+ * @maman   01
+ * @question    2
+ * @author  Omer Shraibshtein (205984271)
+ * @email   omershreib@gmail.com
+ * @since   2026-04-03
+ * */
+
 public class YearlyAvgTempDataProvider {
     private final Map<Integer, List<Double>> yearToMonthlyAvgTemps = new HashMap<>();
     private boolean isInitialized = false;
@@ -12,10 +30,21 @@ public class YearlyAvgTempDataProvider {
         return isInitialized;
     }
 
+    /**
+     * return the newest (maximum) year with a temperature data contained by this dataProvider
+     *
+     * @return an integer (newest year)
+     * */
     public int getMaxYear() {
         return Collections.max(yearToMonthlyAvgTemps.keySet());
     }
 
+
+    /**
+     * return the oldest (minimum) year with a temperature data contained by this dataProvider
+     *
+     * @return an integer (oldest year)
+     * */
     public int getMinYear() {
         return Collections.min(yearToMonthlyAvgTemps.keySet());
     }
@@ -24,6 +53,15 @@ public class YearlyAvgTempDataProvider {
         return yearToMonthlyAvgTemps.containsKey(year);
     }
 
+    /**
+     * yearGetter
+     * <br>
+     * if @year is not exist then return null
+     *
+     * @param year an integer
+     * @return a list of 12 doubles - each depicts the average temperature of its month
+     * (or null, following a given year that this dataProvider does not have data on)
+     * */
     public List<Double> getYearlyData(int year) {
         if (yearToMonthlyAvgTemps.containsKey(year))
             return yearToMonthlyAvgTemps.get(year);
@@ -32,8 +70,21 @@ public class YearlyAvgTempDataProvider {
         return null;
     }
 
+    /**
+     * return all years supported as keys by this dataProvider class
+     *
+     * @return a list of integers: [2021, 2022, 2023, 2024, 2025]
+     * */
     public List<Integer> getAllYearsKeys() { return new ArrayList<>(this.yearToMonthlyAvgTemps.keySet()); }
 
+    /**
+     * this initializing method create this monthly-average-temperature per year data archive. this by filling
+     * this hashMap archive with temperature data for these following 5 years between
+     * 2021 and 2025.
+     * <br> this is a real data by the way, taken from Israel's "Tel Aviv Coast" meteorological station unit.
+     * <br> as a safe mechanism, I used the isInitialized flag to make sure that this data archive is set only once,
+     * even if by a mistake or any reason this init() method will be called more the once.
+     * */
     public void init() {
 
         if (!isInitialized) {
@@ -50,7 +101,7 @@ public class YearlyAvgTempDataProvider {
 
             isInitialized = true;
 
-       /* must cleaner, but does not supported by java 8 ):
+       /* must cleaner, but does not supported by java 8    :(
         if (!isInitialized) {
             yearToMonthlyAvgTemps.put(2021, List.of(16.2, 15.98, 16.92, 19.11, 23.40, 25.20, 28.40, 29.26, 27.50, 24.70, 21.87, 16.62));
 

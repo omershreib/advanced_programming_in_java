@@ -8,7 +8,7 @@ import java.util.List;
  * <h3> BullsAndCowsBackend </h3>
  *
  * <p>
- *     this class handle the Bulls-and-Cows game mechanic and logic.:
+ *     this class handle the Bulls-and-Cows game mechanic and logic. this includes:
  *     <ol>
  *         <li> the backand (or logic) </li>
  *         <li> the inputParser </li>

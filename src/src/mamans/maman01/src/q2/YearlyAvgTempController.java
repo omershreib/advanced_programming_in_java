@@ -10,10 +10,29 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-import java.lang.ref.PhantomReference;
 import java.util.List;
 import java.util.Objects;
-// import java.util.stream.Collectors;
+import java.util.stream.Collectors;
+
+
+/**
+ * <h3> YearlyAvgTempController </h3>
+ * <p>
+ *     this controller class implements the graphic side of this program.
+ * <br> this includes:
+ * <ol>
+ *     <li> handle the next button press or boxChoice selection #onAction() events </li>
+ *     <li> draw the bars chart (per selected year) </li>
+ *     <li> display a proper year title </li>
+ * </ol>
+ * </p>
+ *
+ * @maman   01
+ * @question    2
+ * @author  Omer Shraibshtein (205984271)
+ * @email   omershreib@gmail.com
+ * @since   2026-04-03
+ * */
 
 public class YearlyAvgTempController {
 
@@ -60,7 +79,6 @@ public class YearlyAvgTempController {
     private static final int OCTOBER_AS_INTEGER = 10;
 
 
-
     private static final YearlyAvgTempDataProvider dataProvider = new YearlyAvgTempDataProvider();
     private static final YearlyAvgTempBackend backend = new YearlyAvgTempBackend();
 
@@ -86,10 +104,25 @@ public class YearlyAvgTempController {
 
     public void setYearTitle(String str) { if (yearTitle != null)  yearTitle.setText(str); }
 
+    /** yearSetter
+     * <br>
+     * <p> if the given @year is greater than the newest year that the dataProvider can provide,
+     * then returns the oldest (default) year </p>
+     * <br>
+     * <p> Note: this is the cyclic behavior required by the next button </p>
+     *
+     * @param year an integer
+     * */
     public void setYearToDisplay(int year) { this.year = (year > dataProvider.getMaxYear()) ? dataProvider.getMinYear() : year; }
 
     public int getYearToDisplay() { return this.year; }
 
+
+    /**
+     * clear canvas (includes current bars chart data) <br>
+     * the result of this clear is a white background setup ready for the
+     * next bar chart requested by the user
+     * */
     private void clearCanvas() {
         gc.clearRect(CANVAS_BACKGROUND_X, CANVAS_BACKGROUND_Y, canvas.getWidth(), canvas.getHeight());
         gc.setFill(CANVAS_BACKGROUND_COLOR);
@@ -97,17 +130,24 @@ public class YearlyAvgTempController {
 
     }
 
+    /**
+     * clean the year's title during this program's start with an empty string.
+     * also, set the horizontal position of this title
+     * */
     private void yearTitleSetup() {
         this.setYearTitle(YEAR_TITLE_DEFAULT_TEXT);
         yearTitle.setX(YEAR_TITLE_X_OFFSET);
     }
 
+    /**
+     * canvas height and width setup during the start stage of this program
+     * */
     private void canvasSetup() {
-        gc = canvas.getGraphicsContext2D();
         gc.getCanvas().setHeight(CANVAS_HEIGHT);
         gc.getCanvas().setWidth(CANVAS_WIDTH);
     }
 
+    /** boxChoice style and keys setup during the start stage of this program */
     private void boxChoiceSetup() {
         this.yearChoiceBox.getItems().add(CHOICE_BOX_DEFAULT_TEXT);
         this.yearChoiceBox.getSelectionModel().selectFirst();
@@ -117,7 +157,11 @@ public class YearlyAvgTempController {
         yearChoiceBox.setLayoutX(CHOICE_BOX_X_LAYOUT);
     }
 
-
+    /**
+     * this method display the monthly's average temperature of a given @year
+     *
+     * @param year an integer
+     * */
     private void displayBarsChart(int year) {
         this.clearCanvas();
         this.setYearTitle(YEAR_TITLE_PREFIX + year);
@@ -159,7 +203,7 @@ public class YearlyAvgTempController {
         }
     }
 
-
+    /** handle user's boxChoice year selection and display this year's temperature bar charts */
     @FXML
     private void onSelectYearChoose() {
         int currentYear;
@@ -174,6 +218,8 @@ public class YearlyAvgTempController {
 
     }
 
+    /** handle user's next button press and display a temperature bar charts according
+     *  to a cyclic behavior (e.g., next(2021) → 2022, however, next(2025) → 2021)  */
     @FXML
     private void OnBtnNextPress(ActionEvent event) {
 
@@ -200,6 +246,7 @@ public class YearlyAvgTempController {
         assert yearTitle != null : "fx:id=\"yearTitle\" was not injected: check your FXML file 'yearly_avg_temp.fxml'.";
 
         dataProvider.init();
+        gc = canvas.getGraphicsContext2D();
 
         this.setYearToDisplay(dataProvider.getMinYear());
 
