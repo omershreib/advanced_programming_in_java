@@ -36,7 +36,7 @@ public class YearlyAvgTempMain extends Application {
     private static final int DEFAULT_SCENE_HEIGHT = 600;
     private static final int DEFAULT_STAGE_WIDTH = 850;
     private static final int DEFAULT_STAGE_HEIGHT = 650;
-    private static final String STAGE_TITLE = "Yearly Average Temperature in The Cost of Tel-Aviv (2021 - 2025)";
+    private static final String STAGE_TITLE = "Yearly Average Temperature (Measured In Tel-Aviv In Years 2021 - 2025)";
     private static final boolean SET_STAGE_RESIZABLE = false;
 
     public static void main(String[] args) {
