@@ -8,6 +8,28 @@ import javafx.stage.Stage;
 
 import java.util.Objects;
 
+/**
+ * <h3>YearlyAvgTempMain</h3>
+ *
+ * <p>
+ *     this is the main starter class for running the javafx yearly-average-temperature application required to implement
+ *     in maman 01 (q2).
+ * </p>
+ *
+ * <p> the data presented in my bar charts depicts an <b>ACTUAL DATA</b> of the average temperature,
+ * in Celsius degrees, that had been measured by the Israel's meteorological unit station located in the
+ * coast of Tel-Aviv between 2021 and 2025 </p>
+ * <br>
+ * <p> attached <a href="https://ims.gov.il/en/data_gov">here</a> the source of my data </p>
+ * <br>
+ * <p> Note: HTML tags helps to improve comments readability in editors like IntelliJ that support it </p>
+ *
+ * @maman   01
+ * @question    2
+ * @author  Omer Shraibshtein (205984271)
+ * @email   omershreib@gmail.com
+ * @since   2026-04-* */
+
 public class YearlyAvgTempMain extends Application {
 
 

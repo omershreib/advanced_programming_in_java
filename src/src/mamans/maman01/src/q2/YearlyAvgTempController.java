@@ -11,6 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class YearlyAvgTempController {
 
@@ -43,7 +44,7 @@ public class YearlyAvgTempController {
     private Pane pane;
 
     @FXML
-    private ChoiceBox<Integer> yearChoiceBox;
+    private ChoiceBox<String> yearChoiceBox;
 
 
     @FXML
@@ -57,7 +58,7 @@ public class YearlyAvgTempController {
     }
 
 
-    private void setSelectYear(int year) { yearChoiceBox.setValue(year); }
+    private void setSelectYear(int year) { yearChoiceBox.setValue(Integer.toString(year)); }
 
     public void updateYearTitle(String str) {
         if (yearTitle != null) {
@@ -75,7 +76,12 @@ public class YearlyAvgTempController {
 
     public int getYearToDisplay() { return this.year; }
 
-    private void clearCanvas() { gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); }
+    private void clearCanvas() {
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        gc.setFill(Color.WHITE);
+        gc.fillRect(0,0, 675, 600);
+
+    }
 
     @FXML
     private void onSelectYearChoose() {
@@ -87,28 +93,22 @@ public class YearlyAvgTempController {
 
         int currentYear;
         this.clearCanvas();
-        Integer currentYearChoiceBox = this.yearChoiceBox.valueProperty().isNull().get() ? null : this.yearChoiceBox.getValue();
+        String currentYearChoiceBox = this.yearChoiceBox.valueProperty().isNull().get() ? "select a year" : this.yearChoiceBox.getValue();
 
-
-//        try {
-//            currYearChoiceBox = this.yearChoiceBox.valueProperty().get();
-//        }
-//
-//        catch (Exception ignored) {
-//            currYearChoiceBox = null;
-//        }
-
-
-        if (currentYearChoiceBox != null && this.dataProvider.isYearInData(currentYearChoiceBox)) {
-            currentYear = currentYearChoiceBox;
-            this.yearChoiceBox.setValue(null);
+        if (currentYearChoiceBox != "select a year" && this.dataProvider.isYearInData(Integer.parseInt(currentYearChoiceBox))) {
+            currentYear = Integer.parseInt(currentYearChoiceBox);
+            this.yearChoiceBox.setValue("select a year");
         }
+
+//        if (currentYearChoiceBox != null && this.dataProvider.isYearInData(currentYearChoiceBox)) {
+//            currentYear = currentYearChoiceBox;
+//            this.yearChoiceBox.setValue(null);
+//        }
 
         else
             currentYear = this.getYearToDisplay();
 
         this.updateYearTitle("Year: " + Integer.toString(currentYear));
-        //yearTitle.setText("Year: " + Integer.toString(currentYear));
 
         List<Double> tempsValues = this.dataProvider.getYearlyData(currentYear);
 
@@ -118,18 +118,9 @@ public class YearlyAvgTempController {
         // update next-year-to-display
         this.setYearToDisplay(currentYear + 1);
 
-        // --- old variables
-        //double scale = 15;          // pixels per unit
-        // double barWidth = 30;
-        //double gap = 15;
-        //double barWidth = 40;
-        //double gap = 20;
         double offset = 100;
         double x_offset = 35;   // good value
-        //double offset = 10;
 
-        //double baselineY = canvasHeight - 20;  // bottom of chart
-        //double baselineY = canvasHeight + 100;
         double baselineY = gc.getCanvas().getHeight() - offset;
 
         for (int i = 0; i < 12; i++) {
@@ -182,10 +173,24 @@ public class YearlyAvgTempController {
 
         yearTitle.setX(this.canvas.getLayoutX()/2 + 100);
 
-        yearChoiceBox.getItems().addAll(2021, 2022, 2023, 2024, 2025);
-        yearChoiceBox.setLayoutX(600);
+        System.out.println(this.yearChoiceBox.getItems().toString());
 
         this.dataProvider.init();
+
+        this.yearChoiceBox.getItems().add("select a year");
+
+        this.yearChoiceBox.getSelectionModel().selectFirst();
+
+        this.dataProvider.getAllYearsKeys().forEach(year -> this.yearChoiceBox.getItems().add(Integer.toString(year)));
+
+        //this.dataProvider.getAllYearsKeys().forEach(year -> this.yearChoiceBox.getItems().add(Integer.toString(year)));
+
+        System.out.println(this.yearChoiceBox.getItems().toString());
+
+        //yearChoiceBox.getItems().addAll(2021, 2022, 2023, 2024, 2025);
+        yearChoiceBox.setLayoutX(600);
+
+
 
     }
 

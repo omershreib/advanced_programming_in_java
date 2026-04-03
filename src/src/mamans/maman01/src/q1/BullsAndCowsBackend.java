@@ -87,7 +87,12 @@ public class BullsAndCowsBackend {
      * */
     private void generateGameNumber() {
 
-        List<Integer> numbers = new ArrayList<>(List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9));
+        // does not support on Java-8 :(
+        // List<Integer> numbers = new ArrayList<>(List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9));
+        List<Integer> numbers = new ArrayList<>();
+
+        for (int i=0; i<10; i++) numbers.add(i);
+
         Collections.shuffle(numbers);
 
         int digit0 = numbers.get(3);

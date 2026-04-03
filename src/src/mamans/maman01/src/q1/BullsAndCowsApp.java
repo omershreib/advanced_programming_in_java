@@ -10,12 +10,16 @@ import java.util.Optional;
  * <h3> BullsAndCowsApp </h3>
  *
  * <p>
- *     this is the main class interface for running the Bulls-and-Cows game required to implement in maman01 (q1).
- *     handle the GUI displacement (implemented by alerts boxes) during this entire game's lifetime.
+ *     this is the main class for running the Bulls-and-Cows game required to implement in maman 01 (q1).
+ *     handle the GUI displacement (implemented by alerts boxes) during this entire game's lifetime. </p>
+ *
+ * <br>
  * <p>
  *     uses the BullsAndCowsManager to interacts between the game logic (i.e., the backend class) and the
  *     player's input class handler (i.e., the parser class)
  * </p>
+ * <br>
+ * <p> Note: HTML tags helps to improve comments readability in editors like IntelliJ that support it </p>
  *
  * @maman   01
  * @question    1
