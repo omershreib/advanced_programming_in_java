@@ -16,7 +16,7 @@ import java.util.Objects;
  *     in maman 01 (q2).
  * </p>
  *
- * <p> the data presented in my bar charts depicts an <b>ACTUAL DATA</b> of the average temperature,
+ * <p> the data presented in my bar charts depicts a <b>real data</b> of the average temperature,
  * in Celsius degrees, that had been measured by the Israel's meteorological unit station located in the
  * coast of Tel-Aviv between 2021 and 2025 </p>
  * <br>
@@ -32,14 +32,11 @@ import java.util.Objects;
 
 public class YearlyAvgTempMain extends Application {
 
-
-    private final int DEFAULT_SCENE_WIDTH = 800;
-    private final int DEFAULT_SCENE_HEIGHT = 600;
-
-    private final int DEFAULT_STAGE_WIDTH = 850;
-    private final int DEFAULT_STAGE_HEIGHT = 650;
-
-    private final boolean SET_STAGE_RESIZABLE = false;
+    private static final int DEFAULT_SCENE_WIDTH = 800;
+    private static final int DEFAULT_SCENE_HEIGHT = 600;
+    private static final int DEFAULT_STAGE_WIDTH = 850;
+    private static final int DEFAULT_STAGE_HEIGHT = 650;
+    private static final boolean SET_STAGE_RESIZABLE = false;
 
     public static void main(String[] args) {
         launch(args);

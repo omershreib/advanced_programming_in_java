@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 public class YearlyAvgTempDataProvider {
     private final Map<Integer, List<Double>> yearToMonthlyAvgTemps = new HashMap<>();
-
     private boolean isInitialized = false;
 
 
@@ -26,32 +25,19 @@ public class YearlyAvgTempDataProvider {
     }
 
     public List<Double> getYearlyData(int year) {
-        if (yearToMonthlyAvgTemps.containsKey(year)) {
+        if (yearToMonthlyAvgTemps.containsKey(year))
             return yearToMonthlyAvgTemps.get(year);
-        }
 
-        System.out.println("error: cannot provide data for this year: " + Integer.toString(year));
+        System.out.println("error: cannot provide data for this year: " + year);
         return null;
     }
 
-    public List<Integer> getAllYearsKeys() {
-
-        //ArrayList<Integer> allKeys = new ArrayList<>();
-
-        //this.yearToMonthlyAvgTemps.forEach((key,value) -> allKeys.add(key));
-
-        return new ArrayList<>(this.yearToMonthlyAvgTemps.keySet());
-
-        //return allKeys;
-        //return this.yearToMonthlyAvgTemps.keySet().stream().collect(Collectors.toList());
-
-        // not support on Java 8 :(
-        //return this.yearToMonthlyAvgTemps.keySet().stream().toList();
-    }
+    public List<Integer> getAllYearsKeys() { return new ArrayList<>(this.yearToMonthlyAvgTemps.keySet()); }
 
     public void init() {
 
         if (!isInitialized) {
+
             yearToMonthlyAvgTemps.put(2021, new ArrayList<>(Arrays.asList(16.2, 15.98, 16.92, 19.11, 23.40, 25.20, 28.40, 29.26, 27.50, 24.70, 21.87, 16.62)));
 
             yearToMonthlyAvgTemps.put(2022, new ArrayList<>(Arrays.asList(13.37, 14.88, 14.37, 19.44, 21.81, 25.62, 27.64, 28.44, 27.42, 25.01, 21.23, 17.85)));
@@ -62,7 +48,9 @@ public class YearlyAvgTempDataProvider {
 
             yearToMonthlyAvgTemps.put(2025, new ArrayList<>(Arrays.asList(16.95, 14.70, 18.63, 20.65, 23.11, 25.81, 28.62, 29.33, 27.91, 25.26, 23.83, 18.02)));
 
-       /*
+            isInitialized = true;
+
+       /* must cleaner, but does not supported by java 8 ):
         if (!isInitialized) {
             yearToMonthlyAvgTemps.put(2021, List.of(16.2, 15.98, 16.92, 19.11, 23.40, 25.20, 28.40, 29.26, 27.50, 24.70, 21.87, 16.62));
 
@@ -76,7 +64,7 @@ public class YearlyAvgTempDataProvider {
 
             //yearToMonthlyAvgTemps.put(2026, List.of(16.91, 18.56, 17.15, null, null, null, null, null, null, null, null, null));
         */
-            isInitialized = true;
+
         }
 
     }

@@ -10,6 +10,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
+import java.lang.ref.PhantomReference;
 import java.util.List;
 import java.util.Objects;
 // import java.util.stream.Collectors;
@@ -26,11 +27,22 @@ public class YearlyAvgTempController {
     private static final Color BAR_CHART_MAXIMUM_COLOR = Color.ORANGERED;
     private static final Color BAR_CHART_MINIMUM_COLOR = Color.DODGERBLUE;
     private static final Color BAR_CHART_TEXT_COLOR = Color.BLACK;
+    private static final int BAR_CHART_MONTH_TEXT_Y_OFFSET = 15;
+    private static final int BAR_CHART_TEMPERATURE_TEXT_Y_OFFSET = -5;
+
 
 
     // canvas default style setup
     private static final int CANVAS_WIDTH = 800;
     private static final int CANVAS_HEIGHT = 600;
+
+
+    // canvas background style setup (thought that the default transparent canvas color is ugly)
+    private static final int CANVAS_BACKGROUND_X = 0;
+    private static final int CANVAS_BACKGROUND_Y = 0;
+    private static final int CANVAS_BACKGROUND_WIDTH = 675;
+    private static final int CANVAS_BACKGROUND_HEIGHT = 600;
+    private static final Color CANVAS_BACKGROUND_COLOR = Color.WHITE;
 
 
     // choice box style setup
@@ -41,8 +53,11 @@ public class YearlyAvgTempController {
     // year title default style setup
     private static final int YEAR_TITLE_X_OFFSET = 107;
     private static final String YEAR_TITLE_DEFAULT_TEXT = "";
-
     private static final String YEAR_TITLE_PREFIX = "Year: ";
+
+
+    // others constants (just to make sure that I does not have any "magic numbers")
+    private static final int OCTOBER_AS_INTEGER = 10;
 
 
 
@@ -69,24 +84,16 @@ public class YearlyAvgTempController {
     private Text yearTitle;
 
 
-    //private void setSelectYear(int year) { yearChoiceBox.setValue(Integer.toString(year)); }
-
     public void setYearTitle(String str) { if (yearTitle != null)  yearTitle.setText(str); }
 
-
-    public void setYearToDisplay(int year) {
-        if (year > dataProvider.getMaxYear())
-            this.year = dataProvider.getMinYear();
-        else
-            this.year = year;
-    }
+    public void setYearToDisplay(int year) { this.year = (year > dataProvider.getMaxYear()) ? dataProvider.getMinYear() : year; }
 
     public int getYearToDisplay() { return this.year; }
 
     private void clearCanvas() {
-        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        gc.setFill(Color.WHITE);
-        gc.fillRect(0,0, 675, 600);
+        gc.clearRect(CANVAS_BACKGROUND_X, CANVAS_BACKGROUND_Y, canvas.getWidth(), canvas.getHeight());
+        gc.setFill(CANVAS_BACKGROUND_COLOR);
+        gc.fillRect(CANVAS_BACKGROUND_X,CANVAS_BACKGROUND_Y, CANVAS_BACKGROUND_WIDTH, CANVAS_BACKGROUND_HEIGHT);
 
     }
 
@@ -113,26 +120,21 @@ public class YearlyAvgTempController {
 
     private void displayBarsChart(int year) {
         this.clearCanvas();
-
-        this.setYearTitle(YEAR_TITLE_PREFIX + Integer.toString(year));
+        this.setYearTitle(YEAR_TITLE_PREFIX + year);
 
         List<Double> tempsValues = dataProvider.getYearlyData(year);
 
         int hottestIndex = backend.getArgOfHottestTemperature(tempsValues);
         int coldestIndex = backend.getArgOfColdestTemperature(tempsValues);
 
-        // update next-year-to-display
+        /* update next-year-to-display */
         this.setYearToDisplay(year + 1);
-
-        double offset = 100;
-        double x_offset = 35;   // good value
 
         double baselineY = gc.getCanvas().getHeight() + BAR_CHART_BASELINE_Y_OFFSET;
 
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < tempsValues.size(); i++) {
             double barHeight = tempsValues.get(i) * BAR_CHART_SCALE;
             double x = BAR_CHART_BASELINE_X_OFFSET + i * (BAR_CHART_WIDTH + BAR_CHART_GAP);
-
 
             /* set bar chart color following maximum/minimum/default case scenarios */
             if (i == hottestIndex)
@@ -144,24 +146,16 @@ public class YearlyAvgTempController {
             else
                 gc.setFill(BAR_CHART_GENERAL_COLOR);
 
+            /* temperature bar chart final drawing (per month) */
             gc.fillRect(x, baselineY - barHeight, BAR_CHART_WIDTH, barHeight);
             gc.setFill(BAR_CHART_TEXT_COLOR);
-            gc.fillText("  " + Double.toString(tempsValues.get(i)), x,baselineY - barHeight - 5);
+            gc.fillText("  " + tempsValues.get(i), x,baselineY - barHeight + BAR_CHART_TEMPERATURE_TEXT_Y_OFFSET);
 
-            //String monthTextStyle;
 
             /* month text style needed to be right shifted a little if month has double digits */
-
-            String monthTextStyle = i < 10 ? monthTextStyle = "     " + Integer.toString(i+1) : "    " + Integer.toString(i+1);
-
-//            if (i < 10)
-//                monthTextStyle = "     " + Integer.toString(i+1);
-//
-//            else
-//                monthTextStyle = "    " + Integer.toString(i+1);
-
-            //gc.setFill(Color.BLACK);
-            gc.fillText(monthTextStyle, x,baselineY + 15);
+            int barChartMonthText = i+1;
+            gc.fillText(i < OCTOBER_AS_INTEGER ? "     " + barChartMonthText : "    " + barChartMonthText,
+                    x,baselineY + BAR_CHART_MONTH_TEXT_Y_OFFSET);
         }
     }
 
