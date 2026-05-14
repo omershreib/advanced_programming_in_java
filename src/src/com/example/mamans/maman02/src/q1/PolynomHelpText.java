@@ -1,10 +1,28 @@
 package com.example.mamans.maman02.src.q1;
 
-public class PolynomHelpText {
+/**
+ * <h3> PolynomHelpText </h3>
+ *
+ * <p>
+ *     ad-hoc interface to contains the help text users will see during this program run (by typing 'help')
+ *     i did not wanted this long string in my PolynomMain
+ * </p>
+ * <br>
+ * <p> Note: HTML tags helps to improve comments readability in editors like IntelliJ that support it </p>
+ *
+ * @maman   02
+ * @question    1
+ * @author  Omer Shraibshtein (205984271)
+ * @email   omershreib@gmail.com
+ * @since   2026-05-14
+ * */
+
+
+public interface PolynomHelpText {
 
     // note: this HELP_TEXT is ugly because Java 8 does not support
     // text block literals (required JDK 15+)
-    protected static String HELP_TEXT =
+    static String HELP_TEXT =
             "Polynomial Calculator – Command Reference\n" +
                     "\n" +
                     "Available Commands:\n" +
@@ -15,10 +33,10 @@ public class PolynomHelpText {
                     "  exit\n" +
                     "      Quit the program.\n" +
                     "\n" +
-                    "  set <p|q> (coef1, power1), (coef2, power2), ..., (coef_k, power_k)\n" +
+                    "  set <p|q> (coef1,power1), (coef2,power2), ..., (coef_k,power_k)\n" +
                     "      Define a polynomial.\n" +
                     "      - p or q: the polynomial to set.\n" +
-                    "      - Each term is written as (coefficient, power).\n" +
+                    "      - Each term is written as (coefficient,power).\n" +
                     "      Example:\n" +
                     "          set p (3,2), (1,0)\n" +
                     "      This defines p(x) = 3x^2 + 1.\n" +
@@ -48,7 +66,7 @@ public class PolynomHelpText {
                     "  - Terms with zero coefficients may be omitted.\n";
 
 
-    protected static void printHelpText() {
+    static void printHelpText() {
         System.out.println(HELP_TEXT);
     }
 }

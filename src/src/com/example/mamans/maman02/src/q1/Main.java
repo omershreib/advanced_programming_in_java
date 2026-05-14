@@ -11,13 +11,15 @@ public class Main {
         Polynom p;
         Polynom q;
         Polynom s;
+        Polynom z;
 
 
         {
             try {
                 p = new Polynom(Arrays.asList(-4.0, 2.8, -6.5, 0.0, 7.0), Arrays.asList(7, 5, 10, 1, 0));
                 q = new Polynom(Arrays.asList(1.2), Arrays.asList(5));
-                s = new Polynom(Arrays.asList(8.0, -1.0, 7.0, -3.0), Arrays.asList(3, 1, 0, 2));
+                s = new Polynom(Arrays.asList(8.0, -1.0, 7.0,-2.0, -3.0), Arrays.asList(3, 1, 0, 1, 2));
+                z = new Polynom();
 
                 Polynom ppq = p.plus(q);
                 Polynom pmq = p.minus(q);
@@ -31,8 +33,10 @@ public class Main {
                 System.out.println("s(x) = " + s);
                 System.out.println("s'(x) = " + s.derivative());
 
-                System.out.println("p(x) == q(x) ? " + p.equals(q));
-                System.out.println("s(x) == s(x) ? " + s.equals(s));
+                System.out.println("p(x) == q(x) ? " + Boolean.toString(p==q));
+                System.out.println("s(x) == s(x) ? " + Boolean.toString(s==s));
+
+                System.out.println("Zero polynom: " + z.toString());
 
             }
 

@@ -1,8 +1,22 @@
 package com.example.mamans.maman02.src.q1;
 
-import javafx.util.Pair;
 
-import java.util.ArrayList;
+/**
+ * <h3> PolynomItem </h3>
+ *
+ * <p>
+ *     polynomItem pairs a coefficient and a power. with this class object the definition of the
+ *     Polynom class, as ArrayList of PolynomItems, is simplified
+ * </p>
+ * <br>
+ * <p> Note: HTML tags helps to improve comments readability in editors like IntelliJ that support it </p>
+ *
+ * @maman   02
+ * @question    1
+ * @author  Omer Shraibshtein (205984271)
+ * @email   omershreib@gmail.com
+ * @since   2026-05-14
+ * */
 
 public class PolynomItem {
 
@@ -23,6 +37,17 @@ public class PolynomItem {
     }
 
 
+    /**
+     * examples:
+     * <br>
+     * (3X^0)' = (3)' = 0
+     * <br>
+     * (3X^1)' = (3X)' = 3X^0 = 3
+     * <br>
+     * (3X^2)' = 3*2X^(2-1) = 6X^1 = 6X
+     *
+     * @return the derivative of this polynomItem
+     * */
     protected PolynomItem derivative() {
         if (this.power == 0) { return new PolynomItem(0.0,0); }
         if (this.power == 1) { return new PolynomItem(this.coef, 0); }
@@ -30,11 +55,4 @@ public class PolynomItem {
         return new PolynomItem(this.coef * this.power, this.power - 1);
     }
 
-    protected boolean equals(PolynomItem other) {
-        return (this.coef == other.coef && this.power == other.power);
-    }
-
-//    public Pair<Double, Integer> toPair() {
-//        return new Pair<Double, Integer>(this.coef, this.power);
-//    }
 }

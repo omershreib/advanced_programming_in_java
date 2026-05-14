@@ -22,15 +22,29 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Polynom {
 
-    // defines the zero polynom: 0(x) = 0.0
-    private final Double zero = 0.0;
+
 
     // coefficient floating point print accuracy setup
     private static final int DOUBLE_ROUND_FORMAT = 1;
 
+    private static final int PLUSMINUS_SUBSTRING_START_INDEX = 0;
+    private static final int PLUSMINUS_SUBSTRING_END_INDEX = 3;
+
+    private static final Double zero = 0.0;
+
     // required to sort polynom components from the highest power to the lowest power
     private static final int POLYNOM_SORT_MAGIC_FACTOR = -1;
     private ArrayList<PolynomItem> polynom;
+
+    // defines this exception message once (not need to create it every time)
+    public static final CoefsAndPowersLengthMismatchException coefsAndPowersLengthMismatchException =
+            new CoefsAndPowersLengthMismatchException("coefficients and powers lists must have an equal length");
+
+
+    /** a constructor to create the zero polynom p(x) = 0 **/
+    public Polynom() throws CoefsAndPowersLengthMismatchException {
+        this(Arrays.asList(0.0), Arrays.asList(0));
+    }
 
     /**
      *
@@ -52,7 +66,7 @@ public class Polynom {
      * **/
     public Polynom (List<Double> coefs, List<Integer> powers) throws CoefsAndPowersLengthMismatchException {
         if (coefs.size() != powers.size()) {
-            throw new CoefsAndPowersLengthMismatchException("coefficients and powers lists must have an equal length");
+            throw coefsAndPowersLengthMismatchException;
         }
 
         int polynomLength = coefs.size();
@@ -69,7 +83,70 @@ public class Polynom {
             firstZeroIndex = this.getFirstCoefIndexOf(zero);
         }
 
+        // apply just in case we have two different polynomItems with the same power
+        this.simplify();
+
         this.polynom.sort(Comparator.comparing(item -> item.getPower() * POLYNOM_SORT_MAGIC_FACTOR));
+    }
+
+    private void simplify() throws CoefsAndPowersLengthMismatchException {
+
+        Set<Integer> allPowers = new HashSet<>();
+        polynom.forEach(polynomItem -> allPowers.add(polynomItem.getPower()));
+
+        // if the number of polynomItems equals to the number of powers
+        // then this polynom is in it the simplest state
+        boolean isSimplest = (allPowers.size() == polynom.size());
+
+        if (!(isSimplest)) {
+            HashMap<Integer, Double> powersToCoefSum = new HashMap<>();
+            allPowers.forEach(power -> powersToCoefSum.putIfAbsent(power,zero));
+
+            polynom.forEach(polynomItem -> {
+                int key = polynomItem.getPower();
+                double value = powersToCoefSum.get(key);
+                powersToCoefSum.put(key, value + polynomItem.getCoef());
+            });
+
+            Polynom p = this.ConstructPolynomFromHashMap(powersToCoefSum);
+            this.polynom = p.polynom;
+        }
+    }
+
+    /**
+     * construct a Polynom from power->coef hash-map
+     * <br><br>
+     * note: I created this method to avoid unnecessary duplicate lines of code
+     * <br>
+     *
+     * @param hashMap with key=coef and value=power
+     * @return a Polynom
+     *
+     * */
+    private Polynom ConstructPolynomFromHashMap(HashMap<Integer, Double> hashMap) throws CoefsAndPowersLengthMismatchException {
+        ArrayList<Double> coefs = new ArrayList<>();
+        ArrayList<Integer> powers = new ArrayList<>();
+
+        hashMap.forEach((key, value) -> {
+            coefs.add(value);
+            powers.add(key);
+        });
+
+        Polynom costructedPolynom;
+
+        try {
+            costructedPolynom = new Polynom(coefs, powers);
+        }
+
+        catch (CoefsAndPowersLengthMismatchException e) {
+            throw coefsAndPowersLengthMismatchException;
+        }
+
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return costructedPolynom;
     }
 
     /**
@@ -94,7 +171,11 @@ public class Polynom {
     /**
      * returns the coefficient that bounded to the polynomItem with a specific power.
      * <br>
+     * this assuming that this polynom is at its simplest form
+     * <br>(namely, there are no two different polynomItems that shared the same power)
+     * <br>
      * if it does not exist, returns class.zero (0.0)
+     *
      *
      * @param power an integer
      * @return a double `c` that equals to the coefficient number of cX^power exists in class.polynom
@@ -108,8 +189,13 @@ public class Polynom {
         return zero;
     }
 
-    /** returns the derivative of this Polynom class object * */
-    public Polynom derivative() {
+    /** returns the derivative of this Polynom class object
+     * <br><br>
+     * mathematically, the derivative of a polynom equals to the sum of all its polynomItems derivatives
+     *
+     * @return the derivative of this polynom
+     * * */
+    public Polynom derivative() throws CoefsAndPowersLengthMismatchException{
 
         ArrayList<PolynomItem> polynomItemArrayList = new ArrayList<>();
         ArrayList<Double> coefs = new ArrayList<>();
@@ -129,6 +215,10 @@ public class Polynom {
         }
 
         catch (CoefsAndPowersLengthMismatchException e) {
+            throw Polynom.coefsAndPowersLengthMismatchException;
+        }
+
+        catch (Exception e) {
             throw new RuntimeException(e);
         }
 
@@ -160,7 +250,7 @@ public class Polynom {
      *
      * @return a Polynom class object represent the sum of 2 others Polynoms class objects
      * */
-    public Polynom plus(Polynom other) {
+    public Polynom plus(Polynom other) throws CoefsAndPowersLengthMismatchException {
         Set<Integer> allPowers = new HashSet<>();
 
         this.polynom.forEach(polynomItem -> allPowers.add(polynomItem.getPower()));
@@ -179,25 +269,7 @@ public class Polynom {
             powersToCoefSum.put(key, powersToCoefSum.get(key) + polynomItem.getCoef());
         });
 
-        ArrayList<Double> coefs = new ArrayList<>();
-        ArrayList<Integer> powers = new ArrayList<>();
-
-        powersToCoefSum.forEach((key, value) -> {
-            coefs.add(value);
-            powers.add(key);
-        });
-
-        Polynom thisPlusOther;
-
-        try {
-            thisPlusOther = new Polynom(coefs, powers);
-        }
-
-        catch (CoefsAndPowersLengthMismatchException e) {
-            throw new RuntimeException(e);
-        }
-
-        return thisPlusOther;
+        return this.ConstructPolynomFromHashMap(powersToCoefSum);
     }
 
 
@@ -221,7 +293,7 @@ public class Polynom {
      *
      * @return a Polynom class object represent the subtraction of 2 others Polynoms class objects
      * */
-    public Polynom minus(Polynom other) {
+    public Polynom minus(Polynom other) throws CoefsAndPowersLengthMismatchException {
         Set<Integer> allPowers = new HashSet<>();
 
         this.polynom.forEach(polynomItem -> allPowers.add(polynomItem.getPower()));
@@ -240,25 +312,7 @@ public class Polynom {
             powersToCoefSub.put(key, powersToCoefSub.get(key) - polynomItem.getCoef());
         });
 
-        ArrayList<Double> coefs = new ArrayList<>();
-        ArrayList<Integer> powers = new ArrayList<>();
-
-        powersToCoefSub.forEach((key, value) -> {
-            coefs.add(value);
-            powers.add(key);
-        });
-
-        Polynom thisMinusOther;
-
-        try {
-            thisMinusOther = new Polynom(coefs, powers);
-        }
-
-        catch (CoefsAndPowersLengthMismatchException e) {
-            throw new RuntimeException(e);
-        }
-
-        return thisMinusOther;
+        return this.ConstructPolynomFromHashMap(powersToCoefSub);
     }
 
 
@@ -331,6 +385,12 @@ public class Polynom {
      * */
     @Override
     public String toString() {
+
+        // in case it is the zero polynom
+        if (this.polynom.isEmpty()) {
+            return "0";
+        }
+
         StringBuilder polynomString = new StringBuilder();
 
         this.polynom.forEach(polynomItem -> {
@@ -339,21 +399,27 @@ public class Polynom {
 
             String coefAbsValue = String.format("%." + DOUBLE_ROUND_FORMAT + "f", Math.abs(coef));
             String power = polynomItem.getPower().toString();
-            String sign = coef > 0 ? " + " : " - ";
 
-            if (polynomItem.getPower() == 0)
+            // pick +/- prefix symbol according the sign of coef
+            String sign = coef > zero.intValue() ? " + " : " - ";
+
+            boolean isPowerZero = (polynomItem.getPower() == zero.intValue());
+
+            if (isPowerZero)
                 polynomString.append(sign).append(coefAbsValue);
 
-            if (polynomItem.getPower() != 0)
+            if (!isPowerZero)
                 polynomString.append(sign).append(coefAbsValue + "x" + "^" + power);
         });
 
-        if (Objects.equals(polynomString.substring(0, 3), " - ")) {
-            polynomString.replace(0,3,"-");
+        // final cosmetic touch in the prefix of polynomString - so:
+        // - 3.0X will look as -3.0X ; + 3.0X will look as 3.0X
+        if (Objects.equals(polynomString.substring(PLUSMINUS_SUBSTRING_START_INDEX, PLUSMINUS_SUBSTRING_END_INDEX), " - ")) {
+            polynomString.replace(PLUSMINUS_SUBSTRING_START_INDEX,PLUSMINUS_SUBSTRING_END_INDEX,"-");
         }
 
-        if (Objects.equals(polynomString.substring(0, 3), " + ")) {
-            polynomString.delete(0,3);
+        if (Objects.equals(polynomString.substring(PLUSMINUS_SUBSTRING_START_INDEX, PLUSMINUS_SUBSTRING_END_INDEX), " + ")) {
+            polynomString.delete(PLUSMINUS_SUBSTRING_START_INDEX,PLUSMINUS_SUBSTRING_END_INDEX);
         }
 
         return polynomString.toString();
