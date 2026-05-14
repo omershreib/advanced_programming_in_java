@@ -73,6 +73,7 @@ public class SavingsAccount extends BankAccount {
      *
      * for SavingAccount, credits the customer's account with additional money according to the interest rate defined for the account.
      * */
+    @Override
     public void applyMonthlyManagement() {
         System.out.println("apply monthly management on " + this.getOwner() + " (" + this.getAccountId() + ")");
 

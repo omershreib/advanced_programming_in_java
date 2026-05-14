@@ -1,5 +1,7 @@
 package com.example.mamans.maman02.src.q2;
 
+import javax.swing.*;
+
 /**
  * <h3> ServiceChargeChecking </h3>
  *
@@ -18,7 +20,8 @@ package com.example.mamans.maman02.src.q2;
 
 public class ServiceChargeChecking extends CheckingAccount {
 
-    private int monthlyFee = 5;
+    private static int DEFAULT_MONTHLY_FEE = 5;
+    private int monthlyFee;
 
 
     public void setMonthlyFee(int monthlyFee) {
@@ -52,6 +55,7 @@ public class ServiceChargeChecking extends CheckingAccount {
      * */
     public ServiceChargeChecking(String accountId, String owner, String ownerPID, double balance) {
         super(accountId, owner, ownerPID, balance);
+        this.setMonthlyFee(DEFAULT_MONTHLY_FEE);
     }
 
     /** ServiceChargeChecking constructors
@@ -74,6 +78,7 @@ public class ServiceChargeChecking extends CheckingAccount {
      * */
     public ServiceChargeChecking(String accountId, String owner, String ownerPID) {
         super(accountId, owner, ownerPID);
+        this.setMonthlyFee(DEFAULT_MONTHLY_FEE);
     }
 
 
@@ -81,6 +86,7 @@ public class ServiceChargeChecking extends CheckingAccount {
      *
      * for SavingAccount, apply fee payment to the bank (reduce the current balance in the value of the fee)
      * */
+    @Override
     public void applyMonthlyManagement() {
         System.out.println("apply monthly management on " + this.getOwner() + " (" + this.getAccountId() + ")");
         this.setBalance(this.getBalance() - monthlyFee);

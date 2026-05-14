@@ -17,8 +17,7 @@ package com.example.mamans.maman02.src.q2;
  * */
 
 public class InterestChecking extends NoServiceChargeChecking {
-
-    private int minimumAllowedBalance = 1000;
+    private static int DEFAULT_MINIMUM_ALLOWED_BALANCE = 1000;
     private double interestRate = 0.1;
 
 
@@ -43,6 +42,8 @@ public class InterestChecking extends NoServiceChargeChecking {
      * */
     public InterestChecking(String accountId, String owner, String ownerPID, double balance) {
         super(accountId, owner, ownerPID, balance);
+        this.setMinimumAllowedBalance(DEFAULT_MINIMUM_ALLOWED_BALANCE);
+
     }
 
     /** InterestChecking constructors
@@ -64,6 +65,8 @@ public class InterestChecking extends NoServiceChargeChecking {
      * */
     public InterestChecking(String accountId, String owner, String ownerPID) {
         super(accountId, owner, ownerPID);
+        this.setMinimumAllowedBalance(DEFAULT_MINIMUM_ALLOWED_BALANCE);
+
     }
 
     /** InterestChecking constructors
@@ -91,6 +94,7 @@ public class InterestChecking extends NoServiceChargeChecking {
     public InterestChecking(double interestRate, String accountId, String owner, String ownerPID, double balance) {
         super(accountId, owner, ownerPID, balance);
         this.interestRate = interestRate;
+        this.setMinimumAllowedBalance(DEFAULT_MINIMUM_ALLOWED_BALANCE);
     }
 
     /** InterestChecking constructors
@@ -115,6 +119,7 @@ public class InterestChecking extends NoServiceChargeChecking {
      * */
     public InterestChecking(double interestRate, String accountId, String owner, String ownerPID) {
         super(accountId, owner, ownerPID);
+        this.setMinimumAllowedBalance(DEFAULT_MINIMUM_ALLOWED_BALANCE);
         this.interestRate = interestRate;
     }
 
@@ -126,6 +131,11 @@ public class InterestChecking extends NoServiceChargeChecking {
         this.interestRate = interestRate;
     }
 
+    /** apply monthly account management
+     *
+     * for InterestChecking, credits the customer's account with additional money according to the interest rate defined for the account.
+     * */
+    @Override
     public void applyMonthlyManagement() {
         System.out.println("apply monthly management on " + this.getOwner() + " (" + this.getAccountId() + ")");
 
