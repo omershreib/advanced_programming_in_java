@@ -144,7 +144,7 @@ public class NoServiceChargeChecking extends CheckingAccount {
 
     @Override
     protected void applyMonthlyManagement() {
-
+        // monthly management was not defined to this type of bank account
     }
 
 }

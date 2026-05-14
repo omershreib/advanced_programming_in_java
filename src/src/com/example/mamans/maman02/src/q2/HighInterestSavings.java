@@ -19,7 +19,9 @@ package com.example.mamans.maman02.src.q2;
 public class HighInterestSavings extends SavingsAccount {
 
 
-    private int minimumAllowedBalance = 1000;
+    private static final int DEFAULT_MINIMUM_ALLOWED_BALANCE = 1000;
+
+    private int minimumAllowedBalance;
     private double interestRate = 0.2;
 
 
@@ -47,6 +49,7 @@ public class HighInterestSavings extends SavingsAccount {
      * */
     public HighInterestSavings(String accountId, String owner, String ownerPID, double balance) {
         super(accountId, owner, ownerPID, balance);
+        this.setMinimumAllowedBalance(DEFAULT_MINIMUM_ALLOWED_BALANCE);
     }
 
     /** HighInterestSavings constructors
@@ -69,6 +72,7 @@ public class HighInterestSavings extends SavingsAccount {
      * */
     public HighInterestSavings(String accountId, String owner, String ownerPID) {
         super(accountId, owner, ownerPID);
+        this.setMinimumAllowedBalance(DEFAULT_MINIMUM_ALLOWED_BALANCE);
     }
 
 
@@ -99,6 +103,7 @@ public class HighInterestSavings extends SavingsAccount {
     public HighInterestSavings(double interestRate, String accountId, String owner, String ownerPID, double balance) {
         super(accountId, owner, ownerPID, balance);
         this.setInterestRate(interestRate);
+        this.setMinimumAllowedBalance(DEFAULT_MINIMUM_ALLOWED_BALANCE);
     }
 
     /** HighInterestSavings constructors
@@ -125,6 +130,8 @@ public class HighInterestSavings extends SavingsAccount {
     public HighInterestSavings(double interestRate, String accountId, String owner, String ownerPID) {
         super(accountId, owner, ownerPID);
         this.setInterestRate(interestRate);
+        this.setMinimumAllowedBalance(DEFAULT_MINIMUM_ALLOWED_BALANCE);
+
     }
     
 
@@ -135,9 +142,6 @@ public class HighInterestSavings extends SavingsAccount {
     public void setMinimumAllowedBalance(int minimumAllowedBalance) {
         this.minimumAllowedBalance = minimumAllowedBalance;
     }
-
-
-
 
 
     /** apply monthly account management

@@ -20,7 +20,7 @@ import javax.swing.*;
 
 public class ServiceChargeChecking extends CheckingAccount {
 
-    private static int DEFAULT_MONTHLY_FEE = 5;
+    private static final int DEFAULT_MONTHLY_FEE = 5;
     private int monthlyFee;
 
 
@@ -43,7 +43,7 @@ public class ServiceChargeChecking extends CheckingAccount {
      * */
     public ServiceChargeChecking(int monthlyFee, String accountId, String owner, String ownerPID, double balance) {
         super(accountId, owner, ownerPID, balance);
-        this.monthlyFee = monthlyFee;
+        this.setMonthlyFee(monthlyFee);
     }
 
     /** ServiceChargeChecking constructors
@@ -67,7 +67,7 @@ public class ServiceChargeChecking extends CheckingAccount {
      * */
     public ServiceChargeChecking(int monthlyFee, String accountId, String owner, String ownerPID) {
         super(accountId, owner, ownerPID);
-        this.monthlyFee = monthlyFee;
+        this.setMonthlyFee(monthlyFee);
     }
 
     /** ServiceChargeChecking constructors

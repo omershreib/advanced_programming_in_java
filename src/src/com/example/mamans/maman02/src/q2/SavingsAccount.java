@@ -69,11 +69,11 @@ public class SavingsAccount extends BankAccount {
         this.setInterestRate(interestRate);
     }
 
-    public void setInterestRate(double interestRate) {
+    protected void setInterestRate(double interestRate) {
         this.interestRate = interestRate;
     }
 
-    public double getInterestRate() {
+    protected double getInterestRate() {
         return this.interestRate;
     }
 
