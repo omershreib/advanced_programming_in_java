@@ -81,4 +81,30 @@ public class SavingsAccount extends BankAccount {
 
         this.setBalance(balance);
     }
+
+    /**
+     * compare between two bank accounts
+     *
+     * @param obj
+     * @return true if-and-only-if it is a SavingsAccount class object that all its attribute identical with this
+     * BankAccount class object.
+     * */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj instanceof SavingsAccount) {
+            SavingsAccount otherBankAccount = (SavingsAccount) obj;
+
+            return otherBankAccount.getAccountId().equals(this.getAccountId()) &&
+                    otherBankAccount.getOwner().equals(this.getOwner()) &&
+                    otherBankAccount.getOwnerPID().equals(this.getOwnerPID()) &&
+                    otherBankAccount.getBalance() == this.getBalance();
+
+        }
+
+        return false;
+    }
 }

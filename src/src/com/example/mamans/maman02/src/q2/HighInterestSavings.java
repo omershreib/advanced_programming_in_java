@@ -129,4 +129,30 @@ public class HighInterestSavings extends SavingsAccount {
     public void setMinimumAllowedBalance(int minimumAllowedBalance) {
         this.minimumAllowedBalance = minimumAllowedBalance;
     }
+
+    /**
+     * compare between two bank accounts
+     *
+     * @param obj
+     * @return true if-and-only-if it is a HighInterestSavings class object that all its attribute identical with this
+     * BankAccount class object.
+     * */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj instanceof HighInterestSavings) {
+            HighInterestSavings otherBankAccount = (HighInterestSavings) obj;
+
+            return otherBankAccount.getAccountId().equals(this.getAccountId()) &&
+                    otherBankAccount.getOwner().equals(this.getOwner()) &&
+                    otherBankAccount.getOwnerPID().equals(this.getOwnerPID()) &&
+                    otherBankAccount.getBalance() == this.getBalance();
+
+        }
+
+        return false;
+    }
 }

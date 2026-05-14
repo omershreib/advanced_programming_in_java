@@ -30,4 +30,30 @@ public class NoServiceChargeChecking extends CheckingAccount {
         //this.validateAmount(minimumAllowedBalance);
         this.minimumAllowedBalance = minimumAllowedBalance;
     }
+
+    /**
+     * compare between two bank accounts
+     *
+     * @param obj
+     * @return true if-and-only-if it is a NoServiceChargeChecking class object that all its attribute identical with this
+     * BankAccount class object.
+     * */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj instanceof NoServiceChargeChecking) {
+            NoServiceChargeChecking otherBankAccount = (NoServiceChargeChecking) obj;
+
+            return otherBankAccount.getAccountId().equals(this.getAccountId()) &&
+                    otherBankAccount.getOwner().equals(this.getOwner()) &&
+                    otherBankAccount.getOwnerPID().equals(this.getOwnerPID()) &&
+                    otherBankAccount.getBalance() == this.getBalance();
+
+        }
+
+        return false;
+    }
 }

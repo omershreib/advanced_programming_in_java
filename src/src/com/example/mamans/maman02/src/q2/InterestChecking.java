@@ -134,4 +134,30 @@ public class InterestChecking extends NoServiceChargeChecking {
 
         this.setBalance(balance);
     }
+
+    /**
+     * compare between two bank accounts
+     *
+     * @param obj
+     * @return true if-and-only-if it is a InterestChecking class object that all its attribute identical with this
+     * BankAccount class object.
+     * */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj instanceof InterestChecking) {
+            InterestChecking otherBankAccount = (InterestChecking) obj;
+
+            return otherBankAccount.getAccountId().equals(this.getAccountId()) &&
+                    otherBankAccount.getOwner().equals(this.getOwner()) &&
+                    otherBankAccount.getOwnerPID().equals(this.getOwnerPID()) &&
+                    otherBankAccount.getBalance() == this.getBalance();
+
+        }
+
+        return false;
+    }
 }

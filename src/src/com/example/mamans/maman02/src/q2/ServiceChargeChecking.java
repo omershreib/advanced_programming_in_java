@@ -85,4 +85,30 @@ public class ServiceChargeChecking extends CheckingAccount {
         System.out.println("apply monthly management on " + this.getOwner() + " (" + this.getAccountId() + ")");
         this.setBalance(this.getBalance() - monthlyFee);
     }
+
+    /**
+     * compare between two bank accounts
+     *
+     * @param obj
+     * @return true if-and-only-if it is a ServiceChargeChecking class object that all its attribute identical with this
+     * BankAccount class object.
+     * */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj instanceof ServiceChargeChecking) {
+            ServiceChargeChecking otherBankAccount = (ServiceChargeChecking) obj;
+
+            return otherBankAccount.getAccountId().equals(this.getAccountId()) &&
+                    otherBankAccount.getOwner().equals(this.getOwner()) &&
+                    otherBankAccount.getOwnerPID().equals(this.getOwnerPID()) &&
+                    otherBankAccount.getBalance() == this.getBalance();
+
+        }
+
+        return false;
+    }
 }

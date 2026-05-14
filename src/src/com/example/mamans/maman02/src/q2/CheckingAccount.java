@@ -16,7 +16,7 @@ package com.example.mamans.maman02.src.q2;
  * @since   2026-05-14
  * */
 
-public class CheckingAccount extends BankAccount {
+public abstract class CheckingAccount extends BankAccount {
 
     /** CheckingAccount constructors
      *
@@ -68,4 +68,31 @@ public class CheckingAccount extends BankAccount {
                 "Signature:     ______________\n" +
                 "=========================================\n";
     }
+
+    /**
+     * compare between two bank accounts
+     *
+     * @param obj
+     * @return true if-and-only-if it is a CheckingAccount class object that all its attribute identical with this
+     * BankAccount class object.
+     * */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj instanceof CheckingAccount) {
+            CheckingAccount otherBankAccount = (CheckingAccount) obj;
+
+            return otherBankAccount.getAccountId().equals(this.getAccountId()) &&
+                    otherBankAccount.getOwner().equals(this.getOwner()) &&
+                    otherBankAccount.getOwnerPID().equals(this.getOwnerPID()) &&
+                    otherBankAccount.getBalance() == this.getBalance();
+
+        }
+
+        return false;
+    }
+
 }

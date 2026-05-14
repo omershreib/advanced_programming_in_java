@@ -16,7 +16,7 @@ package com.example.mamans.maman02.src.q2;
  * @since   2026-05-14
  * */
 
-public class BankAccount {
+public abstract class BankAccount {
 
     private String accountId;
     private String owner;
@@ -168,5 +168,9 @@ public class BankAccount {
         if (balance - amount < 0)
             throw new IllegalBalanceException("this withdrawal is disallowed\naccount "
                     + accountId + " is not permitted to be in overdraft");
+    }
+
+    protected void applyMonthlyManagement() {
+
     }
 }
