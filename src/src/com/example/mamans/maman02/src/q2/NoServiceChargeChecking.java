@@ -32,7 +32,7 @@ public class NoServiceChargeChecking extends CheckingAccount {
      * */
     public NoServiceChargeChecking(int minimumAllowedBalance, String accountId, String owner, String ownerPID, double balance) {
         super(accountId, owner, ownerPID, balance);
-        this.setMinimumAllowedBalance(DEFAULT_MINIMUM_ALLOWED_BALANCE);
+        this.setMinimumAllowedBalance(minimumAllowedBalance);
     }
 
     /** NoServiceChargeChecking constructors
@@ -44,6 +44,7 @@ public class NoServiceChargeChecking extends CheckingAccount {
      * */
     public NoServiceChargeChecking(String accountId, String owner, String ownerPID, double balance) {
         super(accountId, owner, ownerPID, balance);
+        this.setMinimumAllowedBalance(DEFAULT_MINIMUM_ALLOWED_BALANCE);
     }
 
     /** NoServiceChargeChecking constructors
@@ -55,7 +56,7 @@ public class NoServiceChargeChecking extends CheckingAccount {
      * */
     public NoServiceChargeChecking(int minimumAllowedBalance, String accountId, String owner, String ownerPID) {
         super(accountId, owner, ownerPID);
-        this.setMinimumAllowedBalance(DEFAULT_MINIMUM_ALLOWED_BALANCE);
+        this.setMinimumAllowedBalance(minimumAllowedBalance);
     }
 
     /** NoServiceChargeChecking constructors
@@ -66,6 +67,7 @@ public class NoServiceChargeChecking extends CheckingAccount {
      * */
     public NoServiceChargeChecking(String accountId, String owner, String ownerPID) {
         super(accountId, owner, ownerPID);
+        this.setMinimumAllowedBalance(DEFAULT_MINIMUM_ALLOWED_BALANCE);
     }
 
 
