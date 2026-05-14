@@ -18,7 +18,9 @@ package com.example.mamans.maman02.src.q2;
 
 public class NoServiceChargeChecking extends CheckingAccount {
 
-    private int minimumAllowedBalance = 10;
+    private static final int DEFAULT_MINIMUM_ALLOWED_BALANCE = 10;
+
+    private int minimumAllowedBalance;
 
     /** NoServiceChargeChecking constructors
      *
@@ -30,7 +32,7 @@ public class NoServiceChargeChecking extends CheckingAccount {
      * */
     public NoServiceChargeChecking(int minimumAllowedBalance, String accountId, String owner, String ownerPID, double balance) {
         super(accountId, owner, ownerPID, balance);
-        this.minimumAllowedBalance = minimumAllowedBalance;
+        this.setMinimumAllowedBalance(DEFAULT_MINIMUM_ALLOWED_BALANCE);
     }
 
     /** NoServiceChargeChecking constructors
@@ -53,7 +55,7 @@ public class NoServiceChargeChecking extends CheckingAccount {
      * */
     public NoServiceChargeChecking(int minimumAllowedBalance, String accountId, String owner, String ownerPID) {
         super(accountId, owner, ownerPID);
-        this.minimumAllowedBalance = minimumAllowedBalance;
+        this.setMinimumAllowedBalance(DEFAULT_MINIMUM_ALLOWED_BALANCE);
     }
 
     /** NoServiceChargeChecking constructors
@@ -121,10 +123,26 @@ public class NoServiceChargeChecking extends CheckingAccount {
             return otherBankAccount.getAccountId().equals(this.getAccountId()) &&
                     otherBankAccount.getOwner().equals(this.getOwner()) &&
                     otherBankAccount.getOwnerPID().equals(this.getOwnerPID()) &&
-                    otherBankAccount.getBalance() == this.getBalance();
-
+                    otherBankAccount.getBalance() == this.getBalance() &&
+                    otherBankAccount.getMinimumAllowedBalance() == this.getMinimumAllowedBalance();
         }
 
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "<InterestChecking" +
+                " ; AccountId: " + this.getAccountId() +
+                " ; Owner: " + this.getOwner() +
+                " ; Owner Personal-ID: " + this.getOwnerPID() +
+                " ; Minimum Allowed Balance: " + this.getMinimumAllowedBalance() +
+                " ; Balance: $" + this.getBalance() + ">";
+    }
+
+    @Override
+    protected void applyMonthlyManagement() {
+
+    }
+
 }

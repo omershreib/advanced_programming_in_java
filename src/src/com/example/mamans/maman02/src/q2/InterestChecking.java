@@ -17,7 +17,7 @@ package com.example.mamans.maman02.src.q2;
  * */
 
 public class InterestChecking extends NoServiceChargeChecking {
-    private static int DEFAULT_MINIMUM_ALLOWED_BALANCE = 1000;
+    private static final int DEFAULT_MINIMUM_ALLOWED_BALANCE = 1000;
     private double interestRate = 0.1;
 
 
@@ -80,7 +80,7 @@ public class InterestChecking extends NoServiceChargeChecking {
      * */
     public InterestChecking(int minimumAllowedBalance, double interestRate, String accountId, String owner, String ownerPID, double balance) {
         super(minimumAllowedBalance, accountId, owner, ownerPID, balance);
-        this.interestRate = interestRate;
+        this.setInterestRate(interestRate);
     }
 
     /** InterestChecking constructors
@@ -93,7 +93,7 @@ public class InterestChecking extends NoServiceChargeChecking {
      * */
     public InterestChecking(double interestRate, String accountId, String owner, String ownerPID, double balance) {
         super(accountId, owner, ownerPID, balance);
-        this.interestRate = interestRate;
+        this.setInterestRate(interestRate);
         this.setMinimumAllowedBalance(DEFAULT_MINIMUM_ALLOWED_BALANCE);
     }
 
@@ -120,7 +120,7 @@ public class InterestChecking extends NoServiceChargeChecking {
     public InterestChecking(double interestRate, String accountId, String owner, String ownerPID) {
         super(accountId, owner, ownerPID);
         this.setMinimumAllowedBalance(DEFAULT_MINIMUM_ALLOWED_BALANCE);
-        this.interestRate = interestRate;
+        this.setInterestRate(interestRate);
     }
 
     public double getInterestRate() {
@@ -136,11 +136,11 @@ public class InterestChecking extends NoServiceChargeChecking {
      * for InterestChecking, credits the customer's account with additional money according to the interest rate defined for the account.
      * */
     @Override
-    public void applyMonthlyManagement() {
+    protected void applyMonthlyManagement() {
         System.out.println("apply monthly management on " + this.getOwner() + " (" + this.getAccountId() + ")");
 
         double balance = this.getBalance();
-        balance += balance*this.interestRate;
+        balance += balance*this.getInterestRate();
 
         this.setBalance(balance);
     }
@@ -164,10 +164,22 @@ public class InterestChecking extends NoServiceChargeChecking {
             return otherBankAccount.getAccountId().equals(this.getAccountId()) &&
                     otherBankAccount.getOwner().equals(this.getOwner()) &&
                     otherBankAccount.getOwnerPID().equals(this.getOwnerPID()) &&
-                    otherBankAccount.getBalance() == this.getBalance();
-
+                    otherBankAccount.getBalance() == this.getBalance() &&
+                    otherBankAccount.getMinimumAllowedBalance() == this.getMinimumAllowedBalance() &&
+                    otherBankAccount.getInterestRate() == this.getInterestRate();
         }
 
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "<InterestChecking" +
+                " ; AccountId: " + this.getAccountId() +
+                " ; Owner: " + this.getOwner() +
+                " ; Owner Personal-ID: " + this.getOwnerPID() +
+                " ; Monthly Interest Rate: " + this.getInterestRate() +
+                " ; Minimum Allowed Balance: " + this.getMinimumAllowedBalance() +
+                " ; Balance: $" + this.getBalance() + ">";
     }
 }

@@ -111,10 +111,21 @@ public class ServiceChargeChecking extends CheckingAccount {
             return otherBankAccount.getAccountId().equals(this.getAccountId()) &&
                     otherBankAccount.getOwner().equals(this.getOwner()) &&
                     otherBankAccount.getOwnerPID().equals(this.getOwnerPID()) &&
-                    otherBankAccount.getBalance() == this.getBalance();
+                    otherBankAccount.getBalance() == this.getBalance() &&
+                    otherBankAccount.getMonthlyFee() == this.getMonthlyFee();
 
         }
 
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "<InterestChecking" +
+                " ; AccountId: " + this.getAccountId() +
+                " ; Owner: " + this.getOwner() +
+                " ; Owner Personal-ID: " + this.getOwnerPID() +
+                " ; Monthly Service Fee: " + this.getMonthlyFee() +
+                " ; Balance: $" + this.getBalance() + ">";
     }
 }

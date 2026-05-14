@@ -95,4 +95,14 @@ public abstract class CheckingAccount extends BankAccount {
         return false;
     }
 
+    @Override
+    public String toString() {
+        return "<CheckingAccount" +
+                " ; AccountId: " + this.getAccountId() +
+                " ; Owner: " + this.getOwner() +
+                " ; Owner Personal-ID: " + this.getOwnerPID() +
+                " ; Balance: $" + this.getBalance() + ">";
+
+    }
+
 }

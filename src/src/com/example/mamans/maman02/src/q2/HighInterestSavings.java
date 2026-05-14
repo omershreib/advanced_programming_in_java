@@ -18,6 +18,7 @@ package com.example.mamans.maman02.src.q2;
 
 public class HighInterestSavings extends SavingsAccount {
 
+
     private int minimumAllowedBalance = 1000;
     private double interestRate = 0.2;
 
@@ -82,7 +83,7 @@ public class HighInterestSavings extends SavingsAccount {
      * */
     public HighInterestSavings(int minimumAllowedBalance, double interestRate, String accountId, String owner, String ownerPID, double balance) {
         super(accountId, owner, ownerPID, balance);
-        this.interestRate = interestRate;
+        this.setInterestRate(interestRate);
         this.setMinimumAllowedBalance(minimumAllowedBalance);
 
     }
@@ -97,7 +98,7 @@ public class HighInterestSavings extends SavingsAccount {
      * */
     public HighInterestSavings(double interestRate, String accountId, String owner, String ownerPID, double balance) {
         super(accountId, owner, ownerPID, balance);
-        this.interestRate = interestRate;
+        this.setInterestRate(interestRate);
     }
 
     /** HighInterestSavings constructors
@@ -110,7 +111,7 @@ public class HighInterestSavings extends SavingsAccount {
      * */
     public HighInterestSavings(int minimumAllowedBalance, double interestRate, String accountId, String owner, String ownerPID) {
         super(accountId, owner, ownerPID);
-        this.interestRate = interestRate;
+        this.setInterestRate(interestRate);
         this.setMinimumAllowedBalance(minimumAllowedBalance);
     }
 
@@ -123,7 +124,7 @@ public class HighInterestSavings extends SavingsAccount {
      * */
     public HighInterestSavings(double interestRate, String accountId, String owner, String ownerPID) {
         super(accountId, owner, ownerPID);
-        this.interestRate = interestRate;
+        this.setInterestRate(interestRate);
     }
     
 
@@ -136,6 +137,9 @@ public class HighInterestSavings extends SavingsAccount {
     }
 
 
+
+
+
     /** apply monthly account management
      *
      * for HighInterestSavings, credits the customer's account with additional money according to the interest rate defined for the account.
@@ -145,7 +149,7 @@ public class HighInterestSavings extends SavingsAccount {
         System.out.println("apply monthly management on " + this.getOwner() + " (" + this.getAccountId() + ")");
 
         double balance = this.getBalance();
-        balance += balance*this.interestRate;
+        balance += balance*this.getInterestRate();
 
         this.setBalance(balance);
     }
@@ -169,10 +173,23 @@ public class HighInterestSavings extends SavingsAccount {
             return otherBankAccount.getAccountId().equals(this.getAccountId()) &&
                     otherBankAccount.getOwner().equals(this.getOwner()) &&
                     otherBankAccount.getOwnerPID().equals(this.getOwnerPID()) &&
-                    otherBankAccount.getBalance() == this.getBalance();
+                    otherBankAccount.getBalance() == this.getBalance() &&
+                    otherBankAccount.getMinimumAllowedBalance() == this.getMinimumAllowedBalance() &&
+                    otherBankAccount.getInterestRate() == this.getInterestRate();
 
         }
 
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "<HighInterestSavings" +
+                " ; AccountId: " + this.getAccountId() +
+                " ; Owner: " + this.getOwner() +
+                " ; Owner Personal-ID: " + this.getOwnerPID() +
+                " ; Monthly Interest Rate: " + this.getInterestRate() +
+                " ; Minimum Allowed Balance: " + this.getMinimumAllowedBalance() +
+                " ; Balance: $" + this.getBalance() + ">";
     }
 }

@@ -120,7 +120,6 @@ public abstract class BankAccount {
 
     @Override
     public String toString() {
-
         return "<BankAccount" +
                 " ; AccountId: " + accountId +
                 " ; Owner: " + owner +
@@ -170,7 +169,5 @@ public abstract class BankAccount {
                     + accountId + " is not permitted to be in overdraft");
     }
 
-    protected void applyMonthlyManagement() {
-
-    }
+    protected abstract void applyMonthlyManagement();
 }

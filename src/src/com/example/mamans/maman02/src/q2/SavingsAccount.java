@@ -53,7 +53,7 @@ public class SavingsAccount extends BankAccount {
      * */
     public SavingsAccount(double interestRate, String accountId, String owner, String ownerPID, double balance) {
         super(accountId, owner, ownerPID, balance);
-        this.interestRate = interestRate;
+        this.setInterestRate(interestRate);
     }
 
 
@@ -66,7 +66,15 @@ public class SavingsAccount extends BankAccount {
      * */
     public SavingsAccount(double interestRate, String accountId, String owner, String ownerPID) {
         super(accountId, owner, ownerPID);
+        this.setInterestRate(interestRate);
+    }
+
+    public void setInterestRate(double interestRate) {
         this.interestRate = interestRate;
+    }
+
+    public double getInterestRate() {
+        return this.interestRate;
     }
 
     /** apply monthly account management
@@ -78,7 +86,7 @@ public class SavingsAccount extends BankAccount {
         System.out.println("apply monthly management on " + this.getOwner() + " (" + this.getAccountId() + ")");
 
         double balance = this.getBalance();
-        balance += balance*this.interestRate;
+        balance += balance*this.getInterestRate();
 
         this.setBalance(balance);
     }
@@ -102,8 +110,8 @@ public class SavingsAccount extends BankAccount {
             return otherBankAccount.getAccountId().equals(this.getAccountId()) &&
                     otherBankAccount.getOwner().equals(this.getOwner()) &&
                     otherBankAccount.getOwnerPID().equals(this.getOwnerPID()) &&
-                    otherBankAccount.getBalance() == this.getBalance();
-
+                    otherBankAccount.getBalance() == this.getBalance() &&
+                    otherBankAccount.getInterestRate() == this.getInterestRate();
         }
 
         return false;
