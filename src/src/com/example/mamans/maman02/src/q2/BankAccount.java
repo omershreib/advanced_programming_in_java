@@ -1,5 +1,21 @@
 package com.example.mamans.maman02.src.q2;
 
+/**
+ * <h3> BankAccount </h3>
+ *
+ * <p>
+ *     this class defines a bank account abstract class 
+ * </p>
+ * <br>
+ * <p> Note: HTML tags helps to improve comments readability in editors like IntelliJ that support it </p>
+ *
+ * @maman   02
+ * @question    2
+ * @author  Omer Shraibshtein (205984271)
+ * @email   omershreib@gmail.com
+ * @since   2026-05-14
+ * */
+
 public class BankAccount {
 
     private String accountId;
@@ -7,14 +23,28 @@ public class BankAccount {
     private String ownerPID;
     private double balance = 0.0;
 
-
+    
+    /** BankAccount constructors 
+     * 
+     * @param accountId bank account id
+     * @param owner first and last owner name
+     * @param ownerPID owner personal-id
+     * @param balance pre-define balance
+     *
+     * */
     public BankAccount(String accountId, String owner, String ownerPID, double balance) {
         this.accountId = accountId;
         this.owner = owner;
         this.ownerPID = ownerPID;
         this.balance = balance;
     }
-
+    
+    /** BankAccount constructors 
+     * 
+     * @param accountId bank account id
+     * @param owner first and last owner name
+     * @param ownerPID owner personal-id
+     * */
     public BankAccount(String accountId, String owner, String ownerPID) {
         this.accountId = accountId;
         this.owner = owner;
@@ -52,8 +82,14 @@ public class BankAccount {
     public double getBalance() {
         return balance;
     }
-
-    public void deposit(int amount) throws NegativeAmountException {
+    
+    
+    /**
+     * deposit into bank account
+     * 
+     * @param amount how much to add into current balance
+     * */
+    public void deposit(double amount) throws NegativeAmountException {
         if (amount < 0)
             throw new NegativeAmountException("amount cannot be negative");
 
@@ -62,8 +98,17 @@ public class BankAccount {
 
         this.balance += amount;
     }
-
-    public void withdrawal(int amount) throws NegativeAmountException, IllegalBalanceException {
+    
+    
+    /**
+     * withdrawal from bank account
+     * <br><br>
+     * note: general bank account cannot withdraw more than it current balance.
+     * namely, this bank account cannot be in overdraft.
+     * 
+     * @param amount how much to subtract from current balance
+     * */
+    public void withdrawal(double amount) throws NegativeAmountException, IllegalBalanceException {
 
         this.validateAmount(amount);
 
@@ -82,7 +127,14 @@ public class BankAccount {
                 " ; Owner Personal-ID: " + ownerPID +
                 " ; Balance: $" + balance + ">";
     }
-
+    
+    /**
+     * compare between two bank accounts
+     * 
+     * @param obj
+     * @return true if-and-only-if it is a BankAccount class object that all its attribute identical with this
+     * BankAccount class object.
+     * */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -100,8 +152,16 @@ public class BankAccount {
 
         return false;
     }
-
-    protected void validateAmount(int amount) throws NegativeAmountException, IllegalBalanceException {
+    
+    
+    /**
+     * Validate Amount
+     * <br>
+     * validate that amount is a non-negative decimal number
+     * 
+     * @param amount a number should represent money
+     * */
+    protected void validateAmount(double amount) throws NegativeAmountException, IllegalBalanceException {
         if (amount < 0)
             throw new NegativeAmountException("amount cannot be negative");
 

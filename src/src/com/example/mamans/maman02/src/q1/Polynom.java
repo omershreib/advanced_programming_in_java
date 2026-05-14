@@ -26,11 +26,10 @@ public class Polynom {
 
     // coefficient floating point print accuracy setup
     private static final int DOUBLE_ROUND_FORMAT = 1;
-
     private static final int PLUSMINUS_SUBSTRING_START_INDEX = 0;
     private static final int PLUSMINUS_SUBSTRING_END_INDEX = 3;
-
     private static final Double zero = 0.0;
+
 
     // required to sort polynom components from the highest power to the lowest power
     private static final int POLYNOM_SORT_MAGIC_FACTOR = -1;
@@ -43,7 +42,7 @@ public class Polynom {
 
     /** a constructor to create the zero polynom p(x) = 0 **/
     public Polynom() throws CoefsAndPowersLengthMismatchException {
-        this(Arrays.asList(0.0), Arrays.asList(0));
+        this(Collections.singletonList(0.0), Collections.singletonList(0));
     }
 
     /**
@@ -62,7 +61,6 @@ public class Polynom {
      * @param coefs a List of doubles
      * @param powers a List of integers
      *
-     * @return a Polynom class object
      * **/
     public Polynom (List<Double> coefs, List<Integer> powers) throws CoefsAndPowersLengthMismatchException {
         if (coefs.size() != powers.size()) {
@@ -70,7 +68,7 @@ public class Polynom {
         }
 
         int polynomLength = coefs.size();
-        this.polynom = new ArrayList<PolynomItem>();
+        this.polynom = new ArrayList<>();
 
         for (int i = 0; i < polynomLength; i++)
             this.polynom.add(i, new PolynomItem(coefs.get(i), powers.get(i)));
@@ -181,8 +179,7 @@ public class Polynom {
      * @return a double `c` that equals to the coefficient number of cX^power exists in class.polynom
      * */
     private Double getCoefOf(int power) {
-        for (int i = 0; i < this.polynom.size(); i++) {
-            PolynomItem polynomItem = this.polynom.get(i);
+        for (PolynomItem polynomItem : this.polynom) {
             if (Objects.equals(polynomItem.getPower(), power)) return polynomItem.getCoef();
         }
 
@@ -321,11 +318,11 @@ public class Polynom {
      * <br><br>
      * technically, p == q and p.isEqualTo(q) are almost the same, with one little difference: the isEqualTo assume
      * that the compared other class object in a Polynom.
-     *
+     * <br>
      * note: I cannot add Exception here since the signature of Object.equals does not include Exception throwing.
      *      (I consider to through IsNotAPolynomException instead of this print)
      *
-     * @param obj
+     * @param obj hopefully a Polynom
      * @return  the boolean result of class.isEqualTo((Polynom) obj)
      *          if obj is not a Polynom class object then return false
      * */
