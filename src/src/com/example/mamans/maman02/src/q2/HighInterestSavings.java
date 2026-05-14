@@ -179,7 +179,7 @@ public class HighInterestSavings extends SavingsAccount {
                     otherBankAccount.getOwnerPID().equals(this.getOwnerPID()) &&
                     otherBankAccount.getBalance() == this.getBalance() &&
                     otherBankAccount.getMinimumAllowedBalance() == this.getMinimumAllowedBalance() &&
-                    otherBankAccount.getInterestRate() == this.getInterestRate();
+                    Double.compare(otherBankAccount.getInterestRate(), this.getInterestRate()) == 0;
 
         }
 

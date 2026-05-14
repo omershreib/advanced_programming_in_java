@@ -19,7 +19,7 @@ package com.example.mamans.maman02.src.q2;
 
 public class SavingsAccount extends BankAccount {
 
-    private double interestRate = 0.1;
+    protected double interestRate = 0.1;
 
     /** SavingsAccount constructors
      *
@@ -106,12 +106,12 @@ public class SavingsAccount extends BankAccount {
 
         if (obj instanceof SavingsAccount) {
             SavingsAccount otherBankAccount = (SavingsAccount) obj;
-
+            
             return otherBankAccount.getAccountId().equals(this.getAccountId()) &&
                     otherBankAccount.getOwner().equals(this.getOwner()) &&
                     otherBankAccount.getOwnerPID().equals(this.getOwnerPID()) &&
                     otherBankAccount.getBalance() == this.getBalance() &&
-                    otherBankAccount.getInterestRate() == this.getInterestRate();
+                    Double.compare(otherBankAccount.getInterestRate(), this.getInterestRate()) == 0;
         }
 
         return false;
