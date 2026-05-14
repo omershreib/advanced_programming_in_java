@@ -69,8 +69,8 @@ public class Main {
                 new InterestChecking("IC-001", "Professor Catnip", "555", 5000),
                 new InterestChecking(2000, 0.15, "IC-002", "Lady Fluffington", "666", 10000),
                 new SavingsAccount("SA-001", "Bark Twain", "777", 7000),
-                new SavingsAccount(0.08, "SA-002", "Hamster Einstein", "888", 4000),
-                new HighInterestSavings("HS-001", "Queen Whiskerbell", "999", 12000),
+                new SavingsAccount(0.08, "SA-002", "Queen Whiskerbell", "888", 4000),
+                new HighInterestSavings("HS-001", "Chucha MaChucha" , "999", 12000),
                 new HighInterestSavings(3000, 0.25, "HS-002", "Doctor Meowzart", "101", 20000)
         };
 
