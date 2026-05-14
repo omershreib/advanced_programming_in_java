@@ -18,7 +18,7 @@ package com.example.mamans.maman02.src.q2;
 
 public class NoServiceChargeChecking extends CheckingAccount {
 
-    private static final int DEFAULT_MINIMUM_ALLOWED_BALANCE = 10;
+    private static final int DEFAULT_MINIMUM_ALLOWED_BALANCE = 100;
 
     private int minimumAllowedBalance;
 
@@ -134,7 +134,7 @@ public class NoServiceChargeChecking extends CheckingAccount {
 
     @Override
     public String toString() {
-        return "<InterestChecking" +
+        return "<NoServiceChargeChecking" +
                 " ; AccountId: " + this.getAccountId() +
                 " ; Owner: " + this.getOwner() +
                 " ; Owner Personal-ID: " + this.getOwnerPID() +

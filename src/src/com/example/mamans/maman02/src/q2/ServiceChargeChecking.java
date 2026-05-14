@@ -121,7 +121,7 @@ public class ServiceChargeChecking extends CheckingAccount {
 
     @Override
     public String toString() {
-        return "<InterestChecking" +
+        return "<ServiceChargeChecking" +
                 " ; AccountId: " + this.getAccountId() +
                 " ; Owner: " + this.getOwner() +
                 " ; Owner Personal-ID: " + this.getOwnerPID() +

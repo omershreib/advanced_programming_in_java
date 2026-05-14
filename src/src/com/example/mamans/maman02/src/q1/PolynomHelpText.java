@@ -40,6 +40,7 @@ public interface PolynomHelpText {
                     "      Example:\n" +
                     "          set p (3,2), (1,0)\n" +
                     "      This defines p(x) = 3x^2 + 1.\n" +
+                    "      Important!: pay attention to spaces (SPACES IS DISALLOWED INSIDE PAIRS!\nTHIS (coef, power) WILL THROW EXCEPTION\nthis way (coef,power) is OK)" +
                     "\n" +
                     "  show <p|q>\n" +
                     "      Display the polynomial in standard mathematical form.\n" +
