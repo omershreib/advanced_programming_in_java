@@ -1,6 +1,4 @@
-package com.example.mamans.maman02.src.q2;
-
-import javax.swing.*;
+package mamans.maman02.src.q2;
 
 /**
  * <h3> ServiceChargeChecking </h3>

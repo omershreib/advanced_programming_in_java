@@ -1,4 +1,4 @@
-package com.example.mamans.maman02.src.q1;
+package mamans.maman02.src.q1;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package com.example.mamans.maman02.src.q2;
+package mamans.maman02.src.q2;
 
 /**
  * <h3> NegativeAmountException </h3>

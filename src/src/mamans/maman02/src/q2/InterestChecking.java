@@ -1,10 +1,10 @@
-package com.example.mamans.maman02.src.q2;
+package mamans.maman02.src.q2;
 
 /**
- * <h3> HighInterestSavings </h3>
+ * <h3> InterestChecking </h3>
  *
  * <p>
- *     this class defines a bank account type high interest savings
+ *     this class defines a bank account type interest checking
  * </p>
  * <br>
  * <p> Note: HTML tags helps to improve comments readability in editors like IntelliJ that support it </p>
@@ -16,17 +16,12 @@ package com.example.mamans.maman02.src.q2;
  * @since   2026-05-14
  * */
 
-public class HighInterestSavings extends SavingsAccount {
-
-
+public class InterestChecking extends NoServiceChargeChecking {
     private static final int DEFAULT_MINIMUM_ALLOWED_BALANCE = 1000;
-
-    private int minimumAllowedBalance;
-    private double interestRate = 0.2;
+    private double interestRate = 0.1;
 
 
-
-    /** HighInterestSavings constructors
+    /** InterestChecking constructors
      *
      * @param minimumAllowedBalance set the minimal balance allowed to this bank account
      * @param accountId bank account id
@@ -34,49 +29,47 @@ public class HighInterestSavings extends SavingsAccount {
      * @param ownerPID owner personal-id
      * @param balance pre-define balance
      * */
-    public HighInterestSavings(int minimumAllowedBalance, String accountId, String owner, String ownerPID, double balance) {
-        super(accountId, owner, ownerPID, balance);
-        this.setMinimumAllowedBalance(minimumAllowedBalance);
+    public InterestChecking(int minimumAllowedBalance, String accountId, String owner, String ownerPID, double balance) {
+        super(minimumAllowedBalance, accountId, owner, ownerPID, balance);
     }
 
-
-    /** HighInterestSavings constructors
+    /** InterestChecking constructors
      *
      * @param accountId bank account id
      * @param owner first and last owner name
      * @param ownerPID owner personal-id
      * @param balance pre-define balance
      * */
-    public HighInterestSavings(String accountId, String owner, String ownerPID, double balance) {
+    public InterestChecking(String accountId, String owner, String ownerPID, double balance) {
         super(accountId, owner, ownerPID, balance);
         this.setMinimumAllowedBalance(DEFAULT_MINIMUM_ALLOWED_BALANCE);
+
     }
 
-    /** HighInterestSavings constructors
+    /** InterestChecking constructors
      *
      * @param minimumAllowedBalance set the minimal balance allowed to this bank account
      * @param accountId bank account id
      * @param owner first and last owner name
-     * @param ownerPID owner personal-id*
+     * @param ownerPID owner personal-id
      * */
-    public HighInterestSavings(int minimumAllowedBalance, String accountId, String owner, String ownerPID) {
-        super(accountId, owner, ownerPID);
-        this.setMinimumAllowedBalance(minimumAllowedBalance);
+    public InterestChecking(int minimumAllowedBalance, String accountId, String owner, String ownerPID) {
+        super(minimumAllowedBalance, accountId, owner, ownerPID);
     }
 
-    /** HighInterestSavings constructors
+    /** InterestChecking constructors
      *
      * @param accountId bank account id
      * @param owner first and last owner name
      * @param ownerPID owner personal-id
      * */
-    public HighInterestSavings(String accountId, String owner, String ownerPID) {
+    public InterestChecking(String accountId, String owner, String ownerPID) {
         super(accountId, owner, ownerPID);
         this.setMinimumAllowedBalance(DEFAULT_MINIMUM_ALLOWED_BALANCE);
+
     }
 
-
-    /** HighInterestSavings constructors
+    /** InterestChecking constructors
      *
      * @param minimumAllowedBalance set the minimal balance allowed to this bank account
      * @param interestRate monthly rate of interest
@@ -85,14 +78,12 @@ public class HighInterestSavings extends SavingsAccount {
      * @param ownerPID owner personal-id
      * @param balance pre-define balance
      * */
-    public HighInterestSavings(int minimumAllowedBalance, double interestRate, String accountId, String owner, String ownerPID, double balance) {
-        super(accountId, owner, ownerPID, balance);
+    public InterestChecking(int minimumAllowedBalance, double interestRate, String accountId, String owner, String ownerPID, double balance) {
+        super(minimumAllowedBalance, accountId, owner, ownerPID, balance);
         this.setInterestRate(interestRate);
-        this.setMinimumAllowedBalance(minimumAllowedBalance);
-
     }
 
-    /** HighInterestSavings constructors
+    /** InterestChecking constructors
      *
      * @param interestRate monthly rate of interest
      * @param accountId bank account id
@@ -100,13 +91,13 @@ public class HighInterestSavings extends SavingsAccount {
      * @param ownerPID owner personal-id
      * @param balance pre-define balance
      * */
-    public HighInterestSavings(double interestRate, String accountId, String owner, String ownerPID, double balance) {
+    public InterestChecking(double interestRate, String accountId, String owner, String ownerPID, double balance) {
         super(accountId, owner, ownerPID, balance);
         this.setInterestRate(interestRate);
         this.setMinimumAllowedBalance(DEFAULT_MINIMUM_ALLOWED_BALANCE);
     }
 
-    /** HighInterestSavings constructors
+    /** InterestChecking constructors
      *
      * @param minimumAllowedBalance set the minimal balance allowed to this bank account
      * @param interestRate monthly rate of interest
@@ -114,42 +105,38 @@ public class HighInterestSavings extends SavingsAccount {
      * @param owner first and last owner name
      * @param ownerPID owner personal-id
      * */
-    public HighInterestSavings(int minimumAllowedBalance, double interestRate, String accountId, String owner, String ownerPID) {
-        super(accountId, owner, ownerPID);
-        this.setInterestRate(interestRate);
-        this.setMinimumAllowedBalance(minimumAllowedBalance);
+    public InterestChecking(int minimumAllowedBalance, double interestRate, String accountId, String owner, String ownerPID) {
+        super(minimumAllowedBalance, accountId, owner, ownerPID);
+        this.interestRate = interestRate;
     }
 
-    /** HighInterestSavings constructors
+    /** InterestChecking constructors
      *
      * @param interestRate monthly rate of interest
      * @param accountId bank account id
      * @param owner first and last owner name
      * @param ownerPID owner personal-id
      * */
-    public HighInterestSavings(double interestRate, String accountId, String owner, String ownerPID) {
+    public InterestChecking(double interestRate, String accountId, String owner, String ownerPID) {
         super(accountId, owner, ownerPID);
-        this.setInterestRate(interestRate);
         this.setMinimumAllowedBalance(DEFAULT_MINIMUM_ALLOWED_BALANCE);
-
-    }
-    
-
-    public int getMinimumAllowedBalance() {
-        return minimumAllowedBalance;
+        this.setInterestRate(interestRate);
     }
 
-    public void setMinimumAllowedBalance(int minimumAllowedBalance) {
-        this.minimumAllowedBalance = minimumAllowedBalance;
+    public double getInterestRate() {
+        return interestRate;
     }
 
+    public void setInterestRate(double interestRate) {
+        this.interestRate = interestRate;
+    }
 
     /** apply monthly account management
      *
-     * for HighInterestSavings, credits the customer's account with additional money according to the interest rate defined for the account.
+     * for InterestChecking, credits the customer's account with additional money according to the interest rate defined for the account.
      * */
     @Override
-    public void applyMonthlyManagement() {
+    protected void applyMonthlyManagement() {
         System.out.println("apply monthly management on " + this.getOwner() + " (" + this.getAccountId() + ")");
 
         double balance = this.getBalance();
@@ -162,7 +149,7 @@ public class HighInterestSavings extends SavingsAccount {
      * compare between two bank accounts
      *
      * @param obj
-     * @return true if-and-only-if it is a HighInterestSavings class object that all its attribute identical with this
+     * @return true if-and-only-if it is a InterestChecking class object that all its attribute identical with this
      * BankAccount class object.
      * */
     @Override
@@ -171,8 +158,8 @@ public class HighInterestSavings extends SavingsAccount {
             return true;
         }
 
-        if (obj instanceof HighInterestSavings) {
-            HighInterestSavings otherBankAccount = (HighInterestSavings) obj;
+        if (obj instanceof InterestChecking) {
+            InterestChecking otherBankAccount = (InterestChecking) obj;
 
             return otherBankAccount.getAccountId().equals(this.getAccountId()) &&
                     otherBankAccount.getOwner().equals(this.getOwner()) &&
@@ -180,7 +167,6 @@ public class HighInterestSavings extends SavingsAccount {
                     otherBankAccount.getBalance() == this.getBalance() &&
                     otherBankAccount.getMinimumAllowedBalance() == this.getMinimumAllowedBalance() &&
                     Double.compare(otherBankAccount.getInterestRate(), this.getInterestRate()) == 0;
-
         }
 
         return false;
@@ -188,7 +174,7 @@ public class HighInterestSavings extends SavingsAccount {
 
     @Override
     public String toString() {
-        return "<HighInterestSavings" +
+        return "<InterestChecking" +
                 " ; AccountId: " + this.getAccountId() +
                 " ; Owner: " + this.getOwner() +
                 " ; Owner Personal-ID: " + this.getOwnerPID() +
