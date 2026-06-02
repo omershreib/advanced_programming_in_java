@@ -5,12 +5,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class SupermarketSelfServiceController extends SupermarketSelfServiceBackend {
 
@@ -20,6 +22,9 @@ public class SupermarketSelfServiceController extends SupermarketSelfServiceBack
     private boolean is_bamba_sale_offer_accepted = false;
 
     private GraphicsContext gc;
+
+    @FXML
+    private TextField costTextField;
 
     @FXML
     private Pane animationPane;
@@ -45,13 +50,21 @@ public class SupermarketSelfServiceController extends SupermarketSelfServiceBack
     @FXML
     void onAddToCartButtonPress(ActionEvent event) {
         ObservableList<String> selected = this.productList.getSelectionModel().getSelectedItems();
-        selected.forEach(this::addToCart);
-
-        this.updateCustomerCartList();
 
         String selectedProduct = selected.get(0);
-        //String selectedItem = this.productList.getSelectionModel().getSelectedItem();
         String productName = selectedProduct.substring(0, selectedProduct.indexOf(" ("));
+        Double productPrice = Double.parseDouble(
+                selectedProduct.substring(
+                        selectedProduct.indexOf("(") + 1,
+                        selectedProduct.indexOf(")")));
+
+        System.out.println(selectedProduct);
+        this.addToCart(selectedProduct);
+        //selected.forEach(this::addToCart);
+
+        this.updateCustomerCartList();
+        this.increaseCostTextField(productPrice);
+
 
         /* private joke */
         if ((this.getDcHashMap().containsKey("Bamba (3.50)")) & !(this.is_bamba_sale_offered)) {
@@ -63,6 +76,7 @@ public class SupermarketSelfServiceController extends SupermarketSelfServiceBack
                 this.is_bamba_sale_offer_accepted = true;
 
                 this.updateCustomerCartList();
+                this.increaseCostTextField(productPrice*2 - 0.51);
             }
         }
 
@@ -87,9 +101,20 @@ public class SupermarketSelfServiceController extends SupermarketSelfServiceBack
 
         String selectedProduct = selected.get(0);
         String productName = selectedProduct.substring(0, selectedProduct.indexOf(" ("));
+        Double productPrice = Double.parseDouble(
+                selectedProduct.substring(
+                        selectedProduct.indexOf("(") + 1,
+                        selectedProduct.indexOf(")")));
 
-        System.out.println(selected);
-        selected.forEach(this::removeFromCart);
+
+        String productEntry = selectedProduct.substring(0, selectedProduct.indexOf(")")+1);
+
+        System.out.println(productEntry);
+
+        System.out.println(this.getDcHashMap().toString());
+        this.removeFromCart(productEntry);
+        this.decreaseCostTextField(productPrice);
+        //selected.forEach(this::removeFromCart);
 
         this.updateCustomerCartList();
 
@@ -143,7 +168,6 @@ public class SupermarketSelfServiceController extends SupermarketSelfServiceBack
                         String.format("%-15s %3d",
                                 productName,
                                 productCount));
-                //this.customerCartList.getItems().add(productName + "\t" + productCount);
             });
 
         }
@@ -159,6 +183,37 @@ public class SupermarketSelfServiceController extends SupermarketSelfServiceBack
 
     }
 
+    private void initCostTextField() {
+        this.costTextField.setText("");
+    }
+
+    private void increaseCostTextField(Double value) {
+        if (Objects.equals(costTextField.getText(), "")) {
+            costTextField.setText("0");
+        }
+
+        double newValue = Double.parseDouble(costTextField.getText()) + value;
+
+        costTextField.setText(String.valueOf(Math.round(newValue * 100.0) / 100.0));
+
+    }
+
+    private void decreaseCostTextField(Double value) {
+        if (Objects.equals(costTextField.getText(), "")) {
+            costTextField.setText("0");
+            return;
+        }
+
+        double newValue = Double.parseDouble(costTextField.getText()) - value;
+
+        costTextField.setText(String.valueOf(Math.round(newValue * 100.0) / 100.0));
+
+        if (Math.round(newValue) == 0) {
+            costTextField.setText("");
+        }
+
+    }
+
     @FXML
     void initialize() throws IOException {
         assert animationPane != null : "fx:id=\"animationPane\" was not injected: check your FXML file 'supermarket_self_service_checkout.fxml'.";
@@ -168,11 +223,11 @@ public class SupermarketSelfServiceController extends SupermarketSelfServiceBack
         assert productImageView != null : "fx:id=\"productImageView\" was not injected: check your FXML file 'supermarket_self_service_checkout.fxml'.";
         assert productList != null : "fx:id=\"productList\" was not injected: check your FXML file 'supermarket_self_service_checkout.fxml'.";
         assert title != null : "fx:id=\"title\" was not injected: check your FXML file 'supermarket_self_service_checkout.fxml'.";
-
-
+        assert costTextField != null : "fx:id=\"costTextField\" was not injected: check your FXML file 'supermarket_self_service_checkout.fxml'.";
 
         this.cartImageView.setImage(SupermarketImages.getImage("Cart"));
 
+        this.initCostTextField();
         this.loadProductsFromFile(this.getProductsFilePath());
         this.productsListSetup();
 

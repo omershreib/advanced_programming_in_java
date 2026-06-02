@@ -1,6 +1,7 @@
 package mamans.maman03.src.q2;
 
 
+import javafx.scene.control.TextArea;
 import mamans.maman03.src.q1.DupCount;
 
 import java.util.HashMap;
@@ -47,49 +48,117 @@ public class SupermarketSelfServiceBackend extends DupCount<String> {
 
     public int removeFromCart(String product) {
 
-        String[] tokens = product.split("\t");
+//        String[] tokens = product.split("\t");
+//
+//        String productName = tokens[0];
+//        int _productCount = Integer.valueOf(tokens[1]);
 
-        String productName = tokens[0];
-        int _productCount = Integer.valueOf(tokens[1]);
-
-        return this.remove(productName);
+        return this.remove(product);
     }
 
     public boolean isCartEmpty() {
         return this.isEmpty();
     }
 
-    public void callCheckoutInfoBox(HashMap<String, Integer> customerCart, boolean is_bamba_sale_offer_accepted) {
+//    public void callCheckoutInfoBox(HashMap<String, Integer> customerCart, boolean is_bamba_sale_offer_accepted) {
+//        StringBuilder checkoutMessage = new StringBuilder();
+//
+//        checkoutMessage.append(String.format("%-15s %3s", "product", "count")).append("\n");
+//
+//        double cost = 0.0;
+//        double productPrice;
+//
+//        for (Map.Entry<String, Integer> entry : customerCart.entrySet()) {
+//            String productName = entry.getKey();
+//            Integer productCount = entry.getValue();
+//            checkoutMessage.append(String.format("%-15s %3d",
+//                    productName,
+//                    productCount)).append("\n");
+//            productPrice = (Double.parseDouble(productName.substring(productName.indexOf("(")+1, productName.indexOf(")"))));
+//            cost = cost + productPrice*productCount;
+//        }
+//
+//        if (is_bamba_sale_offer_accepted) {
+//            cost = cost - 0.51;
+//            checkoutMessage.append("\ntotal cost: ").append(Math.round(cost * 100.0) / 100.0);
+//            checkoutMessage.append("\nyou saved 0.51 new shekels because of the bamba sale!");
+//        }
+//
+//        else {
+//            checkoutMessage.append("\ntotal cost: ").append(Math.round(cost * 100.0) / 100.0);
+//        }
+//
+//        AlertBox.showCheckout(checkoutMessage.toString());
+//
+//
+//    }
+
+    public void callCheckoutInfoBox(HashMap<String, Integer> customerCart,
+                                    boolean is_bamba_sale_offer_accepted) {
+
         StringBuilder checkoutMessage = new StringBuilder();
 
-        checkoutMessage.append(String.format("%-15s %3s", "product", "count")).append("\n");
+        checkoutMessage.append(
+                String.format("%-20s %5s%n", "Product", "Count")
+        );
+
+        checkoutMessage.append(
+                "------------------------------\n"
+        );
 
         double cost = 0.0;
         double productPrice;
 
         for (Map.Entry<String, Integer> entry : customerCart.entrySet()) {
+
             String productName = entry.getKey();
             Integer productCount = entry.getValue();
-            checkoutMessage.append(String.format("%-15s %3d",
-                    productName,
-                    productCount)).append("\n");
-            productPrice = (Double.parseDouble(productName.substring(productName.indexOf("(")+1, productName.indexOf(")"))));
-            cost = cost + productPrice*productCount;
+
+            checkoutMessage.append(
+                    String.format("%-20s %5d%n",
+                            productName,
+                            productCount)
+            );
+
+            productPrice = Double.parseDouble(
+                    productName.substring(
+                            productName.indexOf("(") + 1,
+                            productName.indexOf(")")
+                    )
+            );
+
+            cost += productPrice * productCount;
         }
+
+        checkoutMessage.append("\n");
 
         if (is_bamba_sale_offer_accepted) {
-            cost = cost - 0.51;
-            checkoutMessage.append("\ntotal cost: ").append(Math.round(cost * 100.0) / 100.0);
-            checkoutMessage.append("\nyou saved 0.51 new shekels because of the bamba sale!");
+            cost -= 0.51;
+
+            checkoutMessage.append(
+                    String.format("Total Cost: %.2f%n", cost)
+            );
+
+            checkoutMessage.append(
+                    "You saved ₪0.51 thanks\nto the Bamba sale!"
+            );
+        } else {
+            checkoutMessage.append(
+                    String.format("Total Cost: %.2f", cost)
+            );
         }
 
-        else {
-            checkoutMessage.append("\ntotal cost: ").append(Math.round(cost * 100.0) / 100.0);
-        }
+        TextArea textArea = new TextArea(checkoutMessage.toString());
 
-        AlertBox.showCheckout(checkoutMessage.toString());
+        textArea.setEditable(false);
+        textArea.setWrapText(false);
 
+        textArea.setStyle(
+                "-fx-font-family: 'Consolas';" +
+                        "-fx-font-size: 12px;"
+        );
 
+        AlertBox.showCheckout(textArea);
     }
 
     public boolean offerBambaSale() {
