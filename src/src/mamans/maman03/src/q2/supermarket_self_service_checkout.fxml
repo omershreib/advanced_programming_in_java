@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Text?>
 
 
-<AnchorPane prefHeight="480.0" prefWidth="724.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mamans.maman03.src.q2.SupermarketSelfServiceCheckoutController">
+<AnchorPane prefHeight="480.0" prefWidth="724.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mamans.maman03.src.q2.SupermarketSelfServiceController">
    <children>
       <BorderPane layoutX="-36.0" layoutY="13.0" prefHeight="521.0" prefWidth="760.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>

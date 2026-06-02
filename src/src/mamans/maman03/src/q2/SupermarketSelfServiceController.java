@@ -1,23 +1,18 @@
 package mamans.maman03.src.q2;
 
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ListView;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.animation.*;
 import javafx.scene.layout.Pane;
-import javafx.util.Duration;
 
-import java.io.File;
 import java.io.IOException;
 
-public class SupermarketSelfServiceCheckoutController extends SupermarketSelfServiceCheckoutBackend {
+public class SupermarketSelfServiceController extends SupermarketSelfServiceBackend {
 
 
     //private static final ADD_TO_CART_
@@ -48,7 +43,11 @@ public class SupermarketSelfServiceCheckoutController extends SupermarketSelfSer
         selected.forEach(this::addToCart);
 
         this.updateCustomerCartList();
-        this.playCartAnimation(true);
+
+        String selectedItem = this.productList.getSelectionModel().getSelectedItem();
+        String productName = selectedItem.substring(0, selectedItem.indexOf(" ("));
+
+        this.playCartAnimation(productName, true);
     }
 
 
@@ -59,16 +58,25 @@ public class SupermarketSelfServiceCheckoutController extends SupermarketSelfSer
             return;
         }
 
-        System.out.println(this.getProductDictData().isEmpty());
+        // System.out.println(this.getProductDictData().isEmpty());
 
         System.out.println("remove product from cart");
         ObservableList<String> selected = this.customerCartList.getSelectionModel().getSelectedItems();
+
+        if (selected.isEmpty()) {
+            System.out.println("product must be selected in order to be removed from cart");
+            return;
+        }
 
         System.out.println(selected);
         selected.forEach(this::removeFromCart);
 
         this.updateCustomerCartList();
-        this.playCartAnimation(false);
+
+        String selectedItem = this.productList.getSelectionModel().getSelectedItem();
+        String productName = selectedItem.substring(0, selectedItem.indexOf(" ("));
+
+        this.playCartAnimation(productName, false);
 
     }
 
@@ -85,45 +93,10 @@ public class SupermarketSelfServiceCheckoutController extends SupermarketSelfSer
         gc.fillText("Most Popular Item is " + this.getMaxDup(), 50, 150);
     }
 
-//    private void playCartAnimation(boolean addToCart) {
-//        ImageView flyingImage = new ImageView(imageView.getImage());
-//        flyingImage.setFitWidth(55);
-//        flyingImage.setFitHeight(55);
-//        flyingImage.setPreserveRatio(true);
-//        flyingImage.setOpacity(0.9);
-//
-//        double productListX = addToCart ? animationPane.getWidth() - 40 : 40;
-//        double cartX = imageView.getLayoutX() + imageView.getFitWidth() / 2 - 25;
-//        double cartY = imageView.getLayoutY() + 20;
-//
-//        flyingImage.setLayoutX(addToCart ? productListX : cartX);
-//        flyingImage.setLayoutY(addToCart ? 30 : cartY);
-//
-//        animationPane.getChildren().add(flyingImage);
-//
-//        TranslateTransition fly = new TranslateTransition(Duration.millis(550), flyingImage);
-//        fly.setToX(addToCart ? cartX - productListX : productListX - cartX);
-//        fly.setToY(addToCart ? cartY - 30 : 30 - cartY);
-//
-//        ScaleTransition scale = new ScaleTransition(Duration.millis(550), flyingImage);
-//        scale.setFromX(1.0);
-//        scale.setFromY(1.0);
-//        scale.setToX(addToCart ? 0.35 : 1.4);
-//        scale.setToY(addToCart ? 0.35 : 1.4);
-//
-//        FadeTransition fade = new FadeTransition(Duration.millis(550), flyingImage);
-//        fade.setFromValue(0.95);
-//        fade.setToValue(0.0);
-//
-//        ParallelTransition animation = new ParallelTransition(fly, scale, fade);
-//        animation.setOnFinished(e -> animationPane.getChildren().remove(flyingImage));
-//        animation.play();
-//    }
-
-    private void playCartAnimation(boolean addToCart) {
+    private void playCartAnimation(String productName, boolean addToCart) {
         new CartAnimation(
                 this.canvas,
-                this.imageView.getImage(),
+                SupermarketImages.getImage(productName),
                 addToCart
         ).start();
     }
@@ -159,10 +132,14 @@ public class SupermarketSelfServiceCheckoutController extends SupermarketSelfSer
         assert productList != null : "fx:id=\"productList\" was not injected: check your FXML file 'supermarket_self_service_checkout.fxml'.";
         assert title != null : "fx:id=\"title\" was not injected: check your FXML file 'supermarket_self_service_checkout.fxml'.";
 
+
+
         //System.out.println(new File(".").getAbsolutePath());
-        File file = new File("D:\\Users\\omers\\IdeaProjects\\advanced_programming_in_java\\src\\src\\mamans\\maman03\\src\\q2\\cart.png");
-        Image image = new Image(file.toURI().toString());
-        this.imageView.setImage(image);
+//        File cartPNGFile = new File("D:\\Users\\omers\\IdeaProjects\\advanced_programming_in_java\\src\\src\\mamans\\maman03\\src\\q2\\images\\cart.png");
+//        //File file = new File("D:\\Users\\omers\\IdeaProjects\\advanced_programming_in_java\\src\\src\\mamans\\maman03\\src\\q2\\cart.png");
+//        Image image = new Image(cartPNGFile.toURI().toString());
+//        this.imageView.setImage(image);
+        this.imageView.setImage(SupermarketImages.getImage("Cart"));
 
         this.loadProductsFromFile(this.getProductsFilePath());
         this.productsListSetup();

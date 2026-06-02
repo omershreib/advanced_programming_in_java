@@ -5,9 +5,8 @@ import mamans.maman03.src.q1.DupCount;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
-public class SupermarketSelfServiceCheckoutBackend extends DupCount<String> {
+public class SupermarketSelfServiceBackend extends DupCount<String> {
 
 
     private final String productsFilePath = "D:\\Users\\omers\\IdeaProjects\\advanced_programming_in_java\\src\\src\\mamans\\maman03\\src\\q2\\products.csv";
@@ -19,7 +18,7 @@ public class SupermarketSelfServiceCheckoutBackend extends DupCount<String> {
         return this.productsFilePath;
     }
 
-    public SupermarketSelfServiceCheckoutBackend() {
+    public SupermarketSelfServiceBackend() {
         super();
 
     }

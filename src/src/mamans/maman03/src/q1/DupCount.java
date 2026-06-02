@@ -1,5 +1,3 @@
-package mamans.maman03.src.q1;
-
 /**
  * <h3> DupCount </h3>
  *
@@ -19,7 +17,7 @@ package mamans.maman03.src.q1;
  * @since   2026-06-02
  * */
 
-
+package mamans.maman03.src.q1;
 import java.util.HashMap;
 
 public class DupCount<E> {
