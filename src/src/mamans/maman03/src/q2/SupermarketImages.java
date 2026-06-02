@@ -7,31 +7,33 @@ import java.util.Map;
 
 public class SupermarketImages {
 
+    private static final String imagePath = "resources/images";
+
     private static final Map<String, String> IMAGES = new HashMap<>();
 
     static {
-        IMAGES.put("Bread", "images/bread.png");
-        IMAGES.put("Eggs Pack", "images/eggs.png");
-        IMAGES.put("Milk", "images/milk.png");
-        IMAGES.put("Cheese", "images/cheese.png");
-        IMAGES.put("Cereal", "images/cereal.png");
-        IMAGES.put("Red Wine", "images/wine.png");
-        IMAGES.put("Carrots", "images/carrots.png");
-        IMAGES.put("Cucumber", "images/cucumber.png");
-        IMAGES.put("Onions", "images/onion.png");
-        IMAGES.put("Tomatoes", "images/tomatoes.png");
-        IMAGES.put("Sausage", "images/sausage.png");
-        IMAGES.put("Bamba", "images/bamba.png");
-        IMAGES.put("Cart", "images/cart.png");
+        IMAGES.put("Bread", imagePath + "/" + "bread.png");
+        IMAGES.put("Eggs Pack", imagePath + "/" + "eggs.png");
+        IMAGES.put("Milk", imagePath + "/" + "milk.png");
+        IMAGES.put("Cheese", imagePath + "/" + "cheese.png");
+        IMAGES.put("Cereal", imagePath + "/" + "cereal.png");
+        IMAGES.put("Red Wine", imagePath + "/" + "wine.png");
+        IMAGES.put("Carrots", imagePath + "/" + "carrots.png");
+        IMAGES.put("Cucumber", imagePath + "/" + "cucumber.png");
+        IMAGES.put("Onions", imagePath + "/" + "onion.png");
+        IMAGES.put("Tomatoes", imagePath + "/" + "tomatoes.png");
+        IMAGES.put("Sausage", imagePath + "/" + "sausage.png");
+        IMAGES.put("Bamba", imagePath + "/" + "bamba.png");
+        IMAGES.put("Cart", imagePath + "/" + "cart.png");
     }
 
     public static Image getImage(String productName) {
 
         String path = IMAGES.get(productName);
 
-        if (path == null) {
-            path = "images/cart.png";
-        }
+//        if (path == null) {
+//            path = "images/cart.png";
+//        }
 
         return new Image(
                 SupermarketImages.class

@@ -8,8 +8,11 @@ import java.util.Map;
 
 public class SupermarketSelfServiceBackend extends DupCount<String> {
 
+    //private static final String productsPath = "resources/products";
+    private static final String productsFilePath =  "resources/products/products.csv";
 
-    private final String productsFilePath = "D:\\Users\\omers\\IdeaProjects\\advanced_programming_in_java\\src\\src\\mamans\\maman03\\src\\q2\\products.csv";
+    //private final String productsFilePath = "D:\\Users\\omers\\IdeaProjects\\advanced_programming_in_java\\src\\src\\mamans\\maman03\\src\\q2\\resources\\products\\products.csv";
+
 
     private Map<String, String> productsDict = new HashMap<>();
 

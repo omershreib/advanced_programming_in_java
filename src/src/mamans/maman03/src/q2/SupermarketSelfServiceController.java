@@ -58,8 +58,6 @@ public class SupermarketSelfServiceController extends SupermarketSelfServiceBack
             return;
         }
 
-        // System.out.println(this.getProductDictData().isEmpty());
-
         System.out.println("remove product from cart");
         ObservableList<String> selected = this.customerCartList.getSelectionModel().getSelectedItems();
 
