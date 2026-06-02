@@ -37,7 +37,10 @@ public class SupermarketSelfServiceController extends SupermarketSelfServiceBack
     private Text title;
 
     @FXML
-    private ImageView imageView;
+    private ImageView cartImageView;
+
+    @FXML
+    private ImageView productImageView;
 
     @FXML
     void onAddToCartButtonPress(ActionEvent event) {
@@ -46,8 +49,9 @@ public class SupermarketSelfServiceController extends SupermarketSelfServiceBack
 
         this.updateCustomerCartList();
 
-        String selectedItem = this.productList.getSelectionModel().getSelectedItem();
-        String productName = selectedItem.substring(0, selectedItem.indexOf(" ("));
+        String selectedProduct = selected.get(0);
+        //String selectedItem = this.productList.getSelectionModel().getSelectedItem();
+        String productName = selectedProduct.substring(0, selectedProduct.indexOf(" ("));
 
         /* private joke */
         if ((this.getDcHashMap().containsKey("Bamba (3.50)")) & !(this.is_bamba_sale_offered)) {
@@ -81,15 +85,15 @@ public class SupermarketSelfServiceController extends SupermarketSelfServiceBack
             return;
         }
 
+        String selectedProduct = selected.get(0);
+        String productName = selectedProduct.substring(0, selectedProduct.indexOf(" ("));
+
         System.out.println(selected);
         selected.forEach(this::removeFromCart);
 
         this.updateCustomerCartList();
 
         this.checkBambaSaleRelevance();
-
-        String selectedItem = this.productList.getSelectionModel().getSelectedItem();
-        String productName = selectedItem.substring(0, selectedItem.indexOf(" ("));
 
         this.playCartAnimation(productName, false);
 
@@ -135,7 +139,11 @@ public class SupermarketSelfServiceController extends SupermarketSelfServiceBack
 
         if (!this.isCartEmpty()) {
             this.getDcHashMap().forEach((productName,productCount) ->  {
-                this.customerCartList.getItems().add(productName + "\t" + productCount);
+                this.customerCartList.getItems().add(
+                        String.format("%-15s %3d",
+                                productName,
+                                productCount));
+                //this.customerCartList.getItems().add(productName + "\t" + productCount);
             });
 
         }
@@ -153,26 +161,52 @@ public class SupermarketSelfServiceController extends SupermarketSelfServiceBack
 
     @FXML
     void initialize() throws IOException {
+        assert animationPane != null : "fx:id=\"animationPane\" was not injected: check your FXML file 'supermarket_self_service_checkout.fxml'.";
         assert canvas != null : "fx:id=\"canvas\" was not injected: check your FXML file 'supermarket_self_service_checkout.fxml'.";
-        assert imageView != null : "fx:id=\"imageView\" was not injected: check your FXML file 'supermarket_self_service_checkout.fxml'.";
+        assert cartImageView != null : "fx:id=\"cartImageView\" was not injected: check your FXML file 'supermarket_self_service_checkout.fxml'.";
         assert customerCartList != null : "fx:id=\"customerCartList\" was not injected: check your FXML file 'supermarket_self_service_checkout.fxml'.";
+        assert productImageView != null : "fx:id=\"productImageView\" was not injected: check your FXML file 'supermarket_self_service_checkout.fxml'.";
         assert productList != null : "fx:id=\"productList\" was not injected: check your FXML file 'supermarket_self_service_checkout.fxml'.";
         assert title != null : "fx:id=\"title\" was not injected: check your FXML file 'supermarket_self_service_checkout.fxml'.";
 
 
 
-        //System.out.println(new File(".").getAbsolutePath());
-//        File cartPNGFile = new File("D:\\Users\\omers\\IdeaProjects\\advanced_programming_in_java\\src\\src\\mamans\\maman03\\src\\q2\\images\\cart.png");
-//        //File file = new File("D:\\Users\\omers\\IdeaProjects\\advanced_programming_in_java\\src\\src\\mamans\\maman03\\src\\q2\\cart.png");
-//        Image image = new Image(cartPNGFile.toURI().toString());
-//        this.imageView.setImage(image);
-        this.imageView.setImage(SupermarketImages.getImage("Cart"));
+        this.cartImageView.setImage(SupermarketImages.getImage("Cart"));
 
         this.loadProductsFromFile(this.getProductsFilePath());
         this.productsListSetup();
 
         gc = canvas.getGraphicsContext2D();
         this.title.setText("Supermarket Self Service Checkout");
+
+        customerCartList.setStyle(
+                "-fx-font-family: 'Courier New';"
+        );
+
+        productList.setStyle(
+                "-fx-font-family: 'Courier New';"
+        );
+
+
+
+        productList.getSelectionModel()
+                .selectedItemProperty()
+                .addListener((obs, oldValue, newValue) -> {
+
+                    if (newValue == null) {
+                        return;
+                    }
+
+                    String productName =
+                            newValue.substring(
+                                    0,
+                                    newValue.indexOf(" (")
+                            );
+
+                    this.productImageView.setImage(
+                            SupermarketImages.getImage(productName)
+                    );
+                });
     }
 
 }
