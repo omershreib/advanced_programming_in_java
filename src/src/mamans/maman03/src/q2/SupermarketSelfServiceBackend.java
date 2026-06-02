@@ -16,6 +16,8 @@ public class SupermarketSelfServiceBackend extends DupCount<String> {
 
     private Map<String, String> productsDict = new HashMap<>();
 
+    //private static final InfoBox infoBox = new InfoBox();
+
 
     public String getProductsFilePath() {
         return this.productsFilePath;
@@ -55,6 +57,44 @@ public class SupermarketSelfServiceBackend extends DupCount<String> {
 
     public boolean isCartEmpty() {
         return this.isEmpty();
+    }
+
+    public void callCheckoutInfoBox(HashMap<String, Integer> customerCart, boolean is_bamba_sale_offer_accepted) {
+        StringBuilder checkoutMessage = new StringBuilder();
+        String header = "product\t\tcount\n";
+
+        double cost = 0.0;
+        double productPrice;
+
+        checkoutMessage.append(header);
+
+        for (Map.Entry<String, Integer> entry : customerCart.entrySet()) {
+            String productName = entry.getKey();
+            Integer productCount = entry.getValue();
+            checkoutMessage.append(productName).append("\t\t").append(productCount).append("\n");
+            productPrice = (Double.parseDouble(productName.substring(productName.indexOf("(")+1, productName.indexOf(")"))));
+            cost = cost + productPrice*productCount;
+        }
+
+        if (is_bamba_sale_offer_accepted) {
+            cost = cost - 0.51;
+            checkoutMessage.append("\ntotal cost: ").append(Math.round(cost * 100.0) / 100.0);
+            checkoutMessage.append("\nyou saved 0.51 new shekels because of the bamba sale!");
+        }
+
+        else {
+            checkoutMessage.append("\ntotal cost: ").append(Math.round(cost * 100.0) / 100.0);
+        }
+
+        AlertBox.showCheckout(checkoutMessage.toString());
+
+
+    }
+
+    public boolean offerBambaSale() {
+
+        String message = "Buy 3 Bamba packages in 9.99!";
+        return AlertBox.showBambaSale(message);
     }
 
 }

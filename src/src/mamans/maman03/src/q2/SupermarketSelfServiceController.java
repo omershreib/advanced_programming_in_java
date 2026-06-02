@@ -15,7 +15,9 @@ import java.io.IOException;
 public class SupermarketSelfServiceController extends SupermarketSelfServiceBackend {
 
 
-    //private static final ADD_TO_CART_
+    private boolean is_bamba_sale_offered = false;
+
+    private boolean is_bamba_sale_offer_accepted = false;
 
     private GraphicsContext gc;
 
@@ -47,6 +49,19 @@ public class SupermarketSelfServiceController extends SupermarketSelfServiceBack
         String selectedItem = this.productList.getSelectionModel().getSelectedItem();
         String productName = selectedItem.substring(0, selectedItem.indexOf(" ("));
 
+        /* private joke */
+        if ((this.getDcHashMap().containsKey("Bamba (3.50)")) & !(this.is_bamba_sale_offered)) {
+            this.is_bamba_sale_offered = true;
+            if (this.offerBambaSale()) {
+
+                this.addToCart("Bamba (3.50)");
+                this.addToCart("Bamba (3.50)");
+                this.is_bamba_sale_offer_accepted = true;
+
+                this.updateCustomerCartList();
+            }
+        }
+
         this.playCartAnimation(productName, true);
     }
 
@@ -71,6 +86,8 @@ public class SupermarketSelfServiceController extends SupermarketSelfServiceBack
 
         this.updateCustomerCartList();
 
+        this.checkBambaSaleRelevance();
+
         String selectedItem = this.productList.getSelectionModel().getSelectedItem();
         String productName = selectedItem.substring(0, selectedItem.indexOf(" ("));
 
@@ -81,7 +98,7 @@ public class SupermarketSelfServiceController extends SupermarketSelfServiceBack
 
     @FXML
     void onCheckoutButtonPress(ActionEvent event) {
-
+        this.callCheckoutInfoBox(this.getDcHashMap(), this.is_bamba_sale_offer_accepted);
     }
 
     @FXML
@@ -89,6 +106,18 @@ public class SupermarketSelfServiceController extends SupermarketSelfServiceBack
 
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         gc.fillText("Most Popular Item is " + this.getMaxDup(), 50, 150);
+    }
+
+    private void checkBambaSaleRelevance() {
+
+        if (!this.is_bamba_sale_offer_accepted) {
+            return;
+        }
+
+        if (this.getDcHashMap().get("Bamba (3.50)") < 3) {
+            this.is_bamba_sale_offer_accepted = false;
+        }
+
     }
 
     private void playCartAnimation(String productName, boolean addToCart) {
