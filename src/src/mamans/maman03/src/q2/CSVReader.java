@@ -20,10 +20,12 @@ public class CSVReader {
         return this.filePath;
     }
 
+
+
     public void read() {
         String line;
 
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(String.valueOf(getClass().getResource(filePath).getPath())))) {
 
             // Skip header if exists
             String header = br.readLine();
