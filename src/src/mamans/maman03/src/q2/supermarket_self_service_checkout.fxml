@@ -36,10 +36,10 @@
             <Pane prefHeight="73.0" prefWidth="724.0" BorderPane.alignment="CENTER">
                <children>
                   <Button layoutX="21.0" layoutY="9.0" mnemonicParsing="false" onAction="#onRemoveFromCartButtonPress" prefHeight="40.0" prefWidth="170.0" text="Remove from Cart" />
-                  <ButtonBar layoutX="262.0" layoutY="17.0" prefHeight="40.0" prefWidth="155.0">
+                  <ButtonBar layoutX="255.0" layoutY="17.0" prefHeight="40.0" prefWidth="215.0">
                     <buttons>
-                        <Button mnemonicParsing="false" onAction="#onGetMaxButtonPress" text="get max" />
-                      <Button mnemonicParsing="false" onAction="#onCheckoutButtonPress" text="checkout" />
+                        <Button mnemonicParsing="false" onAction="#onGetMaxButtonPress" prefHeight="25.0" prefWidth="98.0" text="Most Popular" />
+                      <Button mnemonicParsing="false" onAction="#onCheckoutButtonPress" text="Checkout" />
                     </buttons>
                   </ButtonBar>
                   <Button layoutX="540.0" layoutY="9.0" mnemonicParsing="false" onAction="#onAddToCartButtonPress" prefHeight="40.0" prefWidth="170.0" text="Add to Cart" />
@@ -47,7 +47,7 @@
             </Pane>
          </bottom>
          <center>
-            <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <Pane fx:id="animationPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
                   <ImageView fx:id="imageView" fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="186.0" pickOnBounds="true" preserveRatio="true" />
                   <Canvas fx:id="canvas" height="323.0" layoutX="21.0" layoutY="14.0" width="280.0" />
