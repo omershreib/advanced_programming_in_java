@@ -1,35 +1,57 @@
-package mamans.maman03.src.q2;
+/**
+ * <h3> SupermarketSelfServiceBackend </h3>
+ *
+ * <p>
+ *      this is the backend class to run Supermarket-Self-Service JAVAFX application.
+ *      the backend handle this application logic and mechanics which includes:
+ *      <ol>
+ *          <li> interaction with DupCount (that represents the customer cart) </li>
+ *          <li> products file loading </li>
+ *          <li> alert box setup and calling (the cart checkout required it) </li>
+ *          <li> product entry parsing </li>
+ *      </ol>
+ * </p>
+ * <br>
+ * <p> Note: HTML tags helps to improve comments readability in editors like IntelliJ that support it </p>
+ *
+ * @maman   03
+ * @question    2
+ * @author  Omer Shraibshtein (205984271)
+ * @email   omershreib@gmail.com
+ * @since   2026-06-02
+ * */
 
+package mamans.maman03.src.q2;
 
 import javafx.scene.control.TextArea;
 import mamans.maman03.src.q1.DupCount;
-
 import java.util.HashMap;
 import java.util.Map;
 
 public class SupermarketSelfServiceBackend extends DupCount<String> {
 
-    //private static final String productsPath = "resources/products";
     private static final String productsFilePath =  "resources/products/products.csv";
-
-    //private final String productsFilePath = "D:\\Users\\omers\\IdeaProjects\\advanced_programming_in_java\\src\\src\\mamans\\maman03\\src\\q2\\resources\\products\\products.csv";
-
-
+    private static final double DEFAULT_ROUND = 100.0;
+    private static final String TEXT_AREA_STYLE = "-fx-font-family: 'Consolas';" + "-fx-font-size: 12px;";
+    private static final String BAMBA_SALE_OFFER_REMINDER_IN_CHECKOUT = "\"You saved ₪0.51 thanks\\nto the Bamba sale!\"";
+    
+    
+    /* productsDict contains that products data loaded from file
+    (please do not confuse with the controller productList) */
     private Map<String, String> productsDict = new HashMap<>();
 
-    //private static final InfoBox infoBox = new InfoBox();
 
-
-    public String getProductsFilePath() {
-        return this.productsFilePath;
+    protected String getProductsFilePath() {
+        return productsFilePath;
     }
 
-    public SupermarketSelfServiceBackend() {
+    /** SupermarketSelfServiceBackend constructor */
+    protected SupermarketSelfServiceBackend() {
         super();
-
     }
 
-    public void loadProductsFromFile(String filePath) {
+    /** Load products file */
+    protected void loadProductsFromFile(String filePath) {
         System.out.println("load supermarket products from list: " + this.getProductsFilePath());
         CSVReader reader = new CSVReader(filePath);
         reader.read();
@@ -37,134 +59,154 @@ public class SupermarketSelfServiceBackend extends DupCount<String> {
         productsDict = reader.getData();
     }
 
-    public Map<String, String> getProductDictData() {
+    protected Map<String, String> getProductDictData() {
         return productsDict;
     }
 
-    public void addToCart(String product) {
-        System.out.println("add product into cart");
+    /** Add to Cart
+     * <p>
+     *  a wrapper method for DupCount.add()
+     * <br> addToCart() sound more informative than just add()
+     * <br> in addition, I wanted to add an access modifier layer to adding/removing items from cart
+     * but did not want to do this on DupCount method that I prefer to be public
+     * </p>
+     * */
+    protected void addToCart(String product) {
+        System.out.println("add " + product + " into cart");
         this.add(product);
     }
 
-    public int removeFromCart(String product) {
 
-//        String[] tokens = product.split("\t");
-//
-//        String productName = tokens[0];
-//        int _productCount = Integer.valueOf(tokens[1]);
-
+    /** Remove from Cart
+     * <p>
+     * a wrapper method for DupCount.remove()
+     * <br>
+     * removeFromCart() sound more informative than just remove()
+     * <br>
+     * in addition, I wanted to add an access modifier layer to adding/removing items from cart
+     * but did not want to do this on DupCount method that I prefer to be public
+     * </p>
+     *
+     * @param product string name of product
+     * @return an integer represent the current number of product remain in the cart after this removal
+     * */
+    protected int removeFromCart(String product) {
+        System.out.println("remove " + product + " from cart");
         return this.remove(product);
     }
 
-    public boolean isCartEmpty() {
+    protected int countProductsInCart(String product) {
+        return this.getDcHashMap().get(product);
+    }
+
+    /** check if the cart is currently empty
+     * <p>
+     *  a wrapper method to DupCount.isEmpty()
+     * </p>
+     *
+     * @return true if the cart is empty, otherwise false
+     * */
+    protected boolean isCartEmpty() {
         return this.isEmpty();
     }
 
-//    public void callCheckoutInfoBox(HashMap<String, Integer> customerCart, boolean is_bamba_sale_offer_accepted) {
-//        StringBuilder checkoutMessage = new StringBuilder();
-//
-//        checkoutMessage.append(String.format("%-15s %3s", "product", "count")).append("\n");
-//
-//        double cost = 0.0;
-//        double productPrice;
-//
-//        for (Map.Entry<String, Integer> entry : customerCart.entrySet()) {
-//            String productName = entry.getKey();
-//            Integer productCount = entry.getValue();
-//            checkoutMessage.append(String.format("%-15s %3d",
-//                    productName,
-//                    productCount)).append("\n");
-//            productPrice = (Double.parseDouble(productName.substring(productName.indexOf("(")+1, productName.indexOf(")"))));
-//            cost = cost + productPrice*productCount;
-//        }
-//
-//        if (is_bamba_sale_offer_accepted) {
-//            cost = cost - 0.51;
-//            checkoutMessage.append("\ntotal cost: ").append(Math.round(cost * 100.0) / 100.0);
-//            checkoutMessage.append("\nyou saved 0.51 new shekels because of the bamba sale!");
-//        }
-//
-//        else {
-//            checkoutMessage.append("\ntotal cost: ").append(Math.round(cost * 100.0) / 100.0);
-//        }
-//
-//        AlertBox.showCheckout(checkoutMessage.toString());
-//
-//
-//    }
+    /** Parse selected product added or removed from cart
+     * <p>
+     * for example, the raw-string-product during adding:
+     *  <br>"Cereal (14.90)" ← (*)
+     *  <br> will be parsed and split into "Cereal" and "14.90"
+     *  <br><br> following raw-string-product during removal:
+     *  <br> "Cereal (14.90)  5"
+     *  <br> need to also parse the productEntry (equals to (*)) recognized by DupCount from removal
+     *
+     *
+     * @param selectedProduct a selected string product from customerCartList or productList
+     * @return HashMap with 3 keys: productName, productPrice and productEntry (values are String)
+     * </p>
+     * */
+    protected static Map<String, String> parseSelectedProduct(String selectedProduct) {
 
-    public void callCheckoutInfoBox(HashMap<String, Integer> customerCart,
-                                    boolean is_bamba_sale_offer_accepted) {
+        Map<String, String> resultMap = new HashMap<>();
+
+        /* no magic numbers! */
+        int fistIndexOfProductName = 0;
+        int lastIndexOfProductName = selectedProduct.indexOf(" (");
+
+        int fistIndexOfProductPrice = selectedProduct.indexOf("(") + 1;
+        int lastIndexOfProductPrice = selectedProduct.indexOf(")");
+
+        int fistIndexOfProductEntry = 0;
+        int lastIndexOfProductEntry = selectedProduct.indexOf(")") + 1;
+        
+        String productName = selectedProduct.substring(fistIndexOfProductName, lastIndexOfProductName);
+        Double productPrice = Double.parseDouble(
+                selectedProduct.substring(fistIndexOfProductPrice,lastIndexOfProductPrice)
+        );
+        
+        String productEntry = selectedProduct.substring(fistIndexOfProductEntry, lastIndexOfProductEntry);
+
+        resultMap.put("productName", productName);
+        resultMap.put("productPrice", String.valueOf(productPrice));
+        resultMap.put("productEntry", productEntry);
+
+        return resultMap;
+    }
+    
+    /** TextArea Builder
+     * 
+     * @param sb the checkout message stringBuilder
+     * @return styled textArea
+     * */
+    private static TextArea BuildTextArea(StringBuilder sb) {
+        TextArea textArea = new TextArea(sb.toString());
+        textArea.setEditable(false);
+        textArea.setWrapText(false);
+        textArea.setStyle(TEXT_AREA_STYLE);
+        
+        return textArea;
+    }
+
+    /** Call checkout info box
+     *
+     * @param customerCart customer cart provided from DupCount.getDcHashMap()
+     * @param bamba_sale_status boolean status off bamba sale offer
+     * */
+    public void callCheckoutInfoBox(HashMap<String, Integer> customerCart, double cost, boolean bamba_sale_status) {
 
         StringBuilder checkoutMessage = new StringBuilder();
 
-        checkoutMessage.append(
-                String.format("%-20s %5s%n", "Product", "Count")
-        );
+        /* insert text header to checkout massage (hope this will not count as magic variables) */
+        checkoutMessage.append(String.format("%-20s %5s%n", "Product", "Count"));
+        checkoutMessage.append("------------------------------\n");
+        
 
-        checkoutMessage.append(
-                "------------------------------\n"
-        );
-
-        double cost = 0.0;
-        double productPrice;
-
-        for (Map.Entry<String, Integer> entry : customerCart.entrySet()) {
-
-            String productName = entry.getKey();
-            Integer productCount = entry.getValue();
-
-            checkoutMessage.append(
-                    String.format("%-20s %5d%n",
-                            productName,
-                            productCount)
-            );
-
-            productPrice = Double.parseDouble(
-                    productName.substring(
-                            productName.indexOf("(") + 1,
-                            productName.indexOf(")")
-                    )
-            );
-
-            cost += productPrice * productCount;
-        }
-
+        customerCart.forEach((productName, productCount) -> {
+            checkoutMessage.append(String.format("%-20s %5d%n", productName, productCount)).append("\n");
+        });
+        
         checkoutMessage.append("\n");
+        checkoutMessage.append(String.format("Total Cost: %.2f%n", cost));
 
-        if (is_bamba_sale_offer_accepted) {
-            cost -= 0.51;
-
-            checkoutMessage.append(
-                    String.format("Total Cost: %.2f%n", cost)
-            );
-
-            checkoutMessage.append(
-                    "You saved ₪0.51 thanks\nto the Bamba sale!"
-            );
-        } else {
-            checkoutMessage.append(
-                    String.format("Total Cost: %.2f", cost)
-            );
+        if (bamba_sale_status) {
+            checkoutMessage.append(BAMBA_SALE_OFFER_REMINDER_IN_CHECKOUT);
         }
-
-        TextArea textArea = new TextArea(checkoutMessage.toString());
-
-        textArea.setEditable(false);
-        textArea.setWrapText(false);
-
-        textArea.setStyle(
-                "-fx-font-family: 'Consolas';" +
-                        "-fx-font-size: 12px;"
-        );
-
-        AlertBox.showCheckout(textArea);
+        
+        AlertBox.showCheckout(BuildTextArea(checkoutMessage));
     }
 
-    public boolean offerBambaSale() {
-
-        String message = "Buy 3 Bamba packages in 9.99!";
+    /** Alert Bamba sale */
+    protected boolean alertBambaSale() {
+        String message = "Only today, buy 3 Bamba units in 9.99!\n(offer will be presented only once)";
         return AlertBox.showBambaSale(message);
+    }
+    
+    /** Round Cost 
+     * 
+     * @param value the total cost of some product(s)
+     * @return rounded value of this cost
+     * */
+    public static double roundCost(double value) {
+        return Math.round(value * DEFAULT_ROUND) / DEFAULT_ROUND;
     }
 
 }

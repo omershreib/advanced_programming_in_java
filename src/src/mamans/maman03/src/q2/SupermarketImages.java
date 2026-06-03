@@ -1,7 +1,22 @@
+/**
+ * <h3> SupermarketImages </h3>
+ *
+ * <p>
+ *      useful class to handle image loading and calling
+ * </p>
+ * <br>
+ * <p> Note: HTML tags helps to improve comments readability in editors like IntelliJ that support it </p>
+ *
+ * @maman   03
+ * @question    2
+ * @author  Omer Shraibshtein (205984271)
+ * @email   omershreib@gmail.com
+ * @since   2026-06-02
+ * */
+
 package mamans.maman03.src.q2;
 
 import javafx.scene.image.Image;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,10 +45,6 @@ public class SupermarketImages {
     public static Image getImage(String productName) {
 
         String path = IMAGES.get(productName);
-
-//        if (path == null) {
-//            path = "images/cart.png";
-//        }
 
         return new Image(
                 SupermarketImages.class

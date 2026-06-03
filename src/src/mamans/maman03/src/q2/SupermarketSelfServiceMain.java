@@ -25,10 +25,16 @@ import java.util.Objects;
 
 public class SupermarketSelfServiceMain extends Application {
 
+
+    // application stage setup
+    private static final int DEFAULT_STAGE_WIDTH = 800;
+    private static final int DEFAULT_STAGE_HEIGHT = 550;
+    private static final String STAGE_TITLE = "Supermarket Self Service Checkout";
+    private static final boolean SET_STAGE_RESIZABLE = false;
+
     public static void main(String[] args) {
 
         launch(args);
-
     }
 
     @Override
@@ -37,8 +43,12 @@ public class SupermarketSelfServiceMain extends Application {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("supermarket_self_service_checkout.fxml")));
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
+
+        primaryStage.setWidth(DEFAULT_STAGE_WIDTH);
+        primaryStage.setHeight(DEFAULT_STAGE_HEIGHT);
+        primaryStage.setResizable(SET_STAGE_RESIZABLE);
+        primaryStage.setTitle(STAGE_TITLE);
         primaryStage.show();
     }
-
 
 }
