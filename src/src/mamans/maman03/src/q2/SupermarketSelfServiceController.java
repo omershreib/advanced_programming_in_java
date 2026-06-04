@@ -39,8 +39,8 @@ public class SupermarketSelfServiceController extends SupermarketSelfServiceBack
      2. Cost displacement (because why not)
 
      hop that you will like it... */
-    private boolean is_bamba_sale_offered = false;
-    private boolean is_bamba_sale_offer_accepted = false;
+    private boolean isBambaSaleAlreadyOffered = false;
+    private boolean isBambaSaleAccepted = false;
     private static final String BAMBA_PRODUCT = "Bamba (3.50)";
     private static final int NUMBER_OF_BAMBA_UNITS_IN_SALE = 3;
     private static final double APPLY_BAMABA_SALE_ON_COST = 9.99;
@@ -138,7 +138,7 @@ public class SupermarketSelfServiceController extends SupermarketSelfServiceBack
     @FXML
     void onCheckoutButtonPress(ActionEvent event) {
         double cost = Double.parseDouble(this.costTextField.getText());
-        this.callCheckoutInfoBox(this.getDcHashMap(), cost, this.is_bamba_sale_offer_accepted);
+        this.callCheckoutInfoBox(this.getDcHashMap(), cost, this.isBambaSaleAccepted);
     }
 
     /** Display most popular product in current customer cart (or null if its empty) */
@@ -167,10 +167,11 @@ public class SupermarketSelfServiceController extends SupermarketSelfServiceBack
      * </ol>
      * */
     private boolean offerBambaSale(String product) {
-        if (Objects.equals(product, BAMBA_PRODUCT) & !(this.is_bamba_sale_offered)) {
-            this.is_bamba_sale_offered = true;
+        if (Objects.equals(product, BAMBA_PRODUCT) & !(this.isBambaSaleAlreadyOffered)) {
+            this.isBambaSaleAlreadyOffered = true;
             if (this.alertBambaSale()) {
                 this.applyBambaSale();
+                this.playCartAnimation("Bamba", true);
                 return true;
             }
         }
@@ -186,7 +187,7 @@ public class SupermarketSelfServiceController extends SupermarketSelfServiceBack
         for (int i=0; i<NUMBER_OF_BAMBA_UNITS_IN_SALE; i++)
             this.addToCart(BAMBA_PRODUCT);
 
-        this.is_bamba_sale_offer_accepted = true;
+        this.isBambaSaleAccepted = true;
         this.refreshCustomerCartList();
         this.increaseCostTextField(APPLY_BAMABA_SALE_ON_COST);
     }
@@ -197,12 +198,12 @@ public class SupermarketSelfServiceController extends SupermarketSelfServiceBack
      * */
     private void checkBambaSaleRelevance() {
 
-        if (!this.is_bamba_sale_offer_accepted) {
+        if (!this.isBambaSaleAccepted) {
             return;
         }
 
         if (countProductsInCart(BAMBA_PRODUCT) < NUMBER_OF_BAMBA_UNITS_IN_SALE) {
-            this.is_bamba_sale_offer_accepted = false;
+            this.isBambaSaleAccepted = false;
         }
 
     }

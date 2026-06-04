@@ -26,34 +26,48 @@ public class CartAnimation extends Thread {
     private static final int DEFAULT_FRAMES = 30;
     private static final int DEFAULT_DELAY = 15;
 
-    private static final double ADD_TO_CART_START_X = 220;
 
-    private static final double ADD_TO_CART_START_Y = 20;
+    /* ATC is acronym of ADD_TO_CART ; RFC is acronym of REMOVE_FROM_CART */
+    private static final double ATC_START_X = 220;
 
-    private static final double ADD_TO_CART_END_X = 140;
+    private static final double ATC_START_Y = 20;
 
-    private static final double ADD_TO_CART_END_Y = 162;
+    private static final double ATC_END_X = 140;
 
-    private static final double REMOVE_FROM_CART_START_X = 140;
+    private static final double ATC_END_Y = 162;
 
-    private static final double REMOVE_FROM_CART_START_Y = 162;
+    private static final double RFC_START_X = 140;
 
-    private static final double REMOVE_FROM_CART_END_X = 220;
+    private static final double RFC_START_Y = 162;
 
-    private static final double REMOVE_FROM_CART_END_Y = 20;
+    private static final double RFC_END_X = 220;
 
-    private static final int ADD_TO_CART_SIZE_FREE_VARIABLE = 60;
-    
-    private static final int ADD_TO_CART_SIZE_BOUNDED_VARIABLE = 30;
+    private static final double RFC_END_Y = 20;
 
-    private static final int ADD_TO_CART_SIZE_FREE_VARIABLE = 60;
+    private static final int ATC_SIZE_FREE_PARAM = 60;
 
-    private static final int ADD_TO_CART_SIZE_BOUNDED_VARIABLE = 30;
+    private static final int ATC_SIZE_COEF = 30;
+
+    private static final int RFC_SIZE_FREE_PARAM = 30;
+
+    private static final int RFC_SIZE_COEF = 30;
+    private static final int CLEAR_RECT_X = 0;
+    private static final int CLEAR_RECT_Y = 0;
+    private static final double GLOBAL_ALTHA_FREE_PARAM = 1.0;
+    private static final double GLOBAL_ALTHA_COEF = 0.4;
+    private static final double DEFAULT_GLOBAL_ALTHA = 1.0;
 
     private final Canvas canvas;
     private final Image image;
     private final boolean addToCart;
 
+    /** CartAnimation constructor
+     *
+     * @param canvas javafx application canvas object
+     * @param addToCart if true, play add-to-cart animation, otherwise play remove-fro-cart animation
+     * @param image product Image object
+     *
+     * */
     public CartAnimation(Canvas canvas, Image image, boolean addToCart) {
         this.canvas = canvas;
         this.image = image;
@@ -65,23 +79,16 @@ public class CartAnimation extends Thread {
     public void run() {
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
-        // ? 220 : 140
-//        double startX = addToCart ? canvas.getWidth() - 60 : canvas.getWidth() / 2;
-//
-//        // ? 20 : 162
-//        double startY = addToCart ? 20 : canvas.getHeight() / 2;
-//
-//        // ? 140 : 220
-//        double endX = addToCart ? canvas.getWidth() / 2 : canvas.getWidth() - 60;
-//
-//        // ? 162 : 20
-//        double endY = addToCart ? canvas.getHeight() / 2 : 20;
+        double startX = addToCart ? ATC_START_X : RFC_START_X;
+        double startY = addToCart ? ATC_START_Y : RFC_START_Y;
+        double endX = addToCart ? ATC_END_X : RFC_END_X;
+        double endY = addToCart ? ATC_END_Y : RFC_END_Y;
 
-        double startX = addToCart ? ADD_TO_CART_START_X : REMOVE_FROM_CART_START_X;
-        double startY = addToCart ? ADD_TO_CART_START_Y : REMOVE_FROM_CART_START_Y;
-        double endX = addToCart ? ADD_TO_CART_END_X : REMOVE_FROM_CART_END_X;
-        double endY = addToCart ? ADD_TO_CART_END_Y : REMOVE_FROM_CART_END_Y;
-
+        /* during products animation image moves in 3 axis (x, y, alpha)
+        * where alpha controls transparently (obviously...)
+        * each of these axis have its on linear function and their values chane over frames
+        * the variable `t` is the bounded variable of all these functions.
+        * */
 
         for (int i = 0; i <= DEFAULT_FRAMES; i++) {
             double t = (double) i / DEFAULT_FRAMES;
@@ -89,15 +96,26 @@ public class CartAnimation extends Thread {
             double x = startX + (endX - startX) * t;
             double y = startY + (endY - startY) * t;
 
-            double size = addToCart
-                    ? 60 - 30 * t
-                    : 30 + 30 * t;
+            double atcAnimationFunction = ATC_SIZE_FREE_PARAM - ATC_SIZE_COEF * t;
+            double rtcAnimationFunction = RFC_SIZE_FREE_PARAM + RFC_SIZE_COEF * t;
+
+            double size = addToCart ? atcAnimationFunction : rtcAnimationFunction;
+
+            double alphaAnimationFunction = GLOBAL_ALTHA_FREE_PARAM - GLOBAL_ALTHA_COEF * t;
+
+            /* JavaFX is not thread-safe. All GUI components (Canvas, ImageView, TextField, etc.) must be updated only
+             by the JavaFX Application Thread. Since CartAnimation runs in its own worker thread,
+             it cannot directly draw on the canvas. Platform.runLater() is used to schedule the drawing operation on
+             the JavaFX Application Thread, ensuring that the GUI is updated safely and preventing runtime
+             exceptions or unpredictable behavior.
+
+             So I used it despite we did not learn it... */
 
             Platform.runLater(() -> {
-                gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-                gc.setGlobalAlpha(1.0 - t * 0.4);
+                gc.clearRect(CLEAR_RECT_X, CLEAR_RECT_Y, canvas.getWidth(), canvas.getHeight());
+                gc.setGlobalAlpha(alphaAnimationFunction);
                 gc.drawImage(image, x, y, size, size);
-                gc.setGlobalAlpha(1.0);
+                gc.setGlobalAlpha(DEFAULT_GLOBAL_ALTHA);
             });
 
             try {
@@ -107,6 +125,6 @@ public class CartAnimation extends Thread {
             }
         }
 
-        Platform.runLater(() -> gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()));
+        Platform.runLater(() -> gc.clearRect(CLEAR_RECT_X, CLEAR_RECT_Y, canvas.getWidth(), canvas.getHeight()));
     }
 }

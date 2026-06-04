@@ -34,6 +34,8 @@ public class SupermarketSelfServiceBackend extends DupCount<String> {
     private static final double DEFAULT_ROUND = 100.0;
     private static final String TEXT_AREA_STYLE = "-fx-font-family: 'Consolas';" + "-fx-font-size: 12px;";
     private static final String BAMBA_SALE_OFFER_REMINDER_IN_CHECKOUT = "\"You saved ₪0.51 thanks\\nto the Bamba sale!\"";
+
+    private static final String BAMBA_SALE_OFFER_MASSAGE = "Only today, buy 3 Bamba units in 9.99! (offer will be presented only once)";
     
     
     /* productsDict contains that products data loaded from file
@@ -128,7 +130,7 @@ public class SupermarketSelfServiceBackend extends DupCount<String> {
 
         Map<String, String> resultMap = new HashMap<>();
 
-        /* no magic numbers! */
+        /* no magic numbers! everything have meaning */
         int fistIndexOfProductName = 0;
         int lastIndexOfProductName = selectedProduct.indexOf(" (");
 
@@ -169,9 +171,9 @@ public class SupermarketSelfServiceBackend extends DupCount<String> {
     /** Call checkout info box
      *
      * @param customerCart customer cart provided from DupCount.getDcHashMap()
-     * @param bamba_sale_status boolean status off bamba sale offer
+     * @param bambaSaleStatus boolean status off bamba sale offer
      * */
-    public void callCheckoutInfoBox(HashMap<String, Integer> customerCart, double cost, boolean bamba_sale_status) {
+    public void callCheckoutInfoBox(HashMap<String, Integer> customerCart, double cost, boolean bambaSaleStatus) {
 
         StringBuilder checkoutMessage = new StringBuilder();
 
@@ -187,17 +189,19 @@ public class SupermarketSelfServiceBackend extends DupCount<String> {
         checkoutMessage.append("\n");
         checkoutMessage.append(String.format("Total Cost: %.2f%n", cost));
 
-        if (bamba_sale_status) {
+        if (bambaSaleStatus) {
             checkoutMessage.append(BAMBA_SALE_OFFER_REMINDER_IN_CHECKOUT);
         }
         
         AlertBox.showCheckout(BuildTextArea(checkoutMessage));
     }
 
-    /** Alert Bamba sale */
+    /** Alert Bamba sale
+     *
+     * @return true if sale is accepted (user press ok), otherwise false
+     * */
     protected boolean alertBambaSale() {
-        String message = "Only today, buy 3 Bamba units in 9.99!\n(offer will be presented only once)";
-        return AlertBox.showBambaSale(message);
+        return AlertBox.showBambaSale(BAMBA_SALE_OFFER_MASSAGE);
     }
     
     /** Round Cost 
