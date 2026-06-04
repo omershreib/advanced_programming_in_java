@@ -33,7 +33,7 @@ public class SupermarketSelfServiceBackend extends DupCount<String> {
     private static final String productsFilePath =  "resources/products/products.csv";
     private static final double DEFAULT_ROUND = 100.0;
     private static final String TEXT_AREA_STYLE = "-fx-font-family: 'Consolas';" + "-fx-font-size: 12px;";
-    private static final String BAMBA_SALE_OFFER_REMINDER_IN_CHECKOUT = "\"You saved ₪0.51 thanks to the Bamba sale!\"";
+    private static final String BAMBA_SALE_OFFER_REMINDER_IN_CHECKOUT = "\"You saved 0.51₪ thanks to the Bamba sale!\"";
 
     private static final String BAMBA_SALE_OFFER_MASSAGE = "Only today, buy 3 Bamba units in 9.99!\n(offer will be presented only once)";
     
@@ -187,7 +187,8 @@ public class SupermarketSelfServiceBackend extends DupCount<String> {
         });
         
         checkoutMessage.append("\n");
-        checkoutMessage.append(String.format("Total Cost: %.2f%n", cost));
+        checkoutMessage.append("Total Cost: ").append(cost).append("₪").append("\n");
+        //checkoutMessage.append(String.format("Total Cost: %.2f%n", cost));
 
         if (bambaSaleStatus) {
             checkoutMessage.append(BAMBA_SALE_OFFER_REMINDER_IN_CHECKOUT);
