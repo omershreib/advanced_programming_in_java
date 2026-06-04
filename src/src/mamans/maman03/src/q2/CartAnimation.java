@@ -53,9 +53,9 @@ public class CartAnimation extends Thread {
     private static final int RFC_SIZE_COEF = 30;
     private static final int CLEAR_RECT_X = 0;
     private static final int CLEAR_RECT_Y = 0;
-    private static final double GLOBAL_ALTHA_FREE_PARAM = 1.0;
-    private static final double GLOBAL_ALTHA_COEF = 0.4;
-    private static final double DEFAULT_GLOBAL_ALTHA = 1.0;
+    private static final double GLOBAL_ALPHA_FREE_PARAM = 1.0;
+    private static final double GLOBAL_ALPHA_COEF = 0.4;
+    private static final double DEFAULT_GLOBAL_ALPHA = 1.0;
 
     private final Canvas canvas;
     private final Image image;
@@ -101,7 +101,7 @@ public class CartAnimation extends Thread {
 
             double size = addToCart ? atcAnimationFunction : rtcAnimationFunction;
 
-            double alphaAnimationFunction = GLOBAL_ALTHA_FREE_PARAM - GLOBAL_ALTHA_COEF * t;
+            double alphaAnimationFunction = GLOBAL_ALPHA_FREE_PARAM - GLOBAL_ALPHA_COEF * t;
 
             /* JavaFX is not thread-safe. All GUI components (Canvas, ImageView, TextField, etc.) must be updated only
              by the JavaFX Application Thread. Since CartAnimation runs in its own worker thread,
@@ -115,7 +115,7 @@ public class CartAnimation extends Thread {
                 gc.clearRect(CLEAR_RECT_X, CLEAR_RECT_Y, canvas.getWidth(), canvas.getHeight());
                 gc.setGlobalAlpha(alphaAnimationFunction);
                 gc.drawImage(image, x, y, size, size);
-                gc.setGlobalAlpha(DEFAULT_GLOBAL_ALTHA);
+                gc.setGlobalAlpha(DEFAULT_GLOBAL_ALPHA);
             });
 
             try {

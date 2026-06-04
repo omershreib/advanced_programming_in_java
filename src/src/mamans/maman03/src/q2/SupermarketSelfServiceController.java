@@ -90,6 +90,12 @@ public class SupermarketSelfServiceController extends SupermarketSelfServiceBack
     @FXML
     void onAddToCartButtonPress(ActionEvent event) {
         ObservableList<String> selected = this.productList.getSelectionModel().getSelectedItems();
+
+        if (selected.isEmpty()) {
+            System.out.println("product must be selected in order to be added to cart");
+            return;
+        }
+
         String selectedProduct = selected.get(0);
 
         Map<String, String> productsMap = parseSelectedProduct(selected.get(0));
@@ -345,6 +351,5 @@ public class SupermarketSelfServiceController extends SupermarketSelfServiceBack
         this.listViewStyleSetup();
         this.applyProductsImageDisplayOnSelect();
 
-        System.out.println(canvas.getWidth() + " " +  canvas.getHeight());
     }
 }
