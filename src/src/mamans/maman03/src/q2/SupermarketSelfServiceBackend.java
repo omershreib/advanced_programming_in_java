@@ -35,7 +35,7 @@ public class SupermarketSelfServiceBackend extends DupCount<String> {
     private static final String TEXT_AREA_STYLE = "-fx-font-family: 'Consolas';" + "-fx-font-size: 12px;";
     private static final String BAMBA_SALE_OFFER_REMINDER_IN_CHECKOUT = "\"You saved ₪0.51 thanks to the Bamba sale!\"";
 
-    private static final String BAMBA_SALE_OFFER_MASSAGE = "Only today, buy 3 Bamba units in 9.99! (offer will be presented only once)";
+    private static final String BAMBA_SALE_OFFER_MASSAGE = "Only today, buy 3 Bamba units in 9.99!\n(offer will be presented only once)";
     
     
     /* productsDict contains that products data loaded from file
