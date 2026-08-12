@@ -1,6 +1,5 @@
 package mamans.maman04.src.q2;
 
-import learning_to_final_exam.A;
 
 public class Main {
 

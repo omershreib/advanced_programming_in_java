@@ -47,7 +47,7 @@ public class Flight extends Thread {
         return milliseconds * 1000;
     }
 
-    private void simulateRunwayUsage(boolean isDeparture,String airportName, int runway, int minTime, int maxTime)
+    private void simulateRunwayUsage(boolean isDeparture, String airportName, int runway, int minTime, int maxTime)
             throws Exception {
 
 
@@ -84,17 +84,17 @@ public class Flight extends Thread {
         return isDeparture? depatingAirport.depart(this.flightNumber) : landingAirport.land(this.flightNumber);
     }
 
-    private void releaseRunway(boolean isDeparture, int runway) {
+    private void releaseRunway(boolean isDeparture, int runway) throws InterruptedException {
 
         String prefix = "signal airport ";
         String suffix = " that runway #" + runway + " is now free";
         if (isDeparture) {
             System.out.println(getFlightMessagePrefix() + prefix + this.depatingAirport.getName() + suffix);
-            depatingAirport.freeRunway(runway);
+            depatingAirport.freeRunway(this.flightNumber, runway);
         }
         else {
             System.out.println(getFlightMessagePrefix() + prefix + this.landingAirport.getName() + suffix);
-            landingAirport.freeRunway(runway);
+            landingAirport.freeRunway(this.flightNumber, runway);
         }
     }
 
@@ -120,17 +120,34 @@ public class Flight extends Thread {
             System.out.println(getFlightMessagePrefix() + "begins flight");
 
             runway = requestRunway(true);
-            simulateRunwayUsage(true, depatingAirport.getName(), runway, MIN_DEPART_TIME, MAX_DEPART_TIME);
-            releaseRunway(true, runway);
+
+            try {
+                simulateRunwayUsage(true, depatingAirport.getName(), runway, MIN_DEPART_TIME, MAX_DEPART_TIME);
+            }
+
+            finally {
+                releaseRunway(true, runway);
+            }
 
             simulateFlight();
 
             runway = requestRunway(false);
-            simulateRunwayUsage(true, landingAirport.getName(), runway, MIN_LAND_TIME, MAX_LAND_TIME);
-            releaseRunway(false, runway);
+
+            try {
+                simulateRunwayUsage(false, landingAirport.getName(), runway, MIN_LAND_TIME, MAX_LAND_TIME);
+            }
+
+            finally {
+                releaseRunway(false, runway);
+            }
 
             System.out.println(getFlightMessagePrefix() + "ends flight");
         }
+
+        catch (InterruptedException e) {
+            System.out.println(e);
+        }
+
         catch (Exception e) {
             System.out.println(e);
         }

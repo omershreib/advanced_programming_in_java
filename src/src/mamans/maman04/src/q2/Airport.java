@@ -1,7 +1,9 @@
 package mamans.maman04.src.q2;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.Objects;
+import java.util.Queue;
 
 public class Airport {
     private String name;
@@ -9,6 +11,8 @@ public class Airport {
     private int runways;
 
     private String[] runwayPool;
+
+    private Queue<String> waitingFlights = new LinkedList<>();
 
     private final int NO_FREE_RUNWAY_STATUS_CODE = -1;
     private final String FREE_RUNWAY = null;
@@ -47,11 +51,19 @@ public class Airport {
 
 
     public synchronized int allocateRunway(String flightNumber) throws InterruptedException {
+
+        waitingFlights.offer(flightNumber);
+
         int nextRunway;
 
         String flightString = "flight #" + flightNumber;
 
         System.out.println(getAirportMessagePrefix() + flightString + " request a free runway");
+
+        while (!Objects.equals(waitingFlights.peek(), flightNumber)) {
+            System.out.println(getAirportMessagePrefix() + flightString + " is not the first in line - please wait for your turn...");
+            wait();
+        }
 
         while ((nextRunway = allocateNextFreeRunway(flightNumber)) == NO_FREE_RUNWAY_STATUS_CODE) {
             System.out.println(getAirportMessagePrefix() + "airport is too busy, cannot allocate a runway for " + flightString);
@@ -59,6 +71,8 @@ public class Airport {
         }
 
         System.out.println(getAirportMessagePrefix() + "allocate runway #" + nextRunway + " to " + flightString);
+
+        waitingFlights.poll();
 
         return nextRunway;
     }
@@ -72,8 +86,17 @@ public class Airport {
         return allocateRunway(flightNumber);
     }
 
-    public synchronized void freeRunway(int runway) {
-        System.out.println(getAirportMessagePrefix() + "free runway #" + runway);
+    public synchronized void freeRunway(String flightNumber, int runway) throws InterruptedException {
+
+        String flightString = "flight #" + flightNumber;
+
+        System.out.println(getAirportMessagePrefix() + "verify that runway # " + runway + " is really free...");
+
+        while (!Objects.equals(runwayPool[runway], flightNumber)) {
+            wait();
+        }
+
+        System.out.println(getAirportMessagePrefix() + flightString + " free runway #" + runway);
         runwayPool[runway] = FREE_RUNWAY;
 
         notifyAll();
