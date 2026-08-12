@@ -70,6 +70,8 @@ public class Airport {
             wait();
         }
 
+        System.out.println(getAirportMessagePrefix() + waitingFlights.toString());
+
         System.out.println(getAirportMessagePrefix() + "allocate runway #" + nextRunway + " to " + flightString);
 
         waitingFlights.poll();
@@ -90,7 +92,7 @@ public class Airport {
 
         String flightString = "flight #" + flightNumber;
 
-        System.out.println(getAirportMessagePrefix() + "verify that runway # " + runway + " is really free...");
+        System.out.println(getAirportMessagePrefix() + "verify that runway #" + runway + " is really free...");
 
         while (!Objects.equals(runwayPool[runway], flightNumber)) {
             wait();
