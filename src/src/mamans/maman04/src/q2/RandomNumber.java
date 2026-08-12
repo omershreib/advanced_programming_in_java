@@ -11,7 +11,7 @@ public class RandomNumber {
             throw new Exception("the lowerBound must be lower than the upperBound!");
 
         this.lowerBound = lowerBound;
-        this.upperBound = upperBound;
+        this.upperBound = upperBound + 1;
     }
 
     public double getRandomNumberFromRange() {
