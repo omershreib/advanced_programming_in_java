@@ -75,6 +75,7 @@ public class Airport {
         System.out.println(getAirportMessagePrefix() + "allocate runway #" + nextRunway + " to " + flightString);
 
         waitingFlights.poll();
+        notifyAll();
 
         return nextRunway;
     }
@@ -94,8 +95,8 @@ public class Airport {
 
         System.out.println(getAirportMessagePrefix() + "verify that runway #" + runway + " is really free...");
 
-        while (!Objects.equals(runwayPool[runway], flightNumber)) {
-            wait();
+        if (!Objects.equals(runwayPool[runway], flightNumber)) {
+            throw new InterruptedException(flightString + " attempt to release a runway (" + runway + ") that airport " + name + " did not allocated to" );
         }
 
         System.out.println(getAirportMessagePrefix() + flightString + " free runway #" + runway);
